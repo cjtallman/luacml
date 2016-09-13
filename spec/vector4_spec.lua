@@ -1,0 +1,95 @@
+
+describe("vector4", function()
+    local cml = require("luacml")
+
+    describe("constructor", function()
+        it("default", function()
+            assert.matches("<0,0,0,0>", cml.vector4())
+
+            local def = cml.vector4()
+            print(def[1])
+            assert.is_true(0 == def[1])
+        end)
+
+        it("with 1 number", function()
+            assert.matches("<0,0,0,0>", cml.vector4(0))
+            assert.matches("<123,0,0,0>", cml.vector4(123))
+            assert.matches("<1.23,0,0,0>", cml.vector4(1.23))
+            assert.matches("<"..-math.pi..",0,0,0>", cml.vector4(-math.pi))
+            assert.matches("<"..math.huge..",0,0,0>", cml.vector4(math.huge))
+
+        end)
+
+        it("with 2 numbers", function()
+            assert.matches("<0,0,0,0>", cml.vector4(0, 0))
+            assert.matches("<0,1,0,0>", cml.vector4(0, 1))
+            assert.matches("<123,456,0,0>", cml.vector4(123, 456))
+            assert.matches("<1.23,4.56,0,0>", cml.vector4(1.23, 4.56))
+            assert.matches("<"..-math.pi..",1,0,0>", cml.vector4(-math.pi, 1))
+            assert.matches("<"..math.huge..",1,0,0>", cml.vector4(math.huge, 1))
+        end)
+
+        it("with 3 numbers", function()
+            assert.matches("<0,0,0,0>", cml.vector4(0, 0, 0))
+            assert.matches("<0,1,2,0>", cml.vector4(0, 1, 2))
+            assert.matches("<123,456,789,0>", cml.vector4(123, 456, 789))
+            assert.matches("<1.23,4.56,7.89,0>", cml.vector4(1.23, 4.56, 7.89))
+            assert.matches("<"..-math.pi..",1,2,0>", cml.vector4(-math.pi, 1, 2))
+            assert.matches("<"..math.huge..",1,2,0>", cml.vector4(math.huge, 1, 2))
+        end)
+
+        it("with 4 numbers", function()
+            assert.matches("<0,0,0,0>", cml.vector4(0, 0, 0, 0))
+            assert.matches("<0,1,2,3>", cml.vector4(0, 1, 2, 3))
+            assert.matches("<123,456,789,12>", cml.vector4(123, 456, 789, 012))
+            assert.matches("<1.23,4.56,7.89,0.12>", cml.vector4(1.23, 4.56, 7.89, 0.12))
+            assert.matches("<"..-math.pi..",1,2,3>", cml.vector4(-math.pi, 1, 2, 3))
+            assert.matches("<"..math.huge..",1,2,3>", cml.vector4(math.huge, 1, 2, 3))
+        end)
+
+        it("with array of numbers", function()
+            assert.matches("<0,0,0,0>", cml.vector4{0,0,0,0})
+            assert.matches("<1,2,3,4>", cml.vector4{1,2,3,4})
+            assert.matches("<1,2,3,0>", cml.vector4{1,2,3})
+            assert.matches("<1,2,0,0>", cml.vector4{1,2})
+            assert.matches("<1,0,0,0>", cml.vector4{1})
+            assert.matches("<0,0,0,0>", cml.vector4{})
+        end)
+
+        it("with vector4", function()
+            assert.matches("<4,3,2,1>", cml.vector4(cml.vector4(4,3,2,1)))
+            assert.matches("<1,2,3,4>", cml.vector4(cml.vector4(cml.vector4(1,2,3,4))))
+        end)
+
+        it("with vector3", function()
+            assert.matches("<4,3,2,0>", cml.vector4(cml.vector3(4,3,2)))
+            assert.matches("<1,2,3,0>", cml.vector4(cml.vector3(cml.vector4(1,2,3,4))))
+        end)
+
+        it("with vector2", function()
+            assert.matches("<4,3,0,0>", cml.vector4(cml.vector2(4,3)))
+            assert.matches("<1,2,0,0>", cml.vector4(cml.vector2(cml.vector4(1,2,3,4))))
+        end)
+
+        describe("throws #error due to", function()
+            it("too many arguments", function()
+                assert.error.matches(function() cml.vector4(1,2,3,4,5) end, "Too many arguments")
+                assert.error.matches(function() cml.vector4{1,2,3,4,5} end, "Too many arguments")
+            end)
+
+            it("bad argument", function()
+                assert.error.matches(function() cml.vector4(0/0) end, "Bad value #1")
+                assert.error.matches(function() cml.vector4(0, 0/0) end, "Bad value #2")
+                assert.error.matches(function() cml.vector4(0, 0, 0/0) end, "Bad value #3")
+                assert.error.matches(function() cml.vector4("one", 2, 3, 4) end, "bad argument #1")
+                assert.error.matches(function() cml.vector4(1, true, 3, 4) end, "bad argument #2")
+                assert.error.matches(function() cml.vector4(1, 2, {}, 4) end, "bad argument #3")
+                assert.error.matches(function() cml.vector4(1, 2, 3, nil) end, "bad argument #4")
+            end)
+        end)
+
+    end)
+
+
+
+end)
