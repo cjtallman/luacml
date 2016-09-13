@@ -17,21 +17,27 @@
 
 int NewClass(lua_State* L, const char* TYPE_NAME, const luaL_Reg* funcs)
 {
+    // Create udata metatable
     luaL_newmetatable(L, TYPE_NAME);
+
+    // Make metatable index into itself.
     lua_pushstring(L, "__index");
-    lua_newtable(L);
+    lua_pushvalue(L, -2);
+    lua_rawset(L, -3);
+
+    // Store __type in metatable.
     lua_pushstring(L, "__type");
     lua_pushstring(L, TYPE_NAME);
     lua_rawset(L, -3);
 
+    // Loop over each func and store in metatable.
     for (const luaL_Reg* func = funcs; func->name; ++func)
     {
         lua_pushstring(L, func->name);
         lua_pushcfunction(L, func->func);
-        lua_rawset(L, func->name[0] == '_' ? -5 : -3);
+        lua_rawset(L, -3);
     }
 
-    lua_rawset(L, -3);
     lua_pop(L, 1); // Pop here, since it's already stored in the global registry.
 
     return 0;

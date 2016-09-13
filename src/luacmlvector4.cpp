@@ -222,8 +222,11 @@ int Index(lua_State* L)
     // Check valid types.
     if (lua_isnumber(L, 2))
     {
-        const int key = luaL_checkinteger(L, 2);
+        const lua_Number numkey = luaL_checknumber(L, 2);
+        const int        key    = static_cast<int>(numkey);
         luaL_argcheck(L, (key >= 1 && key <= 4), 2, NULL);
+        luaL_argcheck(L, (key == numkey), 2, "index not integer");
+
         const Type::value_type& val = (*vec)[key - 1];
         lua_pushnumber(L, val);
         return 1;
@@ -253,10 +256,13 @@ int NewIndex(lua_State* L)
     // Check valid types.
     if (lua_isnumber(L, 2))
     {
-        const int key = luaL_checkinteger(L, 2);
+        const lua_Number numkey = luaL_checknumber(L, 2);
+        const int        key    = static_cast<int>(numkey);
         luaL_argcheck(L, (key >= 1 && key <= 4), 2, NULL);
+        luaL_argcheck(L, (key == numkey), 2, "index not integer");
+
         const Type::value_type val = luaL_checknumber(L, 3);
-        (*vec)[key]                = val;
+        (*vec)[key - 1]            = val;
         return 0;
     }
     else if (lua_isstring(L, 2))
