@@ -106,6 +106,23 @@ int GetNumbersFromUserdata(lua_State* L, int ud, Type& vec)
     return luaL_error(L, "Invalid call. Bad argument type.");
 }
 
+int ToTable(lua_State* L)
+{
+    Pointer                 vec  = (Pointer)luaL_checkudata(L, 1, UDATA_TYPE_NAME);
+    const Type::value_type* data = vec->data();
+
+    lua_newtable(L);
+
+    for (int i = 0; i < NUM_ELEMENTS; ++i)
+    {
+        lua_pushinteger(L, i + 1);
+        lua_pushnumber(L, data[i]);
+        lua_rawset(L, -3);
+    }
+
+    return 1;
+}
+
 int Print(lua_State* L)
 {
     Pointer                 vec  = (Pointer)luaL_checkudata(L, -1, UDATA_TYPE_NAME);
@@ -204,6 +221,23 @@ int Index(lua_State* L)
 
     Pointer vec = (Pointer)luaL_checkudata(L, 1, UDATA_TYPE_NAME);
 
+    // Check metatable first.
+    lua_getmetatable(L, 1);
+    lua_pushvalue(L, 2);
+    lua_rawget(L, -2);
+
+    // If metatable included value, then return it.
+    if (!lua_isnil(L, -1))
+    {
+        return 1;
+    }
+    // Try indexing vector instead.
+    else
+    {
+        // Pop rawget result and metatable.
+        lua_pop(L, 2);
+    }
+
     // Check valid types.
     if (lua_isnumber(L, 2))
     {
@@ -273,6 +307,9 @@ int Register(lua_State* L)
         {"__tostring", Print},
         {"__index", Index},
         {"__newindex", NewIndex},
+
+        // Methods
+        {"totable", ToTable},
 
         // Sentinel
         {NULL, NULL},
