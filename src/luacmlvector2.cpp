@@ -77,7 +77,7 @@ int GetNumbersFromUserdata(lua_State* L, int ud, Type& vec)
             vec[0] = (*v4)[0];
             vec[1] = (*v4)[1];
             lua_pop(L, 1);
-            return std::min<int>(NUM_ELEMENTS, Vector4::NUM_ELEMENTS);
+            return std::min< int >(NUM_ELEMENTS, Vector4::NUM_ELEMENTS);
         }
 
         // cml.vector2(cml.vector3(1,2,3)) --> vector2:<1,2>
@@ -87,7 +87,7 @@ int GetNumbersFromUserdata(lua_State* L, int ud, Type& vec)
             vec[0] = (*v3)[0];
             vec[1] = (*v3)[1];
             lua_pop(L, 1);
-            return std::min<int>(NUM_ELEMENTS, Vector3::NUM_ELEMENTS);
+            return std::min< int >(NUM_ELEMENTS, Vector3::NUM_ELEMENTS);
         }
 
         // cml.vector2(cml.vector2(1,2)) --> vector2:<1,2>
@@ -97,7 +97,7 @@ int GetNumbersFromUserdata(lua_State* L, int ud, Type& vec)
             vec[0] = (*v2)[0];
             vec[1] = (*v2)[1];
             lua_pop(L, 1);
-            return std::min<int>(NUM_ELEMENTS, Vector2::NUM_ELEMENTS);
+            return std::min< int >(NUM_ELEMENTS, Vector2::NUM_ELEMENTS);
         }
     }
 
@@ -224,7 +224,7 @@ int Index(lua_State* L)
     if (lua_isnumber(L, 2))
     {
         const lua_Number numkey = luaL_checknumber(L, 2);
-        const int        key    = static_cast<int>(numkey);
+        const int        key    = static_cast< int >(numkey);
         luaL_argcheck(L, (key >= 1 && key <= NUM_ELEMENTS), 2, NULL);
         luaL_argcheck(L, (key == numkey), 2, "index not integer");
 
@@ -258,7 +258,7 @@ int NewIndex(lua_State* L)
     if (lua_isnumber(L, 2))
     {
         const lua_Number numkey = luaL_checknumber(L, 2);
-        const int        key    = static_cast<int>(numkey);
+        const int        key    = static_cast< int >(numkey);
         luaL_argcheck(L, (key >= 1 && key <= NUM_ELEMENTS), 2, NULL);
         luaL_argcheck(L, (key == numkey), 2, "index not integer");
 

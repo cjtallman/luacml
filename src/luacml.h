@@ -18,7 +18,7 @@
 #include <cml/cml.h>
 
 #define STRINGIFY(x) #x
-#define EXP_ARG_STR(N) "expected exactly "##STRINGIFY(N)##" argument(s)."
+#define EXP_ARG_STR(N) "expected exactly " STRINGIFY(N) " arguments(s)."
 #define CHECK_ARG_COUNT(L, N) luaL_argcheck(L, (lua_gettop(L) == N), lua_gettop(L), EXP_ARG_STR(N))
 
 int NewClass(lua_State* L, const char* TYPE_NAME, const luaL_Reg* funcs);
@@ -31,7 +31,7 @@ enum
 {
     NUM_ELEMENTS = 2
 };
-typedef cml::vector<lua_Number, cml::fixed<NUM_ELEMENTS>> Type;
+typedef cml::vector< lua_Number, cml::fixed< NUM_ELEMENTS > > Type;
 typedef Type  vector2;
 typedef Type* Pointer;
 
@@ -46,7 +46,7 @@ enum
 {
     NUM_ELEMENTS = 3
 };
-typedef cml::vector<lua_Number, cml::fixed<NUM_ELEMENTS>> Type;
+typedef cml::vector< lua_Number, cml::fixed< NUM_ELEMENTS > > Type;
 typedef Type  vector3;
 typedef Type* Pointer;
 
@@ -61,7 +61,7 @@ enum
 {
     NUM_ELEMENTS = 4
 };
-typedef cml::vector<lua_Number, cml::fixed<NUM_ELEMENTS>> Type;
+typedef cml::vector< lua_Number, cml::fixed< NUM_ELEMENTS > > Type;
 typedef Type  vector4;
 typedef Type* Pointer;
 
