@@ -166,4 +166,32 @@ describe("vector2", function()
             end)
         end)
     end)
+
+    describe("length", function()
+        local function is_near(expected, vec)
+            assert.near(expected, vec:length(), 1e-5)
+        end
+
+        it("returns correct result", function()
+            is_near(0, cml.vector2())
+            is_near(1, cml.vector2(-1))
+            is_near(100, cml.vector2(100))
+            is_near(math.sqrt(2), cml.vector2(1,1))
+            is_near(math.sqrt(13), cml.vector2(3,2))
+        end)
+    end)
+
+    describe("length_squared", function()
+        local function is_near(expected, vec)
+            assert.near(expected, vec:length_squared(), 1e-5)
+        end
+
+        it("returns correct result", function()
+            is_near(0, cml.vector2())
+            is_near(1, cml.vector2(-1))
+            is_near(10000, cml.vector2(100))
+            is_near(2, cml.vector2(1,1))
+            is_near(13, cml.vector2(3,2))
+        end)
+    end)
 end)

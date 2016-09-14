@@ -318,6 +318,22 @@ int NewIndex(lua_State* L)
     return 0;
 }
 
+int Length(lua_State* L)
+{
+    CHECK_ARG_COUNT(L, 1);
+    Pointer vec = (Pointer)luaL_checkudata(L, 1, UDATA_TYPE_NAME);
+    lua_pushnumber(L, vec->length());
+    return 1;
+}
+
+int LengthSquared(lua_State* L)
+{
+    CHECK_ARG_COUNT(L, 1);
+    Pointer vec = (Pointer)luaL_checkudata(L, 1, UDATA_TYPE_NAME);
+    lua_pushnumber(L, vec->length_squared());
+    return 1;
+}
+
 int Register(lua_State* L)
 {
     static const luaL_Reg funcs[] = {
@@ -328,6 +344,8 @@ int Register(lua_State* L)
 
         // Methods
         {"totable", ToTable},
+        {"length", Length},
+        {"length_squared", LengthSquared},
 
         // Sentinel
         {NULL, NULL},
