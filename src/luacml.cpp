@@ -72,7 +72,7 @@ error:
     return 1;
 }
 
-int luaopen_luacml(lua_State* L)
+LUA_EXPORT int luaopen_luacml(lua_State* L)
 {
     static luaL_Reg funcs[] = {{"vector2", &Vector2::New},
                                {"vector3", &Vector3::New},

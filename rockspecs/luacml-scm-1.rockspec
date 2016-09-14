@@ -27,8 +27,34 @@ build =
    {
        luacml =
        {
-           sources = { "src/luacml.cpp", "src/luacompat.cpp", "src/luacmlvector2.cpp", "src/luacmlvector3.cpp", "src/luacmlvector4.cpp" },
-           incdirs = { "lib/cml_1_0_4" },
+           sources =
+           {
+               "src/luacml.cpp",
+               "src/luacompat.cpp",
+               "src/luacmlvector2.cpp",
+               "src/luacmlvector3.cpp",
+               "src/luacmlvector4.cpp",
+           },
+           incdirs =
+           {
+               "lib/cml_1_0_4",
+           },
        },
    },
+   platforms =
+   {
+       linux =
+       {
+           modules =
+           {
+               luacml =
+               {
+                   libraries =
+                   {
+                       "stdc++",
+                   },
+               },
+           },
+       },
+   }
 }
