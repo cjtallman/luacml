@@ -85,120 +85,120 @@ describe("vector4", function()
     end)
 
     describe("index", function()
-        local v4 = cml.vector4(10,20,30,40)
+        local vec = cml.vector4(10,20,30,40)
 
         it("with integer key", function()
-            assert.equals(10, v4[1])
-            assert.equals(20, v4[2])
-            assert.equals(30, v4[3])
-            assert.equals(40, v4[4])
+            assert.equals(10, vec[1])
+            assert.equals(20, vec[2])
+            assert.equals(30, vec[3])
+            assert.equals(40, vec[4])
         end)
 
         it("with lowercase key", function()
-            assert.equals(10, v4.x)
-            assert.equals(20, v4.y)
-            assert.equals(30, v4.z)
-            assert.equals(40, v4.w)
+            assert.equals(10, vec.x)
+            assert.equals(20, vec.y)
+            assert.equals(30, vec.z)
+            assert.equals(40, vec.w)
         end)
 
         it("with uppercase key", function()
-            assert.equals(10, v4.X)
-            assert.equals(20, v4.Y)
-            assert.equals(30, v4.Z)
-            assert.equals(40, v4.W)
+            assert.equals(10, vec.X)
+            assert.equals(20, vec.Y)
+            assert.equals(30, vec.Z)
+            assert.equals(40, vec.W)
         end)
 
         describe("throws #error due to", function()
             it("float key", function()
-                assert.error.matches(function() print(v4[1.1]) end, "index not integer")
+                assert.error.matches(function() print(vec[1.1]) end, "index not integer")
             end)
 
             it("string key", function()
-                assert.error.matches(function() print(v4["1.1"]) end, "index not integer")
+                assert.error.matches(function() print(vec["1.1"]) end, "index not integer")
             end)
 
             it("bool key", function()
-                assert.error.matches(function() print(v4[true]) end, "Bad argument type")
+                assert.error.matches(function() print(vec[true]) end, "Bad argument type")
             end)
 
             it("table key", function()
-                assert.error.matches(function() print(v4[{}]) end, "Bad argument type")
+                assert.error.matches(function() print(vec[{}]) end, "Bad argument type")
             end)
 
             it("function key", function()
-                assert.error.matches(function() print(v4[print]) end, "Bad argument type")
+                assert.error.matches(function() print(vec[print]) end, "Bad argument type")
             end)
 
             it("userdata key", function()
-                assert.error.matches(function() print(v4[v4]) end, "Bad argument type")
+                assert.error.matches(function() print(vec[vec]) end, "Bad argument type")
             end)
         end)
     end)
 
     describe("newindex", function()
         it("with integer key", function()
-            local v4 = cml.vector4(0,0,0,0)
-            assert.matches("<0,0,0,0>", v4)
-            v4[1] = 10
-            assert.matches("<10,0,0,0>", v4)
-            v4[2] = 20
-            assert.matches("<10,20,0,0>", v4)
-            v4[3] = 30
-            assert.matches("<10,20,30,0>", v4)
-            v4[4] = 40
-            assert.matches("<10,20,30,40>", v4)
+            local vec = cml.vector4(0,0,0,0)
+            assert.matches("<0,0,0,0>", vec)
+            vec[1] = 10
+            assert.matches("<10,0,0,0>", vec)
+            vec[2] = 20
+            assert.matches("<10,20,0,0>", vec)
+            vec[3] = 30
+            assert.matches("<10,20,30,0>", vec)
+            vec[4] = 40
+            assert.matches("<10,20,30,40>", vec)
         end)
 
         it("with lowercase key", function()
-            local v4 = cml.vector4(0,0,0,0)
-            assert.matches("<0,0,0,0>", v4)
-            v4.x = 10
-            assert.matches("<10,0,0,0>", v4)
-            v4.y = 20
-            assert.matches("<10,20,0,0>", v4)
-            v4.z = 30
-            assert.matches("<10,20,30,0>", v4)
-            v4.w = 40
-            assert.matches("<10,20,30,40>", v4)
+            local vec = cml.vector4(0,0,0,0)
+            assert.matches("<0,0,0,0>", vec)
+            vec.x = 10
+            assert.matches("<10,0,0,0>", vec)
+            vec.y = 20
+            assert.matches("<10,20,0,0>", vec)
+            vec.z = 30
+            assert.matches("<10,20,30,0>", vec)
+            vec.w = 40
+            assert.matches("<10,20,30,40>", vec)
         end)
 
         it("with uppercase key", function()
-            local v4 = cml.vector4(0,0,0,0)
-            assert.matches("<0,0,0,0>", v4)
-            v4.X = 10
-            assert.matches("<10,0,0,0>", v4)
-            v4.Y = 20
-            assert.matches("<10,20,0,0>", v4)
-            v4.Z = 30
-            assert.matches("<10,20,30,0>", v4)
-            v4.W = 40
-            assert.matches("<10,20,30,40>", v4)
+            local vec = cml.vector4(0,0,0,0)
+            assert.matches("<0,0,0,0>", vec)
+            vec.X = 10
+            assert.matches("<10,0,0,0>", vec)
+            vec.Y = 20
+            assert.matches("<10,20,0,0>", vec)
+            vec.Z = 30
+            assert.matches("<10,20,30,0>", vec)
+            vec.W = 40
+            assert.matches("<10,20,30,40>", vec)
         end)
 
         describe("throws #error due to", function()
-            local v4 = cml.vector4(0,0,0,0)
+            local vec = cml.vector4(0,0,0,0)
             it("float key", function()
-                assert.error.matches(function() v4[1.1] = 10 end, "index not integer")
+                assert.error.matches(function() vec[1.1] = 10 end, "index not integer")
             end)
 
             it("string key", function()
-                assert.error.matches(function() v4["1.1"] = 10 end, "index not integer")
+                assert.error.matches(function() vec["1.1"] = 10 end, "index not integer")
             end)
 
             it("bool key", function()
-                assert.error.matches(function() v4[true] = 10 end, "Bad argument type")
+                assert.error.matches(function() vec[true] = 10 end, "Bad argument type")
             end)
 
             it("table key", function()
-                assert.error.matches(function() v4[{}] = 10 end, "Bad argument type")
+                assert.error.matches(function() vec[{}] = 10 end, "Bad argument type")
             end)
 
             it("function key", function()
-                assert.error.matches(function() v4[print] = 10 end, "Bad argument type")
+                assert.error.matches(function() vec[print] = 10 end, "Bad argument type")
             end)
 
             it("userdata key", function()
-                assert.error.matches(function() v4[v4] = 10 end, "Bad argument type")
+                assert.error.matches(function() vec[vec] = 10 end, "Bad argument type")
             end)
         end)
     end)

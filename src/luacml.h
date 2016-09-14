@@ -27,7 +27,11 @@ int PrintClass(lua_State* L);
 
 namespace Vector2 {
 extern const char* UDATA_TYPE_NAME;
-typedef cml::vector<lua_Number, cml::fixed<2>> Type;
+enum
+{
+    NUM_ELEMENTS = 2
+};
+typedef cml::vector<lua_Number, cml::fixed<NUM_ELEMENTS>> Type;
 typedef Type  vector2;
 typedef Type* Pointer;
 
@@ -38,7 +42,11 @@ int GetNumbersFromTable(lua_State* L, int tab, Type& vec);
 
 namespace Vector3 {
 extern const char* UDATA_TYPE_NAME;
-typedef cml::vector<lua_Number, cml::fixed<3>> Type;
+enum
+{
+    NUM_ELEMENTS = 3
+};
+typedef cml::vector<lua_Number, cml::fixed<NUM_ELEMENTS>> Type;
 typedef Type  vector3;
 typedef Type* Pointer;
 
@@ -49,7 +57,11 @@ int GetNumbersFromTable(lua_State* L, int tab, Type& vec);
 
 namespace Vector4 {
 extern const char* UDATA_TYPE_NAME;
-typedef cml::vector<lua_Number, cml::fixed<4>> Type;
+enum
+{
+    NUM_ELEMENTS = 4
+};
+typedef cml::vector<lua_Number, cml::fixed<NUM_ELEMENTS>> Type;
 typedef Type  vector4;
 typedef Type* Pointer;
 

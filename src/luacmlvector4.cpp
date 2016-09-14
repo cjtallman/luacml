@@ -7,7 +7,7 @@
 /// @date   09/12/2016
 /// @author ctallman
 ///
-/// @brief  Lua CML Vector4.
+/// @brief  Lua CML vector4.
 ///
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -46,7 +46,7 @@ int GetNumbersFromTable(lua_State* L, const int tab, Type& vec)
 
     // Verify length of table.
     const int len = lua_rawlen(L, tab);
-    if (len > (int)vec.size())
+    if (len > NUM_ELEMENTS)
     {
         return luaL_error(L, "Invalid call. Too many arguments.");
     }
@@ -79,7 +79,7 @@ int GetNumbersFromUserdata(lua_State* L, int ud, Type& vec)
             vec[2] = (*v4)[2];
             vec[3] = (*v4)[3];
             lua_pop(L, 1);
-            return 4;
+            return std::min<int>(NUM_ELEMENTS, Vector4::NUM_ELEMENTS);
         }
 
         // cml.vector4(cml.vector3(1,2,3)) --> vector4:<1,2,3,0>
@@ -90,7 +90,7 @@ int GetNumbersFromUserdata(lua_State* L, int ud, Type& vec)
             vec[1] = (*v3)[1];
             vec[2] = (*v3)[2];
             lua_pop(L, 1);
-            return 3;
+            return std::min<int>(NUM_ELEMENTS, Vector3::NUM_ELEMENTS);
         }
 
         // cml.vector4(cml.vector2(1,2)) --> vector4:<1,2,0,0>
@@ -100,7 +100,7 @@ int GetNumbersFromUserdata(lua_State* L, int ud, Type& vec)
             vec[0] = (*v2)[0];
             vec[1] = (*v2)[1];
             lua_pop(L, 1);
-            return 2;
+            return std::min<int>(NUM_ELEMENTS, Vector2::NUM_ELEMENTS);
         }
     }
 
@@ -124,7 +124,7 @@ int New(lua_State* L)
     Type temp;
     temp.zero();
 
-    luaL_argcheck(L, (nargs <= 4), 5, "Too many arguments.");
+    luaL_argcheck(L, (nargs <= NUM_ELEMENTS), NUM_ELEMENTS + 1, "Too many arguments.");
 
     // Construct new vector based on input arguments.
     switch (nargs)
@@ -142,7 +142,7 @@ int New(lua_State* L)
         if (lua_isnumber(L, 1))
         {
             // cml.vector4(1) --> vector4:<1,0,0,0>
-            GetNumbersFromStack(L, 1, 1, temp);
+            GetNumbersFromStack(L, 1, nargs, temp);
         }
         // From 1 array of numbers.
         else if (lua_istable(L, 1))
@@ -162,13 +162,14 @@ int New(lua_State* L)
         break;
 
     case 2:
-        // cml.vector4(1.0, 2.0) --> {1,2,0,0}
+        // cml.vector4(1.0, 2.0) --> vector4:<1,2,0,0>
         if (lua_isnumber(L, 1) && lua_isnumber(L, 2))
         {
-            GetNumbersFromStack(L, 1, 2, temp);
+            GetNumbersFromStack(L, 1, nargs, temp);
         }
         else
         {
+            // Generate error message.
             luaL_checknumber(L, 1);
             luaL_checknumber(L, 2);
             return luaL_error(L, "Invalid call. Bad argument type.");
@@ -176,13 +177,14 @@ int New(lua_State* L)
         break;
 
     case 3:
-        // cml.vector4(1.0, 2.0, 3.0) --> {1,2,3,0}
+        // cml.vector4(1.0, 2.0, 3.0) --> vector4:<1,2,3,0>
         if (lua_isnumber(L, 1) && lua_isnumber(L, 2) && lua_isnumber(L, 3))
         {
-            GetNumbersFromStack(L, 1, 3, temp);
+            GetNumbersFromStack(L, 1, nargs, temp);
         }
         else
         {
+            // Generate error message.
             luaL_checknumber(L, 1);
             luaL_checknumber(L, 2);
             luaL_checknumber(L, 3);
@@ -191,13 +193,14 @@ int New(lua_State* L)
         break;
 
     case 4:
-        // cml.vector4(1.0, 2.0, 3.0, 4.0) --> {1,2,3,4}
+        // cml.vector4(1.0, 2.0, 3.0, 4.0) --> vector4:<1,2,3,4>
         if (lua_isnumber(L, 1) && lua_isnumber(L, 2) && lua_isnumber(L, 3) && lua_isnumber(L, 4))
         {
-            GetNumbersFromStack(L, 1, 4, temp);
+            GetNumbersFromStack(L, 1, nargs, temp);
         }
         else
         {
+            // Generate error message.
             luaL_checknumber(L, 1);
             luaL_checknumber(L, 2);
             luaL_checknumber(L, 3);
@@ -207,8 +210,8 @@ int New(lua_State* L)
         break;
     }
 
-    Type* newvec = (Type*)lua_newuserdata(L, sizeof(Type));
-    newvec->set(temp[0], temp[1], temp[2], temp[3]);
+    Pointer newvec = (Pointer)lua_newuserdata(L, sizeof(Type));
+    (*newvec)      = temp;
 
     return SetClass(L, UDATA_TYPE_NAME);
 }
@@ -224,7 +227,7 @@ int Index(lua_State* L)
     {
         const lua_Number numkey = luaL_checknumber(L, 2);
         const int        key    = static_cast<int>(numkey);
-        luaL_argcheck(L, (key >= 1 && key <= 4), 2, NULL);
+        luaL_argcheck(L, (key >= 1 && key <= NUM_ELEMENTS), 2, NULL);
         luaL_argcheck(L, (key == numkey), 2, "index not integer");
 
         const Type::value_type& val = (*vec)[key - 1];
@@ -234,7 +237,7 @@ int Index(lua_State* L)
     else if (lua_isstring(L, 2))
     {
         static const char*      valid[] = {"x", "y", "z", "w", "X", "Y", "Z", "W", NULL};
-        const int               key     = luaL_checkoption(L, 2, NULL, valid) % 4;
+        const int               key     = luaL_checkoption(L, 2, NULL, valid) % NUM_ELEMENTS;
         const Type::value_type& val     = (*vec)[key];
         lua_pushnumber(L, val);
         return 1;
@@ -258,7 +261,7 @@ int NewIndex(lua_State* L)
     {
         const lua_Number numkey = luaL_checknumber(L, 2);
         const int        key    = static_cast<int>(numkey);
-        luaL_argcheck(L, (key >= 1 && key <= 4), 2, NULL);
+        luaL_argcheck(L, (key >= 1 && key <= NUM_ELEMENTS), 2, NULL);
         luaL_argcheck(L, (key == numkey), 2, "index not integer");
 
         const Type::value_type val = luaL_checknumber(L, 3);
@@ -268,7 +271,7 @@ int NewIndex(lua_State* L)
     else if (lua_isstring(L, 2))
     {
         static const char*     valid[] = {"x", "y", "z", "w", "X", "Y", "Z", "W", NULL};
-        const int              key     = luaL_checkoption(L, 2, NULL, valid) % 4;
+        const int              key     = luaL_checkoption(L, 2, NULL, valid) % NUM_ELEMENTS;
         const Type::value_type val     = luaL_checknumber(L, 3);
         (*vec)[key]                    = val;
         return 0;
