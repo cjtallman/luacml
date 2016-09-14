@@ -3,15 +3,16 @@ version = "scm-1"
 
 source =
 {
-   url = "*** please add URL for source tarball, zip or repository here ***"
+   url = "git://github.com/cjtallman/luacml.git",
+   branch = "master",
 }
 
 description =
 {
-   summary = "## Description",
-   detailed = "## Description",
-   homepage = "*** please enter a project homepage ***",
-   license = "*** please specify a license ***"
+   summary = "## Lua bindings for the CML math library.",
+   detailed = "## luacml is a math library built upon [CML](http://cmldev.net).",
+   homepage = "https://github.com/cjtallman/luacml",
+   license = "MIT"
 }
 
 dependencies =

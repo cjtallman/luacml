@@ -1,0 +1,22 @@
+
+version: 0.1.{build}
+
+environment:
+  matrix:
+  - LUA: lua 5.1
+  - LUA: lua 5.2
+  - LUA: lua 5.3
+
+install:
+- cmd: set "PATH=%CD%\env\bin;C:\Python27\Scripts;%PATH%"
+- cmd: pip install hererocks
+- cmd: hererocks env --%LUA% -rlatest
+- cmd: luarocks install busted
+- cmd: luarocks install luacheck
+
+build_script:
+- cmd: luarocks make rockspec\luacml-scm-1.rockspec
+
+test_script:
+- cmd: luacheck --std max+busted spec
+- cmd: busted --verbose
