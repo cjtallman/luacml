@@ -15,7 +15,7 @@ install:
 - cmd: luarocks install luacheck
 
 build_script:
-- cmd: luarocks make rockspec\luacml-scm-1.rockspec
+- cmd: luarocks make rockspecs\luacml-scm-1.rockspec
 
 test_script:
 - cmd: luacheck --std max+busted spec
