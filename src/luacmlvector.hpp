@@ -16,13 +16,6 @@
 
 #include "luacml.hpp"
 
-namespace Vector {
-LUACML_API int ToTable(lua_State* L);
-LUACML_API int GetNumberFromStack(lua_State* L, const int index, lua_Number* num);
-LUACML_API int GetNumbersFromTable(lua_State* L, const int tab, lua_Number* vec, const int len);
-LUACML_API int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* vec, const int len);
-}
-
 namespace Vector2 {
 extern const char* UDATA_TYPE_NAME;
 enum
@@ -35,6 +28,7 @@ typedef Type* Pointer;
 
 int New(lua_State* L);
 int Register(lua_State* L);
+int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* vec, const int len);
 }
 
 namespace Vector3 {
@@ -49,6 +43,7 @@ typedef Type* Pointer;
 
 int New(lua_State* L);
 int Register(lua_State* L);
+int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* vec, const int len);
 }
 
 namespace Vector4 {
@@ -63,6 +58,7 @@ typedef Type* Pointer;
 
 int New(lua_State* L);
 int Register(lua_State* L);
+int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* vec, const int len);
 }
 
 #endif // luacmlvector_hpp__

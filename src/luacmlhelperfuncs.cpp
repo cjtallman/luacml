@@ -3,23 +3,27 @@
 ///
 /// @copyright Copyright (c) 2016 Mimic Technologies Inc. All rights reserved.
 ///
-/// @file   luacmlvector.cpp
+/// @file   luacmlhelperfuncs.hpp
 /// @date   09/15/2016
 /// @author ctallman
 ///
-/// @brief  description
+/// @brief  Misc helper functions.
 ///
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "luacmlhelperfuncs.hpp"
 #include "luacmlvector.hpp"
+#include "luacmlquaternion.hpp"
 
-namespace Vector {
+namespace Helper {
 
 LUACML_API int ToTable(lua_State* L)
 {
+    CHECK_ARG_COUNT(L, 1);
+
     static const int MAX_LEN = Vector4::NUM_ELEMENTS;
     lua_Number       vec[MAX_LEN];
-    const int        len = Vector::GetNumbersFromUserdata(L, 1, vec, MAX_LEN);
+    const int        len = GetNumbersFromAnyUserdata(L, 1, vec, MAX_LEN);
 
     lua_newtable(L);
     for (int i = 0; i < len; ++i)
@@ -44,7 +48,8 @@ LUACML_API int GetNumberFromStack(lua_State* L, const int index, lua_Number* num
     return 1;
 }
 
-LUACML_API int GetNumbersFromTable(lua_State* L, const int tab, lua_Number* vec, const int len)
+LUACML_API int GetNumbersFromTable(lua_State* L, const int tab, lua_Number* vec, const int len,
+                                   bool need_same_len)
 {
     // Verify it's a table.
     luaL_checktype(L, tab, LUA_TTABLE);
@@ -54,6 +59,10 @@ LUACML_API int GetNumbersFromTable(lua_State* L, const int tab, lua_Number* vec,
     if (count > len)
     {
         return luaL_error(L, "Invalid call. Too many arguments.");
+    }
+    else if (need_same_len && count != len)
+    {
+        return luaL_error(L, "Invalid call. Missing arguments.");
     }
 
     // Extract data.
@@ -71,47 +80,18 @@ LUACML_API int GetNumbersFromTable(lua_State* L, const int tab, lua_Number* vec,
     return count;
 }
 
-LUACML_API int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* vec, const int len)
+LUACML_API int GetNumbersFromAnyUserdata(lua_State* L, const int ud, lua_Number* vec, const int len)
 {
     if (lua_isuserdata(L, ud))
     {
-        if (const Vector4::Pointer v4 =
-                (Vector4::Pointer)luaL_testudata(L, ud, Vector4::UDATA_TYPE_NAME))
+        int result = 0;
+        if ((result = Vector4::GetNumbersFromUserdata(L, ud, vec, len)) ||
+            (result = Vector3::GetNumbersFromUserdata(L, ud, vec, len)) ||
+            (result = Vector2::GetNumbersFromUserdata(L, ud, vec, len)) ||
+            (result = QuatNeg::GetNumbersFromUserdata(L, ud, vec, len)) ||
+            (result = QuatPos::GetNumbersFromUserdata(L, ud, vec, len)))
         {
-            // Copy as much as possible.
-            const int count = std::min< int >(len, Vector4::NUM_ELEMENTS);
-            for (int i = 0; i < count; ++i)
-            {
-                vec[i] = (*v4)[i];
-            }
-            lua_pop(L, 1);
-            return count;
-        }
-
-        else if (const Vector3::Pointer v3 =
-                     (Vector3::Pointer)luaL_testudata(L, ud, Vector3::UDATA_TYPE_NAME))
-        {
-            // Copy as much as possible.
-            const int count = std::min< int >(len, Vector3::NUM_ELEMENTS);
-            for (int i = 0; i < count; ++i)
-            {
-                vec[i] = (*v3)[i];
-            }
-            lua_pop(L, 1);
-            return count;
-        }
-
-        else if (const Vector2::Pointer v2 =
-                     (Vector2::Pointer)luaL_testudata(L, -1, Vector2::UDATA_TYPE_NAME))
-        {
-            // Copy as much as possible.
-            const int count = std::min< int >(len, Vector2::NUM_ELEMENTS);
-            for (int i = 0; i < count; ++i)
-            {
-                vec[i] = (*v2)[i];
-            }
-            lua_pop(L, 1);
-            return count;
+            return result;
         }
     }
 

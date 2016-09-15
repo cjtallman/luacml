@@ -12,9 +12,34 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "luacmlvector.hpp"
+#include "luacmlquaternion.hpp"
+#include "luacmlhelperfuncs.hpp"
 
 namespace Vector4 {
 const char* UDATA_TYPE_NAME = "vector4";
+
+int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* vec, const int len)
+{
+    if (lua_isuserdata(L, ud))
+    {
+        if (const Pointer v = (Pointer)luaL_testudata(L, ud, UDATA_TYPE_NAME))
+        {
+            // Copy as much as possible.
+            const int count = std::min< int >(len, NUM_ELEMENTS);
+            for (int i = 0; i < count; ++i)
+            {
+                vec[i] = (*v)[i];
+            }
+            return count;
+        }
+        else
+            return 0;
+    }
+    else
+    {
+        return luaL_error(L, "Expected userdata type.");
+    }
+}
 
 int Print(lua_State* L)
 {
@@ -51,17 +76,22 @@ int New(lua_State* L)
         if (lua_isnumber(L, 1))
         {
             // cml.vector4(1) --> vector4:<1,0,0,0>
-            Vector::GetNumberFromStack(L, 1, temp.data());
+            Helper::GetNumberFromStack(L, 1, temp.data());
         }
         // From 1 array of numbers.
         else if (lua_istable(L, 1))
         {
-            Vector::GetNumbersFromTable(L, 1, temp.data(), NUM_ELEMENTS);
+            Helper::GetNumbersFromTable(L, 1, temp.data(), NUM_ELEMENTS, false);
         }
         // From 1 vector2, vector3, or vector4.
         else if (lua_isuserdata(L, 1))
         {
-            Vector::GetNumbersFromUserdata(L, 1, temp.data(), NUM_ELEMENTS);
+            const int result = Vector2::GetNumbersFromUserdata(L, 1, temp.data(), NUM_ELEMENTS) ||
+                               Vector3::GetNumbersFromUserdata(L, 1, temp.data(), NUM_ELEMENTS) ||
+                               Vector4::GetNumbersFromUserdata(L, 1, temp.data(), NUM_ELEMENTS) ||
+                               QuatNeg::GetNumbersFromUserdata(L, 1, temp.data(), NUM_ELEMENTS) ||
+                               QuatPos::GetNumbersFromUserdata(L, 1, temp.data(), NUM_ELEMENTS);
+            luaL_argcheck(L, result, 1, "Invalid call. Bad argument type.");
         }
         // Not one of the supported input types.
         else
@@ -74,8 +104,8 @@ int New(lua_State* L)
         // cml.vector4(1.0, 2.0) --> vector4:<1,2,0,0>
         if (lua_isnumber(L, 1) && lua_isnumber(L, 2))
         {
-            Vector::GetNumberFromStack(L, 1, temp.data());
-            Vector::GetNumberFromStack(L, 2, temp.data() + 1);
+            Helper::GetNumberFromStack(L, 1, temp.data());
+            Helper::GetNumberFromStack(L, 2, temp.data() + 1);
         }
         else
         {
@@ -90,9 +120,9 @@ int New(lua_State* L)
         // cml.vector4(1.0, 2.0, 3.0) --> vector4:<1,2,3,0>
         if (lua_isnumber(L, 1) && lua_isnumber(L, 2) && lua_isnumber(L, 3))
         {
-            Vector::GetNumberFromStack(L, 1, temp.data());
-            Vector::GetNumberFromStack(L, 2, temp.data() + 1);
-            Vector::GetNumberFromStack(L, 3, temp.data() + 2);
+            Helper::GetNumberFromStack(L, 1, temp.data());
+            Helper::GetNumberFromStack(L, 2, temp.data() + 1);
+            Helper::GetNumberFromStack(L, 3, temp.data() + 2);
         }
         else
         {
@@ -108,10 +138,10 @@ int New(lua_State* L)
         // cml.vector4(1.0, 2.0, 3.0, 4.0) --> vector4:<1,2,3,4>
         if (lua_isnumber(L, 1) && lua_isnumber(L, 2) && lua_isnumber(L, 3) && lua_isnumber(L, 4))
         {
-            Vector::GetNumberFromStack(L, 1, temp.data());
-            Vector::GetNumberFromStack(L, 2, temp.data() + 1);
-            Vector::GetNumberFromStack(L, 3, temp.data() + 2);
-            Vector::GetNumberFromStack(L, 4, temp.data() + 3);
+            Helper::GetNumberFromStack(L, 1, temp.data());
+            Helper::GetNumberFromStack(L, 2, temp.data() + 1);
+            Helper::GetNumberFromStack(L, 3, temp.data() + 2);
+            Helper::GetNumberFromStack(L, 4, temp.data() + 3);
         }
         else
         {
@@ -287,7 +317,7 @@ int Register(lua_State* L)
         {"__newindex", NewIndex},
 
         // Methods
-        {"totable", Vector::ToTable},
+        {"totable", Helper::ToTable},
         {"length", Length},
         {"length_squared", LengthSquared},
         {"normalize", Normalize},

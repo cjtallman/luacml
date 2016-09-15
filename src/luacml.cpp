@@ -13,8 +13,16 @@
 
 #include "luacml.hpp"
 #include "luacmlvector.hpp"
+#include "luacmlquaternion.hpp"
+#include "luacmlhelperfuncs.hpp"
 #include <lua.hpp>
 #include <cml/cml.h>
+
+typedef Vector4::Type Vec4;
+typedef Vector3::Type Vec3;
+typedef Vector2::Type Vec2;
+typedef QuatNeg::Type QNeg;
+typedef QuatPos::Type QPos;
 
 int NewClass(lua_State* L, const char* TYPE_NAME, const luaL_Reg* funcs)
 {
@@ -51,33 +59,56 @@ int SetClass(lua_State* L, const char* TYPE_NAME)
     return 1;
 }
 
-int PrintClass(lua_State* L)
+int Cross(lua_State* L)
 {
-    char buf[256];
-    if (!lua_getmetatable(L, 1))
-        goto error;
-    lua_pushstring(L, "__index");
-    lua_gettable(L, -2);
-    if (!lua_istable(L, -1))
-        goto error;
-    lua_pushstring(L, "__type");
-    lua_gettable(L, -2);
-    if (!lua_isstring(L, -1))
-        goto error;
-    sprintf(buf, "%p", lua_touserdata(L, 1));
-    lua_pushfstring(L, "%s: %s", lua_tostring(L, -1), buf);
-    return 1;
-error:
-    lua_pushstring(L, "invalid object passed to '__tostring'");
-    lua_error(L);
-    return 1;
+    CHECK_ARG_COUNT(L, 2);
+
+    Vec3* A = (Vec3*)luaL_checkudata(L, 1, Vector3::UDATA_TYPE_NAME);
+    Vec3* B = (Vec3*)luaL_checkudata(L, 2, Vector3::UDATA_TYPE_NAME);
+    Vec3* C = (Vec3*)lua_newuserdata(L, sizeof(Vector3::Type));
+
+    *C = cml::cross(*A, *B);
+
+    return SetClass(L, Vector3::UDATA_TYPE_NAME);
+}
+
+int Dot(lua_State* L)
+{
+    CHECK_ARG_COUNT(L, 2);
+
+    if (const Vec4* A = (Vec4*)luaL_testudata(L, 1, Vector4::UDATA_TYPE_NAME))
+    {
+        Vec4* B = (Vec4*)luaL_checkudata(L, 2, Vector4::UDATA_TYPE_NAME);
+        lua_pushnumber(L, cml::dot(*A, *B));
+        return 1;
+    }
+    else if (const Vec3* A = (Vec3*)luaL_testudata(L, 1, Vector3::UDATA_TYPE_NAME))
+    {
+        Vec3* B = (Vec3*)luaL_checkudata(L, 2, Vector3::UDATA_TYPE_NAME);
+        lua_pushnumber(L, cml::dot(*A, *B));
+        return 1;
+    }
+    else if (const Vec2* A = (Vec2*)luaL_testudata(L, 1, Vector2::UDATA_TYPE_NAME))
+    {
+        Vec2* B = (Vec2*)luaL_checkudata(L, 2, Vector2::UDATA_TYPE_NAME);
+        lua_pushnumber(L, cml::dot(*A, *B));
+        return 1;
+    }
+    else
+    {
+        return luaL_argerror(L, 1, "Expected vector2, vector3, or vector4");
+    }
 }
 
 LUACML_API int luaopen_luacml(lua_State* L)
 {
-    static luaL_Reg funcs[] = {{"vector2", &Vector2::New},
-                               {"vector3", &Vector3::New},
-                               {"vector4", &Vector4::New},
+    static luaL_Reg funcs[] = {{"vector2", Vector2::New},
+                               {"vector3", Vector3::New},
+                               {"vector4", Vector4::New},
+                               {"quat_n", QuatNeg::New},
+                               {"quat_p", QuatPos::New},
+                               {"cross", Cross},
+                               {"dot", Dot},
                                {NULL, NULL}};
 
     lua_newtable(L);
@@ -86,6 +117,8 @@ LUACML_API int luaopen_luacml(lua_State* L)
     Vector2::Register(L);
     Vector3::Register(L);
     Vector4::Register(L);
+    QuatPos::Register(L);
+    QuatNeg::Register(L);
 
     return 1;
 }

@@ -1,139 +1,43 @@
 
-
-describe("vector4", function()
+describe("quat_p", function()
     local cml = require("luacml")
     local eps = 1e-5
-    local constructor = cml.vector4
+
+    local constructor = cml.quat_p
 
     describe("constructor", function()
         it("default", function()
             local input = constructor()
-            local expected = {0,0,0,0}
+            local expected = {0,0,0,1}
             assert.same(expected, input:totable())
         end)
 
-        describe("with 1 number", function()
-            it("test 1", function()
-                local input = constructor(1)
-                local expected = {1,0,0,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test 123", function()
-                local input = constructor(123)
-                local expected = {123,0,0,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test 1.23", function()
-                local input = constructor(1.23)
-                local expected = {1.23,0,0,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test math.huge", function()
-                local input = constructor(math.huge)
-                local expected = {math.huge,0,0,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test -math.pi", function()
-                local input = constructor(-math.pi)
-                local expected = {-math.pi,0,0,0}
-                assert.same(expected, input:totable())
-            end)
-        end)
-
-        describe("with 2 numbers", function()
-            it("test 0,1", function()
-                local input = constructor(0,1)
-                local expected = {0,1,0,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test 123,456", function()
-                local input = constructor(123,456)
-                local expected = {123,456,0,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test 1.23,4.56", function()
-                local input = constructor(1.23,4.56)
-                local expected = {1.23,4.56,0,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test 1,math.huge", function()
-                local input = constructor(1,math.huge)
-                local expected = {1,math.huge,0,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test 1,-math.pi", function()
-                local input = constructor(1,-math.pi)
-                local expected = {1,-math.pi,0,0}
-                assert.same(expected, input:totable())
-            end)
-        end)
-
-        describe("with 3 numbers", function()
-            it("test 0,1,2", function()
-                local input = constructor(0,1,2)
-                local expected = {0,1,2,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test 123,456,789", function()
-                local input = constructor(123,456,789)
-                local expected = {123,456,789,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test 1.23,4.56,7.89", function()
-                local input = constructor(1.23,4.56,7.89)
-                local expected = {1.23,4.56,7.89,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test 1,2,math.huge", function()
-                local input = constructor(1,2,math.huge)
-                local expected = {1,2,math.huge,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test 1,2,-math.pi", function()
-                local input = constructor(1,2,-math.pi)
-                local expected = {1,2,-math.pi,0}
-                assert.same(expected, input:totable())
-            end)
-        end)
-
         describe("with 4 numbers", function()
-            it("test 0,1,2,3", function()
+            it("test (0,1,2,3)", function()
                 local input = constructor(0,1,2,3)
                 local expected = {0,1,2,3}
                 assert.same(expected, input:totable())
             end)
 
-            it("test 123,456,789,012", function()
+            it("test (123,456,789,012)", function()
                 local input = constructor(123,456,789,012)
                 local expected = {123,456,789,012}
                 assert.same(expected, input:totable())
             end)
 
-            it("test 1.23,4.56,7.89,0.12", function()
+            it("test (1.23,4.56,7.89,0.12)", function()
                 local input = constructor(1.23,4.56,7.89,0.12)
                 local expected = {1.23,4.56,7.89,0.12}
                 assert.same(expected, input:totable())
             end)
 
-            it("test 1,2,3,math.huge", function()
+            it("test (1,2,3,math.huge)", function()
                 local input = constructor(1,2,3,math.huge)
                 local expected = {1,2,3,math.huge}
                 assert.same(expected, input:totable())
             end)
 
-            it("test 1,2,3,-math.pi", function()
+            it("test (1,2,3,-math.pi)", function()
                 local input = constructor(1,2,3,-math.pi)
                 local expected = {1,2,3,-math.pi}
                 assert.same(expected, input:totable())
@@ -141,33 +45,15 @@ describe("vector4", function()
         end)
 
         describe("with array of numbers", function()
-            it("test {1,2,3,4}", function()
-                local input = constructor{1,2,3,4}
-                local expected = {1,2,3,4}
+            it("test {0,1,2,3}", function()
+                local input = constructor{0,1,2,3}
+                local expected = {0,1,2,3}
                 assert.same(expected, input:totable())
             end)
 
-            it("test {1,2,3}", function()
-                local input = constructor{1,2,3}
-                local expected = {1,2,3,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test {1,2}", function()
-                local input = constructor{1,2}
-                local expected = {1,2,0,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test {1}", function()
-                local input = constructor{1}
-                local expected = {1,0,0,0}
-                assert.same(expected, input:totable())
-            end)
-
-            it("test {}", function()
-                local input = constructor{}
-                local expected = {0,0,0,0}
+            it("test {math.huge,1,1,1}", function()
+                local input = constructor{math.huge,1,1,1}
+                local expected = {math.huge,1,1,1}
                 assert.same(expected, input:totable())
             end)
         end)
@@ -186,30 +72,58 @@ describe("vector4", function()
             end)
         end)
 
-        describe("with vector3", function()
-            it("test cml.vector3(1,2,3)", function()
-                local input = constructor(cml.vector3(1,2,3))
-                local expected = {1,2,3,0}
+        describe("with quat_p", function()
+            it("test cml.quat_p(1,2,3,4)", function()
+                local input = constructor(cml.quat_p(1,2,3,4))
+                local expected = {1,2,3,4}
                 assert.same(expected, input:totable())
             end)
 
-            it("test cml.vector3(constructor(1,2,3,4))", function()
-                local input = constructor(cml.vector3(constructor(1,2,3,4)))
-                local expected = {1,2,3,0}
+            it("test cml.quat_p(constructor(1,2,3,4))", function()
+                local input = constructor(cml.quat_p(constructor(1,2,3,4)))
+                local expected = {1,2,3,4}
                 assert.same(expected, input:totable())
             end)
         end)
 
-        describe("with vector2", function()
-            it("test cml.vector2(1,2,3)", function()
-                local input = constructor(cml.vector2(1,2))
-                local expected = {1,2,0,0}
+        describe("with quat_n", function()
+            it("test cml.quat_n(1,2,3,4)", function()
+                local input = constructor(cml.quat_n(1,2,3,4))
+                local expected = {1,2,3,4}
                 assert.same(expected, input:totable())
             end)
 
-            it("test cml.vector2(constructor(1,2,3,4))", function()
-                local input = constructor(cml.vector2(constructor(1,2,3,4)))
-                local expected = {1,2,0,0}
+            it("test cml.quat_n(constructor(1,2,3,4))", function()
+                local input = constructor(cml.quat_n(constructor(1,2,3,4)))
+                local expected = {1,2,3,4}
+                assert.same(expected, input:totable())
+            end)
+        end)
+
+        describe("with vector3 and 1 number", function()
+            it("test cml.vector3(), 4", function()
+                local input = constructor(cml.vector3(), 4)
+                local expected = {0,0,0,4}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test cml.vector3(1,2,3), 4", function()
+                local input = constructor(cml.vector3(1,2,3), 4)
+                local expected = {1,2,3,4}
+                assert.same(expected, input:totable())
+            end)
+        end)
+
+        describe("with 1 number and vector3", function()
+            it("test 4, cml.vector3()", function()
+                local input = constructor(4, cml.vector3())
+                local expected = {0,0,0,4}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test 4, cml.vector3(1,2,3)", function()
+                local input = constructor(4, cml.vector3(1,2,3))
+                local expected = {1,2,3,4}
                 assert.same(expected, input:totable())
             end)
         end)
@@ -221,9 +135,10 @@ describe("vector4", function()
             end)
 
             it("bad argument", function()
-                assert.error.matches(function() constructor(0/0) end, "Bad value #1")
-                assert.error.matches(function() constructor(0, 0/0) end, "Bad value #2")
-                assert.error.matches(function() constructor(0, 0, 0/0) end, "Bad value #3")
+                assert.error.matches(function() constructor(0/0,0,0,0) end, "Bad value #1")
+                assert.error.matches(function() constructor(0,0/0,0,0) end, "Bad value #2")
+                assert.error.matches(function() constructor(0,0,0/0,0) end, "Bad value #3")
+                assert.error.matches(function() constructor(0,0,0,0/0) end, "Bad value #4")
                 assert.error.matches(function() constructor("one", 2, 3, 4) end, "bad argument #1")
                 assert.error.matches(function() constructor(1, true, 3, 4) end, "bad argument #2")
                 assert.error.matches(function() constructor(1, 2, {}, 4) end, "bad argument #3")
@@ -351,67 +266,161 @@ describe("vector4", function()
         end)
     end)
 
-    describe("length", function()
-        it("test 0", function()
-            local input = constructor(0)
-            local expected = 0
-            assert.near(expected, input:length(), eps)
+    describe("identity", function()
+        it("test {0,0,0,1}", function()
+            local input = constructor(0,0,0,1)
+            local expected = {0,0,0,1}
+            assert.same(expected, input:identity():totable())
+            assert.near(1, input:length(), eps)
         end)
 
-        it("test -1", function()
-            local input = constructor(-1)
+        it("test {1,2,3,4}", function()
+            local input = constructor(1,2,3,4)
+            local expected = {0,0,0,1}
+            assert.same(expected, input:identity():totable())
+            assert.near(1, input:length(), eps)
+        end)
+    end)
+
+    describe("length", function()
+        it("test {0,0,0,1}", function()
+            local input = constructor(0,0,0,1)
             local expected = 1
             assert.near(expected, input:length(), eps)
         end)
 
-        it("test 100", function()
-            local input = constructor(100)
-            local expected = 100
-            assert.near(expected, input:length(), eps)
-        end)
-
-        it("test 1,1,1,1", function()
+        it("test {1,1,1,1}", function()
             local input = constructor(1,1,1,1)
             local expected = 2
             assert.near(expected, input:length(), eps)
         end)
 
-        it("test 3,2,1,0", function()
+        it("test {3,2,1,0}", function()
             local input = constructor(3,2,1,0)
+            local expected = math.sqrt(14)
+            assert.near(expected, input:length(), eps)
+        end)
+
+        it("test {-3,2,-1,0}", function()
+            local input = constructor(-3,2,-1,0)
             local expected = math.sqrt(14)
             assert.near(expected, input:length(), eps)
         end)
     end)
 
     describe("length_squared", function()
-        it("test 0", function()
-            local input = constructor(0)
-            local expected = 0
-            assert.near(expected, input:length_squared(), eps)
-        end)
-
-        it("test -1", function()
-            local input = constructor(-1)
+        it("test {0,0,0,1}", function()
+            local input = constructor(0,0,0,1)
             local expected = 1
             assert.near(expected, input:length_squared(), eps)
         end)
 
-        it("test 100", function()
-            local input = constructor(100)
-            local expected = 10000
-            assert.near(expected, input:length_squared(), eps)
-        end)
-
-        it("test 1,1,1,1", function()
+        it("test {1,1,1,1}", function()
             local input = constructor(1,1,1,1)
             local expected = 4
             assert.near(expected, input:length_squared(), eps)
         end)
 
-        it("test 3,2,1,0", function()
+        it("test {3,2,1,0}", function()
             local input = constructor(3,2,1,0)
             local expected = 14
             assert.near(expected, input:length_squared(), eps)
+        end)
+
+        it("test {-3,2,-1,0}", function()
+            local input = constructor(-3,2,-1,0)
+            local expected = 14
+            assert.near(expected, input:length_squared(), eps)
+        end)
+    end)
+
+    describe("normalize", function()
+        it("test {0,0,0,1}", function()
+            local input = constructor(0,0,0,1)
+            local expected = {0,0,0,1}
+            assert.same(expected, input:normalize():totable())
+            assert.near(1, input:length(), eps)
+        end)
+
+        it("test {1,1,1,1}", function()
+            local input = constructor(1,1,1,1)
+            local expected = {0.5,0.5,0.5,0.5}
+            assert.same(expected, input:normalize():totable())
+            assert.near(1, input:length(), eps)
+        end)
+
+        it("test {3,2,1,0}", function()
+            local input = constructor(3,2,1,0)
+            local expected = {3/math.sqrt(14), math.sqrt(2/7), 1/math.sqrt(14),0}
+            assert.same(expected, input:normalize():totable())
+            assert.near(1, input:length(), eps)
+        end)
+
+        it("test {-3,2,-1,0}", function()
+            local input = constructor(-3,2,-1,0)
+            local expected = {-3/math.sqrt(14), math.sqrt(2/7), -1/math.sqrt(14),0}
+            assert.same(expected, input:normalize():totable())
+            assert.near(1, input:length(), eps)
+        end)
+    end)
+
+    describe("inverse", function()
+        it("test {0,0,0,1}", function()
+            local input = constructor(0,0,0,1)
+            local expected = {0,0,0,1}
+            assert.same(expected, input:inverse():totable())
+            assert.near(1, input:length(), eps)
+        end)
+
+        it("test {1,1,1,1}", function()
+            local input = constructor(1,1,1,1)
+            local expected = {-0.25,-0.25,-0.25,0.25}
+            assert.same(expected, input:inverse():totable())
+            assert.near(0.5, input:length(), eps)
+        end)
+
+        it("test {3,2,1,0}", function()
+            local input = constructor(3,2,1,0)
+            local expected = {-3/14, -1/7, -1/14,0}
+            assert.same(expected, input:inverse():totable())
+            assert.near(1/math.sqrt(14), input:length(), eps)
+        end)
+
+        it("test {-3,2,-1,0}", function()
+            local input = constructor(-3,2,-1,0)
+            local expected = {3/14, -1/7, 1/14,0}
+            assert.same(expected, input:inverse():totable())
+            assert.near(1/math.sqrt(14), input:length(), eps)
+        end)
+    end)
+
+    describe("conjugate", function()
+        it("test {0,0,0,1}", function()
+            local input = constructor(0,0,0,1)
+            local expected = {0,0,0,1}
+            assert.same(expected, input:conjugate():totable())
+            assert.near(1, input:length(), eps)
+        end)
+
+        it("test {1,1,1,1}", function()
+            local input = constructor(1,1,1,1)
+            local expected = {-1,-1,-1,1}
+            assert.same(expected, input:conjugate():totable())
+            assert.near(2, input:length(), eps)
+        end)
+
+        it("test {3,2,1,0}", function()
+            local input = constructor(3,2,1,0)
+            local expected = {-3,-2,-1,0}
+            assert.same(expected, input:conjugate():totable())
+            assert.near(math.sqrt(14), input:length(), eps)
+        end)
+
+        it("test {-3,2,-1,0}", function()
+            local input = constructor(-3,2,-1,0)
+            local expected = {3,-2,1,0}
+            assert.same(expected, input:conjugate():totable())
+            assert.near(math.sqrt(14), input:length(), eps)
         end)
     end)
 end)

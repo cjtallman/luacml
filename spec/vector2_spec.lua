@@ -2,72 +2,161 @@
 
 describe("vector2", function()
     local cml = require("luacml")
-
-    local function table_same(expected, vec)
-        assert.same(expected, vec:totable())
-    end
+    local eps = 1e-5
+    local constructor = cml.vector2
 
     describe("constructor", function()
         it("default", function()
-            table_same({0,0}, cml.vector2())
+            local input = constructor()
+            local expected = {0,0}
+            assert.same(expected, input:totable())
         end)
 
-        it("with 1 number", function()
-            table_same({1,0}, cml.vector2(1))
-            table_same({123,0}, cml.vector2(123))
-            table_same({1.23,0}, cml.vector2(1.23))
-            table_same({math.huge,0}, cml.vector2(math.huge))
-            table_same({-math.pi,0}, cml.vector2(-math.pi))
+        describe("with 1 number", function()
+            it("test 1", function()
+                local input = constructor(1)
+                local expected = {1,0}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test 123", function()
+                local input = constructor(123)
+                local expected = {123,0}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test 1.23", function()
+                local input = constructor(1.23)
+                local expected = {1.23,0}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test math.huge", function()
+                local input = constructor(math.huge)
+                local expected = {math.huge,0}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test -math.pi", function()
+                local input = constructor(-math.pi)
+                local expected = {-math.pi,0}
+                assert.same(expected, input:totable())
+            end)
         end)
 
-        it("with 2 numbers", function()
-            table_same({0,1}, cml.vector2(0, 1))
-            table_same({123,456}, cml.vector2(123, 456))
-            table_same({1.23,4.56}, cml.vector2(1.23, 4.56))
-            table_same({1,math.huge}, cml.vector2(1, math.huge))
-            table_same({1,-math.pi}, cml.vector2(1, -math.pi))
+        describe("with 2 numbers", function()
+            it("test 0,1", function()
+                local input = constructor(0,1)
+                local expected = {0,1}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test 123,456", function()
+                local input = constructor(123,456)
+                local expected = {123,456}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test 1.23,4.56", function()
+                local input = constructor(1.23,4.56)
+                local expected = {1.23,4.56}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test 1,math.huge", function()
+                local input = constructor(1,math.huge)
+                local expected = {1,math.huge}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test 1,-math.pi", function()
+                local input = constructor(1,-math.pi)
+                local expected = {1,-math.pi}
+                assert.same(expected, input:totable())
+            end)
         end)
 
-        it("with array of numbers", function()
-            table_same({1,2}, cml.vector2{1, 2})
-            table_same({1,0}, cml.vector2{1})
-            table_same({0,0}, cml.vector2{})
+        describe("with array of numbers", function()
+            it("test {1,2}", function()
+                local input = constructor{1,2}
+                local expected = {1,2}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test {1}", function()
+                local input = constructor{1}
+                local expected = {1,0}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test {}", function()
+                local input = constructor{}
+                local expected = {0,0}
+                assert.same(expected, input:totable())
+            end)
         end)
 
-        it("with vector4", function()
-            table_same({4,3}, cml.vector2(cml.vector4(4,3,2,1)))
-            table_same({1,2}, cml.vector2(cml.vector4(cml.vector2(1,2))))
+        describe("with vector4", function()
+            it("test cml.vector4(1,2,3,4)", function()
+                local input = constructor(cml.vector4(1,2,3,4))
+                local expected = {1,2}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test cml.vector4(constructor(1,2,3,4))", function()
+                local input = constructor(cml.vector4(constructor(1,2)))
+                local expected = {1,2}
+                assert.same(expected, input:totable())
+            end)
         end)
 
-        it("with vector3", function()
-            table_same({4,3}, cml.vector2(cml.vector3(4,3,2)))
-            table_same({1,2}, cml.vector2(cml.vector3(cml.vector2(1,2))))
+        describe("with vector3", function()
+            it("test cml.vector3(1,2,3)", function()
+                local input = constructor(cml.vector3(1,2,3))
+                local expected = {1,2}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test cml.vector3(constructor(1,2))", function()
+                local input = constructor(cml.vector3(constructor(1,2)))
+                local expected = {1,2}
+                assert.same(expected, input:totable())
+            end)
         end)
 
-        it("with vector2", function()
-            table_same({4,3}, cml.vector2(cml.vector2(4,3)))
-            table_same({1,2}, cml.vector2(cml.vector2(cml.vector2(1,2))))
+        describe("with vector2", function()
+            it("test cml.vector2(1,2)", function()
+                local input = constructor(cml.vector2(1,2))
+                local expected = {1,2}
+                assert.same(expected, input:totable())
+            end)
+
+            it("test cml.vector2(constructor(1,2))", function()
+                local input = constructor(cml.vector2(constructor(1,2)))
+                local expected = {1,2}
+                assert.same(expected, input:totable())
+            end)
         end)
 
         describe("throws #error due to", function()
             it("too many arguments", function()
-                assert.error.matches(function() cml.vector2(1,2,3) end, "Too many arguments")
-                assert.error.matches(function() cml.vector2{1,2,3} end, "Too many arguments")
+                assert.error.matches(function() constructor(1,2,3) end, "Too many arguments")
+                assert.error.matches(function() constructor{1,2,3} end, "Too many arguments")
             end)
 
             it("bad argument", function()
-                assert.error.matches(function() cml.vector2(0/0) end, "Bad value #1")
-                assert.error.matches(function() cml.vector2(0, 0/0) end, "Bad value #2")
-                assert.error.matches(function() cml.vector2("one", 2) end, "bad argument #1")
-                assert.error.matches(function() cml.vector2(1, true) end, "bad argument #2")
-                assert.error.matches(function() cml.vector2(1, {}) end, "bad argument #2")
-                assert.error.matches(function() cml.vector2(1, nil) end, "bad argument #2")
+                assert.error.matches(function() constructor(0/0) end, "Bad value #1")
+                assert.error.matches(function() constructor(0, 0/0) end, "Bad value #2")
+                assert.error.matches(function() constructor("one", 2) end, "bad argument #1")
+                assert.error.matches(function() constructor(1, true) end, "bad argument #2")
+                assert.error.matches(function() constructor(1, {}) end, "bad argument #2")
+                assert.error.matches(function() constructor(1, nil) end, "bad argument #2")
             end)
         end)
     end)
 
     describe("index", function()
-        local vec = cml.vector2(10,20)
+        local vec = constructor(10,20)
 
         it("with integer key", function()
             assert.equals(10, vec[1])
@@ -113,34 +202,34 @@ describe("vector2", function()
 
     describe("newindex", function()
         it("with integer key", function()
-            local vec = cml.vector2(0,0)
-            table_same({0,0}, vec)
+            local vec = constructor(0,0)
+            assert.same({0,0}, vec:totable())
             vec[1] = 10
-            table_same({10,0}, vec)
+            assert.same({10,0}, vec:totable())
             vec[2] = 20
-            table_same({10,20}, vec)
+            assert.same({10,20}, vec:totable())
         end)
 
         it("with lowercase key", function()
-            local vec = cml.vector2(0,0)
-            table_same({0,0}, vec)
+            local vec = constructor(0,0)
+            assert.same({0,0}, vec:totable())
             vec.x = 10
-            table_same({10,0}, vec)
+            assert.same({10,0}, vec:totable())
             vec.y = 20
-            table_same({10,20}, vec)
+            assert.same({10,20}, vec:totable())
         end)
 
         it("with uppercase key", function()
-            local vec = cml.vector2(0,0)
-            table_same({0,0}, vec)
+            local vec = constructor(0,0)
+            assert.same({0,0}, vec:totable())
             vec.X = 10
-            table_same({10,0}, vec)
+            assert.same({10,0}, vec:totable())
             vec.Y = 20
-            table_same({10,20}, vec)
+            assert.same({10,20}, vec:totable())
         end)
 
         describe("throws #error due to", function()
-            local vec = cml.vector2(0,0)
+            local vec = constructor(0,0)
             it("float key", function()
                 assert.error.matches(function() vec[1.1] = 10 end, "index not integer")
             end)
@@ -168,30 +257,66 @@ describe("vector2", function()
     end)
 
     describe("length", function()
-        local function is_near(expected, vec)
-            assert.near(expected, vec:length(), 1e-5)
-        end
+        it("test 0", function()
+            local input = constructor(0)
+            local expected = 0
+            assert.near(expected, input:length(), eps)
+        end)
 
-        it("returns correct result", function()
-            is_near(0, cml.vector2())
-            is_near(1, cml.vector2(-1))
-            is_near(100, cml.vector2(100))
-            is_near(math.sqrt(2), cml.vector2(1,1))
-            is_near(math.sqrt(13), cml.vector2(3,2))
+        it("test -1", function()
+            local input = constructor(-1)
+            local expected = 1
+            assert.near(expected, input:length(), eps)
+        end)
+
+        it("test 100", function()
+            local input = constructor(100)
+            local expected = 100
+            assert.near(expected, input:length(), eps)
+        end)
+
+        it("test 1,1", function()
+            local input = constructor(1,1)
+            local expected = math.sqrt(2)
+            assert.near(expected, input:length(), eps)
+        end)
+
+        it("test 3,2", function()
+            local input = constructor(3,2)
+            local expected = math.sqrt(13)
+            assert.near(expected, input:length(), eps)
         end)
     end)
 
     describe("length_squared", function()
-        local function is_near(expected, vec)
-            assert.near(expected, vec:length_squared(), 1e-5)
-        end
+        it("test 0", function()
+            local input = constructor(0)
+            local expected = 0
+            assert.near(expected, input:length_squared(), eps)
+        end)
 
-        it("returns correct result", function()
-            is_near(0, cml.vector2())
-            is_near(1, cml.vector2(-1))
-            is_near(10000, cml.vector2(100))
-            is_near(2, cml.vector2(1,1))
-            is_near(13, cml.vector2(3,2))
+        it("test -1", function()
+            local input = constructor(-1)
+            local expected = 1
+            assert.near(expected, input:length_squared(), eps)
+        end)
+
+        it("test 100", function()
+            local input = constructor(100)
+            local expected = 10000
+            assert.near(expected, input:length_squared(), eps)
+        end)
+
+        it("test 1,1", function()
+            local input = constructor(1,1)
+            local expected = 2
+            assert.near(expected, input:length_squared(), eps)
+        end)
+
+        it("test 3,2", function()
+            local input = constructor(3,2)
+            local expected = 13
+            assert.near(expected, input:length_squared(), eps)
         end)
     end)
 end)
