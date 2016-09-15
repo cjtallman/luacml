@@ -11,7 +11,8 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "luacml.h"
+#include "luacml.hpp"
+#include "luacmlvector.hpp"
 #include <lua.hpp>
 #include <cml/cml.h>
 
@@ -72,7 +73,7 @@ error:
     return 1;
 }
 
-LUA_EXPORT int luaopen_luacml(lua_State* L)
+LUACML_API int luaopen_luacml(lua_State* L)
 {
     static luaL_Reg funcs[] = {{"vector2", &Vector2::New},
                                {"vector3", &Vector3::New},

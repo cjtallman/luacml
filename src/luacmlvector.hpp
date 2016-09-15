@@ -3,28 +3,25 @@
 ///
 /// @copyright Copyright (c) 2016 Chris Tallman. All rights reserved.
 ///
-/// @file   luacml.h
-/// @date   09/12/2016
+/// @file   luacmlvector.hpp
+/// @date   09/15/2016
 /// @author ctallman
 ///
-/// @brief  Lua bindings for the CML math library.
+/// @brief  Helper functions for vector2, vector3, and vector4.
 ///
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef luacml_h__
-#define luacml_h__
+#ifndef luacmlvector_hpp__
+#define luacmlvector_hpp__
 
-#include "luacompat.h"
-#include <cml/cml.h>
+#include "luacml.hpp"
 
-#define STRINGIFY(x) #x
-#define EXP_ARG_STR(N) "expected exactly " STRINGIFY(N) " arguments(s)."
-#define CHECK_ARG_COUNT(L, N) luaL_argcheck(L, (lua_gettop(L) == N), lua_gettop(L), EXP_ARG_STR(N))
-#define LUA_EXPORT extern "C"
-
-int NewClass(lua_State* L, const char* TYPE_NAME, const luaL_Reg* funcs);
-int SetClass(lua_State* L, const char* TYPE_NAME);
-int PrintClass(lua_State* L);
+namespace Vector {
+LUACML_API int ToTable(lua_State* L);
+LUACML_API int GetNumberFromStack(lua_State* L, const int index, lua_Number* num);
+LUACML_API int GetNumbersFromTable(lua_State* L, const int tab, lua_Number* vec, const int len);
+LUACML_API int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* vec, const int len);
+}
 
 namespace Vector2 {
 extern const char* UDATA_TYPE_NAME;
@@ -38,7 +35,6 @@ typedef Type* Pointer;
 
 int New(lua_State* L);
 int Register(lua_State* L);
-int GetNumbersFromTable(lua_State* L, int tab, Type& vec);
 }
 
 namespace Vector3 {
@@ -53,7 +49,6 @@ typedef Type* Pointer;
 
 int New(lua_State* L);
 int Register(lua_State* L);
-int GetNumbersFromTable(lua_State* L, int tab, Type& vec);
 }
 
 namespace Vector4 {
@@ -68,7 +63,6 @@ typedef Type* Pointer;
 
 int New(lua_State* L);
 int Register(lua_State* L);
-int GetNumbersFromTable(lua_State* L, int tab, Type& vec);
 }
 
-#endif // luacml_h__
+#endif // luacmlvector_hpp__

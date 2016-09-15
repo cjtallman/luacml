@@ -31,6 +31,7 @@ build =
            {
                "src/luacml.cpp",
                "src/luacompat.cpp",
+               "src/luacmlvector.cpp",
                "src/luacmlvector2.cpp",
                "src/luacmlvector3.cpp",
                "src/luacmlvector4.cpp",
