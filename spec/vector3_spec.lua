@@ -367,4 +367,57 @@ describe("vector3", function()
             assert.near(expected, input:length_squared(), eps)
         end)
     end)
+
+    describe("operator", function()
+        local A = constructor(1,2,3)
+        local B = constructor(2,3,4)
+
+        it("+", function()
+            local input = A + B
+            local expected = {3,5,7}
+            assert.same(expected, input:totable())
+        end)
+
+        it("-", function()
+            local input = A - B
+            local expected = {-1,-1,-1}
+            assert.same(expected, input:totable())
+        end)
+
+        it("- (unary)", function()
+            local input = (-A)
+            local expected = {-1,-2,-3}
+            assert.same(expected, input:totable())
+        end)
+
+        it("* (scalar first)", function()
+            local input = 10 * A
+            local expected = {10,20,30}
+            assert.same(expected, input:totable())
+        end)
+
+        it("* (scalar second)", function()
+            local input = A * 10
+            local expected = {10,20,30}
+            assert.same(expected, input:totable())
+        end)
+
+        it("/", function()
+            local input = A / 10
+            local expected = {0.1,0.2,0.3}
+            assert.same(expected, input:totable())
+        end)
+
+        it("==", function()
+            assert.is_false(A == B)
+            assert.is_true(A == A)
+            assert.is_true(A == constructor(1,2,3))
+        end)
+
+        it("~=", function()
+            assert.is_true(A ~= B)
+            assert.is_false(A ~= A)
+            assert.is_false(A ~= constructor(1,2,3))
+        end)
+    end)
 end)
