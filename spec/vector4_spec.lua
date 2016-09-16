@@ -351,6 +351,70 @@ describe("vector4", function()
         end)
     end)
 
+    describe("set", function()
+        it("test (1,2,3,4)", function()
+            local A = constructor()
+            local expected = {1,2,3,4}
+            assert.same(expected, A:set(1,2,3,4):totable())
+        end)
+
+        it("test {1,2,3,4}", function()
+            local A = constructor()
+            local B = {1,2,3,4}
+            local expected = {1,2,3,4}
+            assert.same(expected, A:set(B):totable())
+        end)
+
+        it("test vector4(1,2,3,4)", function()
+            local A = constructor()
+            local B = constructor(1,2,3,4)
+            local expected = {1,2,3,4}
+            assert.same(expected, A:set(B):totable())
+        end)
+
+        describe("throws #error", function()
+            it("1 number", function()
+                assert.error(function() constructor():set(1) end)
+            end)
+
+            it("2 numbers", function()
+                assert.error(function() constructor():set(1,2) end)
+            end)
+
+            it("3 numbers", function()
+                assert.error(function() constructor():set(1,2,3) end)
+            end)
+
+            it("5 numbers", function()
+                assert.error(function() constructor():set(1,2,3,4,5) end)
+            end)
+
+            it("too small table", function()
+                assert.error(function() constructor():set({1,2,3}) end)
+            end)
+
+            it("too big table", function()
+                assert.error(function() constructor():set({1,2,3,4,5}) end)
+            end)
+
+            it("vector2", function()
+                assert.error(function() constructor():set(cml.vector2(1,2)) end)
+            end)
+
+            it("vector3", function()
+                assert.error(function() constructor():set(cml.vector3(1,2,3)) end)
+            end)
+
+            it("quat_p", function()
+                assert.error(function() constructor():set(cml.quat_p(1,2,3,4)) end)
+            end)
+
+            it("quat_n", function()
+                assert.error(function() constructor():set(cml.quat_n(1,2,3,4)) end)
+            end)
+        end)
+    end)
+
     describe("length", function()
         it("test 0", function()
             local input = constructor(0)
@@ -412,6 +476,59 @@ describe("vector4", function()
             local input = constructor(3,2,1,0)
             local expected = 14
             assert.near(expected, input:length_squared(), eps)
+        end)
+    end)
+
+    describe("operator", function()
+        local A = constructor(1,2,3,4)
+        local B = constructor(2,3,4,5)
+
+        it("+", function()
+            local input = A + B
+            local expected = {3,5,7,9}
+            assert.same(expected, input:totable())
+        end)
+
+        it("-", function()
+            local input = A - B
+            local expected = {-1,-1,-1,-1}
+            assert.same(expected, input:totable())
+        end)
+
+        it("- (unary)", function()
+            local input = (-A)
+            local expected = {-1,-2,-3,-4}
+            assert.same(expected, input:totable())
+        end)
+
+        it("* (scalar first)", function()
+            local input = 10 * A
+            local expected = {10,20,30,40}
+            assert.same(expected, input:totable())
+        end)
+
+        it("* (scalar second)", function()
+            local input = A * 10
+            local expected = {10,20,30,40}
+            assert.same(expected, input:totable())
+        end)
+
+        it("/", function()
+            local input = A / 10
+            local expected = {0.1,0.2,0.3,0.4}
+            assert.same(expected, input:totable())
+        end)
+
+        it("==", function()
+            assert.is_false(A == B)
+            assert.is_true(A == A)
+            assert.is_true(A == constructor(1,2,3,4))
+        end)
+
+        it("~=", function()
+            assert.is_true(A ~= B)
+            assert.is_false(A ~= A)
+            assert.is_false(A ~= constructor(1,2,3,4))
         end)
     end)
 end)
