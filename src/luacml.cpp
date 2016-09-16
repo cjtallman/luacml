@@ -94,10 +94,24 @@ int Dot(lua_State* L)
         lua_pushnumber(L, cml::dot(*A, *B));
         return 1;
     }
-    else
+    else if (const QNeg* A = (QNeg*)luaL_testudata(L, 1, QuatNeg::UDATA_TYPE_NAME))
     {
-        return luaL_argerror(L, 1, "Expected vector2, vector3, or vector4");
+        if (const QNeg* B = (QNeg*)luaL_checkudata(L, 2, QuatNeg::UDATA_TYPE_NAME))
+        {
+            lua_pushnumber(L, cml::dot(*A, *B));
+            return 1;
+        }
     }
+    else if (const QPos* A = (QPos*)luaL_testudata(L, 1, QuatPos::UDATA_TYPE_NAME))
+    {
+        if (const QPos* B = (QPos*)luaL_checkudata(L, 2, QuatPos::UDATA_TYPE_NAME))
+        {
+            lua_pushnumber(L, cml::dot(*A, *B));
+            return 1;
+        }
+    }
+
+    return luaL_argerror(L, 1, "Expected vector2, vector3, vector4, quat_p, quat_n");
 }
 
 LUACML_API int luaopen_luacml(lua_State* L)
