@@ -1,7 +1,7 @@
 
 describe("cml", function()
     local cml = require("luacml")
-    local eps = 1e-5
+    --local eps = 1e-5
 
     describe("dot", function()
         it("vector2(), vector2()", function()
