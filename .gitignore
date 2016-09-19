@@ -1,4 +1,11 @@
 
+/env
+/lua51
+/lua52
+/lua53
+/luajit20
+/luajit21
+
 *.o
 *.so
 *.obj
