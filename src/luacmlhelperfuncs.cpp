@@ -22,7 +22,7 @@ LUACML_API int GetNumberFromStack(lua_State* L, const int index, lua_Number* num
     *num = lua_tonumber(L, index);
     if (!lua_rawequal(L, index, index))
     {
-        return luaL_error(L, "Invalid call. Bad value #%d.", index);
+        return luaL_error(L, "bad argument #%d.", index);
     }
 
     return 1;
@@ -36,7 +36,7 @@ LUACML_API int GetIntegerFromStack(lua_State* L, const int index, int* num)
 
     if (!lua_rawequal(L, index, index) || (temp != (int)temp))
     {
-        return luaL_error(L, "Invalid call. Bad value #%d.", index);
+        return luaL_error(L, "bad argument #%d.", index);
     }
     else
     {
@@ -68,7 +68,7 @@ LUACML_API int GetNumbersFromTable(lua_State* L, const int tab, lua_Number* vec,
         vec[i] = luaL_checknumber(L, -1);
         if (!lua_rawequal(L, -1, -1))
         {
-            return luaL_error(L, "Invalid call. Bad value #%d.", i + 1);
+            return luaL_error(L, "bad argument #%d.", i + 1);
         }
         lua_pop(L, 1);
     }

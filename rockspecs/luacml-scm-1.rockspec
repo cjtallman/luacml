@@ -32,11 +32,8 @@ build =
                "src/luacml.cpp",
                "src/luacompat.cpp",
                "src/luacmlhelperfuncs.cpp",
-               "src/luacmlvector2.cpp",
-               "src/luacmlvector3.cpp",
-               "src/luacmlvector4.cpp",
-               "src/luacmlquaternionpos.cpp",
-               "src/luacmlquaternionneg.cpp",
+               "src/luacmlvector.cpp",
+               "src/luacmlquat.cpp",
            },
            incdirs =
            {

@@ -109,54 +109,75 @@ int New(lua_State* L)
     }
     else if (nargs == 2)
     {
-        if (lua_isnumber(L, 1) && lua_isuserdata(L, 2))
+        if (lua_isnumber(L, 1))
         {
-            lua_Number vec[4];
-            Helper::GetNumberFromStack(L, 1, vec + 3);
-            Helper::GetNumbersFromUserdata(L, 2, vec, 3, true, true);
-            temp[T::Type::X] = vec[0];
-            temp[T::Type::Y] = vec[1];
-            temp[T::Type::Z] = vec[2];
-            temp[T::Type::W] = vec[3];
+            if (lua_isuserdata(L, 2))
+            {
+                lua_Number vec[4];
+                Helper::GetNumberFromStack(L, 1, vec + 3);
+                Helper::GetNumbersFromUserdata(L, 2, vec, 3, true, true);
+                temp[T::Type::X] = vec[0];
+                temp[T::Type::Y] = vec[1];
+                temp[T::Type::Z] = vec[2];
+                temp[T::Type::W] = vec[3];
+            }
+            else if (lua_istable(L, 2))
+            {
+                lua_Number vec[4];
+                Helper::GetNumberFromStack(L, 1, vec + 3);
+                Helper::GetNumbersFromTable(L, 2, vec, 3, true, true);
+                temp[T::Type::X] = vec[0];
+                temp[T::Type::Y] = vec[1];
+                temp[T::Type::Z] = vec[2];
+                temp[T::Type::W] = vec[3];
+            }
+            else
+            {
+                return luaL_argerror(L, 2, "expected table, or vector3");
+            }
         }
-        else if (lua_isnumber(L, 1) && lua_istable(L, 2))
+        else if (lua_isuserdata(L, 1))
         {
-            lua_Number vec[4];
-            Helper::GetNumberFromStack(L, 1, vec + 3);
-            Helper::GetNumbersFromTable(L, 2, vec, 3, true, true);
-            temp[T::Type::X] = vec[0];
-            temp[T::Type::Y] = vec[1];
-            temp[T::Type::Z] = vec[2];
-            temp[T::Type::W] = vec[3];
+            if (lua_isnumber(L, 2))
+            {
+                lua_Number vec[4];
+                Helper::GetNumbersFromUserdata(L, 1, vec, 3, true, true);
+                Helper::GetNumberFromStack(L, 2, vec + 3);
+                temp[T::Type::X] = vec[0];
+                temp[T::Type::Y] = vec[1];
+                temp[T::Type::Z] = vec[2];
+                temp[T::Type::W] = vec[3];
+            }
+            else
+            {
+                return luaL_argerror(L, 2, "expected number");
+            }
         }
-        else if (lua_isuserdata(L, 1) && lua_isnumber(L, 2))
+        else if (lua_istable(L, 1))
         {
-            lua_Number vec[4];
-            Helper::GetNumbersFromUserdata(L, 1, vec, 3, true, true);
-            Helper::GetNumberFromStack(L, 2, vec + 3);
-            temp[T::Type::X] = vec[0];
-            temp[T::Type::Y] = vec[1];
-            temp[T::Type::Z] = vec[2];
-            temp[T::Type::W] = vec[3];
-        }
-        else if (lua_istable(L, 1) && lua_isnumber(L, 2))
-        {
-            lua_Number vec[4];
-            Helper::GetNumbersFromTable(L, 1, vec, 3, true, true);
-            Helper::GetNumberFromStack(L, 2, vec + 3);
-            temp[T::Type::X] = vec[0];
-            temp[T::Type::Y] = vec[1];
-            temp[T::Type::Z] = vec[2];
-            temp[T::Type::W] = vec[3];
+            if (lua_isnumber(L, 2))
+            {
+                lua_Number vec[4];
+                Helper::GetNumbersFromTable(L, 1, vec, 3, true, true);
+                Helper::GetNumberFromStack(L, 2, vec + 3);
+                temp[T::Type::X] = vec[0];
+                temp[T::Type::Y] = vec[1];
+                temp[T::Type::Z] = vec[2];
+                temp[T::Type::W] = vec[3];
+            }
+            else
+            {
+                return luaL_argerror(L, 2, "expected number");
+            }
         }
         else
         {
-            return luaL_error(L, "Invalid call. Bad argument type.");
+            return luaL_argerror(L, 1, "expected number, table, or vector3");
         }
     }
     else if (nargs == 3)
     {
-        return luaL_error(L, "Invalid call. Missing arguments.");
+        return luaL_argerror(L, 3, "missing arguments");
     }
     else if (nargs == 4)
     {
@@ -233,7 +254,7 @@ int Index(lua_State* L)
     }
     else
     {
-        return luaL_error(L, "Invalid call. Bad argument type.");
+        return luaL_argerror(L, 2, "expected integer index");
     }
 
     return 0;
@@ -285,7 +306,7 @@ int NewIndex(lua_State* L)
     }
     else
     {
-        return luaL_error(L, "Invalid call. Bad argument type.");
+        return luaL_argerror(L, 2, "expected integer index");
     }
 
     return 0;
