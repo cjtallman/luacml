@@ -12,7 +12,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "luacmlmatrix.hpp"
-#include "luacmlhelperfuncs.hpp"
 
 const char* Matrix22::UDATA_TYPE_NAME   = "matrix22";
 const char* Matrix22_r::UDATA_TYPE_NAME = "matrix22_r";
@@ -31,7 +30,9 @@ const char* Matrix34_c::UDATA_TYPE_NAME = "matrix34_c";
 template < typename T >
 static int Print(lua_State* L)
 {
-    const T::Pointer  vec  = (T::Pointer)luaL_checkudata(L, -1, T::UDATA_TYPE_NAME);
+    typedef typename T::Pointer TPointer;
+
+    const TPointer    vec  = (TPointer)luaL_checkudata(L, -1, T::UDATA_TYPE_NAME);
     const lua_Number* data = vec->data();
     const char*       name = T::UDATA_TYPE_NAME;
 

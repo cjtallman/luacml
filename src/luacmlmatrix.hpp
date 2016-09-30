@@ -16,6 +16,7 @@
 
 #include "luacml.hpp"
 #include "luacmlvector.hpp"
+#include "luacmlhelperfuncs.hpp"
 
 /******************************************************************************/
 
@@ -244,6 +245,9 @@ namespace Matrix {
 template < typename T >
 int New(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
+    typedef typename T::Type    TType;
+
     // This is here because Lua passes the table to __call as the first
     //  argument, but we don't want it.
     lua_remove(L, 1);
@@ -251,7 +255,7 @@ int New(lua_State* L)
     const int nargs = lua_gettop(L);
 
     // Temporary vector to create result from.
-    T::Type temp;
+    TType temp;
     temp.identity();
 
     // Check for too many arguments.
@@ -285,8 +289,8 @@ int New(lua_State* L)
         return luaL_error(L, "Invalid call.");
     }
 
-    T::Pointer newvec = (T::Pointer)lua_newuserdata(L, sizeof(T::Type));
-    (*newvec)         = temp;
+    TPointer newvec = (TPointer)lua_newuserdata(L, sizeof(TType));
+    (*newvec)       = temp;
 
     return ::SetClass(L, T::UDATA_TYPE_NAME);
 }
@@ -294,11 +298,14 @@ int New(lua_State* L)
 template < typename T >
 int Set(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
+    typedef typename T::Type    TType;
+
     const int nargs = lua_gettop(L);
 
     luaL_argcheck(L, (nargs <= T::NUM_ELEMENTS + 1), T::NUM_ELEMENTS + 2, "Too many arguments.");
 
-    T::Pointer A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    TPointer A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
 
     switch (nargs)
     {
@@ -308,8 +315,8 @@ int Set(lua_State* L)
         // Assignment operator
         if (lua_isuserdata(L, 2))
         {
-            const T::Pointer B = (T::Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
-            (*A)               = (*B);
+            const TPointer B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+            (*A)             = (*B);
 
             // Pop second userdata off
             lua_pop(L, 1);
@@ -354,9 +361,11 @@ int Set(lua_State* L)
 template < typename T >
 int Index(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
+
     CHECK_ARG_COUNT(L, 2);
 
-    const T::Pointer obj = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    const TPointer obj = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
 
     // Check metatable first.
     lua_getmetatable(L, 1);

@@ -70,9 +70,10 @@ int Cross(lua_State* L)
 template < typename T >
 int TDot(lua_State* L)
 {
-    if (const T::Pointer A = (T::Pointer)luaL_testudata(L, 1, T::UDATA_TYPE_NAME))
+    typedef typename T::Pointer Pointer;
+    if (const Pointer A = (Pointer)luaL_testudata(L, 1, T::UDATA_TYPE_NAME))
     {
-        T::Pointer B = (T::Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+        Pointer B = (Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
         lua_pushnumber(L, cml::dot(*A, *B));
         return 1;
     }

@@ -12,7 +12,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "luacmlquat.hpp"
-#include "luacmlhelperfuncs.hpp"
 
 const char* QuatDef::UDATA_TYPE_NAME = "quat";
 const char* QuatPos::UDATA_TYPE_NAME = "quat_p";
@@ -21,7 +20,9 @@ const char* QuatNeg::UDATA_TYPE_NAME = "quat_n";
 template < typename T >
 static int Print(lua_State* L)
 {
-    const T::Pointer  vec  = (T::Pointer)luaL_checkudata(L, -1, T::UDATA_TYPE_NAME);
+    typedef typename T::Pointer TPointer;
+
+    const TPointer    vec  = (TPointer)luaL_checkudata(L, -1, T::UDATA_TYPE_NAME);
     const lua_Number* data = vec->data();
 
     lua_pushfstring(L, "%s:<%f,%f,%f,%f>", T::UDATA_TYPE_NAME, data[0], data[1], data[2], data[3]);

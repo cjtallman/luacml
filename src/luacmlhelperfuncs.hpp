@@ -27,8 +27,10 @@ LUACML_API int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* ve
 template < typename T, typename U >
 int AssignFromUserdata(lua_State* L, const int ud, T* to)
 {
+    typedef typename U::Pointer UPointer;
+
     luaL_checktype(L, ud, LUA_TUSERDATA);
-    if (const U::Pointer from = (U::Pointer)luaL_testudata(L, ud, U::UDATA_TYPE_NAME))
+    if (const UPointer from = (UPointer)luaL_testudata(L, ud, U::UDATA_TYPE_NAME))
     {
         (*to) = (*from);
         return 1;
@@ -42,9 +44,11 @@ int AssignFromUserdata(lua_State* L, const int ud, T* to)
 template < typename T >
 int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* vec, const int len)
 {
+    typedef typename T::Pointer TPointer;
+
     if (lua_isuserdata(L, ud))
     {
-        if (const T::Pointer v = (T::Pointer)luaL_testudata(L, ud, T::UDATA_TYPE_NAME))
+        if (const TPointer v = (TPointer)luaL_testudata(L, ud, T::UDATA_TYPE_NAME))
         {
             // Copy as much as possible.
             const int count = std::min< int >(len, T::NUM_ELEMENTS);
@@ -66,9 +70,11 @@ int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* vec, const in
 template < typename T >
 int ToTable(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
+
     CHECK_ARG_COUNT(L, 1);
 
-    const T::Pointer v = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    const TPointer v = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
 
     lua_newtable(L);
     for (int i = 0; i < T::NUM_ELEMENTS; ++i)

@@ -15,6 +15,7 @@
 #define luacmlvector_hpp__
 
 #include "luacml.hpp"
+#include "luacmlhelperfuncs.hpp"
 
 /******************************************************************************/
 
@@ -67,6 +68,9 @@ namespace Vector {
 template < typename T >
 int New(lua_State* L)
 {
+    typedef typename T::Type    TType;
+    typedef typename T::Pointer TPointer;
+
     // This is here because Lua passes the table to __call as the first
     //  argument, but we don't want it.
     lua_remove(L, 1);
@@ -74,7 +78,7 @@ int New(lua_State* L)
     const int nargs = lua_gettop(L);
 
     // Temporary vector to create result from.
-    T::Type temp;
+    TType temp;
     temp.zero();
 
     // Check for too many arguments.
@@ -116,8 +120,8 @@ int New(lua_State* L)
         return luaL_error(L, "Invalid call.");
     }
 
-    T::Pointer newvec = (T::Pointer)lua_newuserdata(L, sizeof(T::Type));
-    (*newvec)         = temp;
+    TPointer newvec = (TPointer)lua_newuserdata(L, sizeof(TType));
+    (*newvec)       = temp;
 
     return ::SetClass(L, T::UDATA_TYPE_NAME);
 }
@@ -125,9 +129,12 @@ int New(lua_State* L)
 template < typename T >
 int Index(lua_State* L)
 {
+    typedef typename T::Type    TType;
+    typedef typename T::Pointer TPointer;
+
     CHECK_ARG_COUNT(L, 2);
 
-    const T::Pointer vec = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    const TPointer vec = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
 
     // Check metatable first.
     lua_getmetatable(L, 1);
@@ -202,9 +209,12 @@ int Index(lua_State* L)
 template < typename T >
 int NewIndex(lua_State* L)
 {
+    typedef typename T::Type    TType;
+    typedef typename T::Pointer TPointer;
+
     CHECK_ARG_COUNT(L, 3);
 
-    T::Pointer vec = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    TPointer vec = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
 
     // Check valid types.
     if (lua_isnumber(L, 2))
@@ -264,8 +274,9 @@ int NewIndex(lua_State* L)
 template < typename T >
 int Length(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 1);
-    const T::Pointer A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    const TPointer A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
     lua_pushnumber(L, A->length());
     return 1;
 }
@@ -273,8 +284,9 @@ int Length(lua_State* L)
 template < typename T >
 int LengthSquared(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 1);
-    const T::Pointer A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    const TPointer A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
     lua_pushnumber(L, A->length_squared());
     return 1;
 }
@@ -282,8 +294,9 @@ int LengthSquared(lua_State* L)
 template < typename T >
 int Normalize(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 1);
-    T::Pointer A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    TPointer A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
     A->normalize();
     return 1;
 }
@@ -291,8 +304,9 @@ int Normalize(lua_State* L)
 template < typename T >
 int Zero(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 1);
-    T::Pointer A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    TPointer A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
     A->zero();
     return 1;
 }
@@ -300,9 +314,10 @@ int Zero(lua_State* L)
 template < typename T >
 int Cardinal(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 2);
-    T::Pointer A     = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
-    int        index = 0;
+    TPointer A     = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    int      index = 0;
     Helper::GetIntegerFromStack(L, 2, &index);
     luaL_argcheck(L, (index > 0) && (index <= T::NUM_ELEMENTS), 2, "Index (1-based) out of range.");
     A->cardinal(index);
@@ -313,9 +328,10 @@ int Cardinal(lua_State* L)
 template < typename T >
 int Minimize(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 2);
-    T::Pointer       A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
-    const T::Pointer B = (T::Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+    TPointer       A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    const TPointer B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
     A->minimize(*B);
     return 0;
 }
@@ -323,9 +339,10 @@ int Minimize(lua_State* L)
 template < typename T >
 int Maximize(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 2);
-    T::Pointer       A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
-    const T::Pointer B = (T::Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+    TPointer       A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    const TPointer B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
     A->maximize(*B);
     return 0;
 }
@@ -333,8 +350,9 @@ int Maximize(lua_State* L)
 template < typename T >
 int Random(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 3);
-    T::Pointer       A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    TPointer         A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
     const lua_Number B = luaL_checknumber(L, 2);
     const lua_Number C = luaL_checknumber(L, 3);
     (*A).random(B, C);
@@ -344,19 +362,22 @@ int Random(lua_State* L)
 template < typename T >
 int Unm(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
+    typedef typename T::Type    TType;
     CHECK_ARG_COUNT(L, 2);
-    const T::Pointer A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
-    T::Pointer       B = (T::Pointer)lua_newuserdata(L, sizeof(T::Type));
-    *B                 = -(*A);
+    const TPointer A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    TPointer       B = (TPointer)lua_newuserdata(L, sizeof(TType));
+    *B               = -(*A);
     return SetClass(L, T::UDATA_TYPE_NAME);
 }
 
 template < typename T >
 int Equ(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 2);
-    const T::Pointer A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
-    const T::Pointer B = (T::Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+    const TPointer A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    const TPointer B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
     lua_pushboolean(L, (*A) == (*B));
     return 1;
 }
@@ -364,9 +385,10 @@ int Equ(lua_State* L)
 template < typename T >
 int LessThan(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 2);
-    const T::Pointer A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
-    const T::Pointer B = (T::Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+    const TPointer A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    const TPointer B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
     lua_pushboolean(L, (*A) < (*B));
     return 1;
 }
@@ -374,42 +396,48 @@ int LessThan(lua_State* L)
 template < typename T >
 int Add(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
+    typedef typename T::Type    TType;
     CHECK_ARG_COUNT(L, 2);
-    const T::Pointer A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
-    const T::Pointer B = (T::Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
-    T::Pointer       C = (T::Pointer)lua_newuserdata(L, sizeof(T::Type));
-    *C                 = (*A) + (*B);
+    const TPointer A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    const TPointer B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+    TPointer       C = (TPointer)lua_newuserdata(L, sizeof(TType));
+    *C               = (*A) + (*B);
     return SetClass(L, T::UDATA_TYPE_NAME);
 }
 
 template < typename T >
 int Sub(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
+    typedef typename T::Type    TType;
     CHECK_ARG_COUNT(L, 2);
-    const T::Pointer A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
-    const T::Pointer B = (T::Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
-    T::Pointer       C = (T::Pointer)lua_newuserdata(L, sizeof(T::Type));
-    *C                 = (*A) - (*B);
+    const TPointer A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    const TPointer B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+    TPointer       C = (TPointer)lua_newuserdata(L, sizeof(TType));
+    *C               = (*A) - (*B);
     return SetClass(L, T::UDATA_TYPE_NAME);
 }
 
 template < typename T >
 int Mul(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
+    typedef typename T::Type    TType;
     CHECK_ARG_COUNT(L, 2);
     if (lua_isuserdata(L, 1))
     {
-        const T::Pointer A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+        const TPointer   A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
         const lua_Number B = luaL_checknumber(L, 2);
-        T::Pointer       C = (T::Pointer)lua_newuserdata(L, sizeof(T::Type));
+        TPointer         C = (TPointer)lua_newuserdata(L, sizeof(TType));
         *C                 = (*A) * B;
         return SetClass(L, T::UDATA_TYPE_NAME);
     }
     else if (lua_isnumber(L, 1))
     {
         const lua_Number A = luaL_checknumber(L, 1);
-        const T::Pointer B = (T::Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
-        T::Pointer       C = (T::Pointer)lua_newuserdata(L, sizeof(T::Type));
+        const TPointer   B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+        TPointer         C = (TPointer)lua_newuserdata(L, sizeof(TType));
         *C                 = A * (*B);
         return SetClass(L, T::UDATA_TYPE_NAME);
     }
@@ -422,12 +450,14 @@ int Mul(lua_State* L)
 template < typename T >
 int Div(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
+    typedef typename T::Type    TType;
     CHECK_ARG_COUNT(L, 2);
     if (lua_isuserdata(L, 1))
     {
-        const T::Pointer A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+        const TPointer   A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
         const lua_Number B = luaL_checknumber(L, 2);
-        T::Pointer       C = (T::Pointer)lua_newuserdata(L, sizeof(T::Type));
+        TPointer         C = (TPointer)lua_newuserdata(L, sizeof(TType));
         *C                 = (*A) / B;
         return SetClass(L, T::UDATA_TYPE_NAME);
     }
@@ -440,9 +470,10 @@ int Div(lua_State* L)
 template < typename T >
 int AddEq(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 2);
-    T::Pointer       A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
-    const T::Pointer B = (T::Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+    TPointer       A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    const TPointer B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
     (*A) += (*B);
     return 1;
 }
@@ -450,9 +481,10 @@ int AddEq(lua_State* L)
 template < typename T >
 int SubEq(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 2);
-    T::Pointer       A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
-    const T::Pointer B = (T::Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+    TPointer       A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    const TPointer B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
     (*A) -= (*B);
     return 1;
 }
@@ -460,8 +492,9 @@ int SubEq(lua_State* L)
 template < typename T >
 int MulEq(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 2);
-    T::Pointer       A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    TPointer         A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
     const lua_Number B = luaL_checknumber(L, 2);
     (*A) *= B;
     return 1;
@@ -470,8 +503,9 @@ int MulEq(lua_State* L)
 template < typename T >
 int DivEq(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
     CHECK_ARG_COUNT(L, 2);
-    T::Pointer       A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    TPointer         A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
     const lua_Number B = luaL_checknumber(L, 2);
     (*A) /= B;
     return 1;
@@ -480,11 +514,13 @@ int DivEq(lua_State* L)
 template < typename T >
 int Set(lua_State* L)
 {
+    typedef typename T::Pointer TPointer;
+
     const int nargs = lua_gettop(L);
 
     luaL_argcheck(L, (nargs <= T::NUM_ELEMENTS + 1), T::NUM_ELEMENTS + 2, "Too many arguments.");
 
-    T::Pointer A = (T::Pointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+    TPointer A = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
 
     switch (nargs)
     {
@@ -494,8 +530,8 @@ int Set(lua_State* L)
         // Assignment operator
         if (lua_isuserdata(L, 2))
         {
-            const T::Pointer B = (T::Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
-            (*A)               = (*B);
+            const TPointer B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+            (*A)             = (*B);
 
             // Pop second userdata off
             lua_pop(L, 1);
