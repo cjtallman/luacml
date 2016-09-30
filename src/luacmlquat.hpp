@@ -226,6 +226,7 @@ int Index(lua_State* L)
     {
         int key;
         Helper::GetIntegerFromStack(L, 2, &key);
+        luaL_argcheck(L, key > 0 && key <= T::NUM_ELEMENTS, 2, "index out of bounds");
         const lua_Number val = (*vec)[key - 1];
         lua_pushnumber(L, val);
         return 1;

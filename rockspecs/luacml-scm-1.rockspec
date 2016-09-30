@@ -34,6 +34,7 @@ build =
                "src/luacmlhelperfuncs.cpp",
                "src/luacmlvector.cpp",
                "src/luacmlquat.cpp",
+               "src/luacmlmatrix.cpp",
            },
            incdirs =
            {

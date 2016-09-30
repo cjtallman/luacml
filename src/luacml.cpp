@@ -14,6 +14,7 @@
 #include "luacml.hpp"
 #include "luacmlvector.hpp"
 #include "luacmlquat.hpp"
+#include "luacmlmatrix.hpp"
 #include "luacmlhelperfuncs.hpp"
 #include <lua.hpp>
 #include <cml/cml.h>
@@ -100,7 +101,6 @@ int Dot(lua_State* L)
 
 LUACML_API int luaopen_luacml(lua_State* L)
 {
-
     static luaL_Reg funcs[] = {{"cross", Cross}, {"dot", Dot}, {NULL, NULL}};
 
     lua_newtable(L);
@@ -112,6 +112,19 @@ LUACML_API int luaopen_luacml(lua_State* L)
     REGISTER_LIB(L, "quat", luaopen_luacml_quat);
     REGISTER_LIB(L, "quat_p", luaopen_luacml_quatpos);
     REGISTER_LIB(L, "quat_n", luaopen_luacml_quatneg);
+    REGISTER_LIB(L, "matrix22", luaopen_luacml_matrix22);
+    REGISTER_LIB(L, "matrix22_r", luaopen_luacml_matrix22_r);
+    REGISTER_LIB(L, "matrix22_c", luaopen_luacml_matrix22_c);
+    REGISTER_LIB(L, "matrix33", luaopen_luacml_matrix33);
+    REGISTER_LIB(L, "matrix33_r", luaopen_luacml_matrix33_r);
+    REGISTER_LIB(L, "matrix33_c", luaopen_luacml_matrix33_c);
+    REGISTER_LIB(L, "matrix44", luaopen_luacml_matrix44);
+    REGISTER_LIB(L, "matrix44_r", luaopen_luacml_matrix44_r);
+    REGISTER_LIB(L, "matrix44_c", luaopen_luacml_matrix44_c);
+    REGISTER_LIB(L, "matrix32_r", luaopen_luacml_matrix32_r);
+    REGISTER_LIB(L, "matrix23_c", luaopen_luacml_matrix23_c);
+    REGISTER_LIB(L, "matrix43_r", luaopen_luacml_matrix43_r);
+    REGISTER_LIB(L, "matrix34_c", luaopen_luacml_matrix34_c);
 
     return 1;
 }

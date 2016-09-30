@@ -21,7 +21,7 @@ const char* QuatNeg::UDATA_TYPE_NAME = "quat_n";
 template < typename T >
 static int Print(lua_State* L)
 {
-    T::Pointer        vec  = (T::Pointer)luaL_checkudata(L, -1, T::UDATA_TYPE_NAME);
+    const T::Pointer  vec  = (T::Pointer)luaL_checkudata(L, -1, T::UDATA_TYPE_NAME);
     const lua_Number* data = vec->data();
 
     lua_pushfstring(L, "%s:<%f,%f,%f,%f>", T::UDATA_TYPE_NAME, data[0], data[1], data[2], data[3]);
@@ -69,15 +69,6 @@ static int Register(lua_State* L)
     };
 
     return NewClass(L, T::UDATA_TYPE_NAME, funcs);
-}
-
-template < typename T >
-int WrapNew(lua_State* L)
-{
-    lua_pushcfunction(L, Quaternion::New< T >);
-    lua_replace(L, 1);
-    lua_call(L, lua_gettop(L) - 1, LUA_MULTRET);
-    return lua_gettop(L);
 }
 
 LUACML_API int luaopen_luacml_quat(lua_State* L)
