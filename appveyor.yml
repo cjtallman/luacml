@@ -20,5 +20,5 @@ build_script:
 - cmd: luarocks make rockspecs\luacml-scm-1.rockspec
 
 test_script:
-- cmd: luacheck --std max+busted spec
+- cmd: luacheck spec
 - cmd: busted --verbose

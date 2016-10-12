@@ -1,7 +1,7 @@
 
 describe("matrix", function()
     local cml = require("luacml")
-    local eps = 1e-5
+    --local eps = 1e-5
     local testfmt = "(%s)"
 
     local classes_2x2 =
@@ -28,31 +28,26 @@ describe("matrix", function()
     describe("constructor", function()
         for name, ctor in pairs(classes_2x2) do
             local testname = testfmt:format(name)
-
             assert.is_table(ctor)
             assert.is_function((getmetatable(ctor) or {}).__call)
-
             describe("default", function()
                 it(testname, function()
                     local input, expected = ctor(), {1,0,0,1}
                     assert.same(expected, input:totable())
                 end)
             end)
-
             describe("with 4 floats", function()
                 it(testname, function()
                     local input, expected = ctor(1,2,3,4), {1,2,3,4}
                     assert.same(expected, input:totable())
                 end)
             end)
-
             describe("with array of 4 floats", function()
                 it(testname, function()
                     local input, expected = ctor{1,2,3,4}, {1,2,3,4}
                     assert.same(expected, input:totable())
                 end)
             end)
-
             describe("with matrix", function()
                 it(testname, function()
                     local A = ctor(1,2,3,4)
@@ -64,28 +59,26 @@ describe("matrix", function()
 
         for name, ctor in pairs(classes_3x3) do
             local testname = testfmt:format(name)
-
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
             describe("default", function()
                 it(testname, function()
                     local input, expected = ctor(), {1,0,0,0,1,0,0,0,1}
                     assert.same(expected, input:totable())
                 end)
             end)
-
             describe("with 9 floats", function()
                 it(testname, function()
                     local input, expected = ctor(1,2,3,4,5,6,7,8,9), {1,2,3,4,5,6,7,8,9}
                     assert.same(expected, input:totable())
                 end)
             end)
-
             describe("with array of 9 floats", function()
                 it(testname, function()
                     local input, expected = ctor{1,2,3,4,5,6,7,8,9}, {1,2,3,4,5,6,7,8,9}
                     assert.same(expected, input:totable())
                 end)
             end)
-
             describe("with matrix", function()
                 it(testname, function()
                     local A = ctor(1,2,3,4,5,6,7,8,9)
@@ -97,32 +90,262 @@ describe("matrix", function()
 
         for name, ctor in pairs(classes_4x4) do
             local testname = testfmt:format(name)
-
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
             describe("default", function()
                 it(testname, function()
                     local input, expected = ctor(), {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1}
                     assert.same(expected, input:totable())
                 end)
             end)
-
             describe("with 16 floats", function()
                 it(testname, function()
                     local input, expected = ctor(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
                     assert.same(expected, input:totable())
                 end)
             end)
-
             describe("with array of 16 floats", function()
                 it(testname, function()
                     local input, expected = ctor{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}, {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
                     assert.same(expected, input:totable())
                 end)
             end)
-
             describe("with matrix", function()
                 it(testname, function()
                     local A = ctor(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)
                     local input, expected = ctor(A), {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
+                    assert.same(expected, input:totable())
+                end)
+            end)
+        end
+
+        -- Test 3x2 matrix
+        do
+            local name = "matrix32_r"
+            local ctor = cml.matrix32_r
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+            describe("default", function()
+                it(testname, function()
+                    local input = ctor()
+                    local expected =
+                    {
+                        1,0,
+                        0,1,
+                        0,0,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+            describe("with 6 floats", function()
+                it(testname, function()
+                    local input = ctor(11,12,21,22,31,32)
+                    local expected =
+                    {
+                        11,12,
+                        21,22,
+                        31,32,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+            describe("with array of 6 floats", function()
+                it(testname, function()
+                    local input = ctor{11,12,21,22,31,32}
+                    local expected =
+                    {
+                        11,12,
+                        21,22,
+                        31,32,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+            describe("with matrix", function()
+                it(testname, function()
+                    local A = ctor(11,12,21,22,31,32)
+                    local input = ctor(A)
+                    local expected =
+                    {
+                        11,12,
+                        21,22,
+                        31,32,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+        end
+
+        -- Test 2x3 matrix
+        do
+            local name = "matrix23_c"
+            local ctor = cml.matrix23_c
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+            describe("default", function()
+                it(testname, function()
+                    local input = ctor()
+                    local expected =
+                    {
+                        1,0,0,
+                        0,1,0,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+            describe("with 6 floats", function()
+                it(testname, function()
+                    local input = ctor(11,12,13,21,22,23)
+                    local expected =
+                    {
+                        11,12,13,
+                        21,22,23,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+            describe("with array of 6 floats", function()
+                it(testname, function()
+                    local input = ctor{11,12,13,21,22,23}
+                    local expected =
+                    {
+                        11,12,13,
+                        21,22,23,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+            describe("with matrix", function()
+                it(testname, function()
+                    local A = ctor(11,12,13,21,22,23)
+                    local input = ctor(A)
+                    local expected =
+                    {
+                        11,12,13,
+                        21,22,23,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+        end
+
+        -- Test 4x3 matrix
+        do
+            local name = "matrix43_r"
+            local ctor = cml.matrix43_r
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+            describe("default", function()
+                it(testname, function()
+                    local input = ctor()
+                    local expected =
+                    {
+                        1,0,0,
+                        0,1,0,
+                        0,0,1,
+                        0,0,0,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+            describe("with 6 floats", function()
+                it(testname, function()
+                    local input = ctor(11,12,13,21,22,23,31,32,33,41,42,43)
+                    local expected =
+                    {
+                        11,12,13,
+                        21,22,23,
+                        31,32,33,
+                        41,42,43,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+            describe("with array of 6 floats", function()
+                it(testname, function()
+                    local input = ctor{11,12,13,21,22,23,31,32,33,41,42,43}
+                    local expected =
+                    {
+                        11,12,13,
+                        21,22,23,
+                        31,32,33,
+                        41,42,43,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+            describe("with matrix", function()
+                it(testname, function()
+                    local A = ctor(11,12,13,21,22,23,31,32,33,41,42,43)
+                    local input = ctor(A)
+                    local expected =
+                    {
+                        11,12,13,
+                        21,22,23,
+                        31,32,33,
+                        41,42,43,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+        end
+
+        -- Test 3x4 matrix
+        do
+            local name = "matrix34_c"
+            local ctor = cml.matrix34_c
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+            describe("default", function()
+                it(testname, function()
+                    local input = ctor()
+                    local expected =
+                    {
+                        1,0,0,0,
+                        0,1,0,0,
+                        0,0,1,0,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+            describe("with 6 floats", function()
+                it(testname, function()
+                    local input = ctor(11,12,13,14,21,22,23,24,31,32,33,34)
+                    local expected =
+                    {
+                        11,12,13,14,
+                        21,22,23,24,
+                        31,32,33,34,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+            describe("with array of 6 floats", function()
+                it(testname, function()
+                    local input = ctor{11,12,13,14,21,22,23,24,31,32,33,34}
+                    local expected =
+                    {
+                        11,12,13,14,
+                        21,22,23,24,
+                        31,32,33,34,
+                    }
+                    assert.same(expected, input:totable())
+                end)
+            end)
+            describe("with matrix", function()
+                it(testname, function()
+                    local A = ctor(11,12,13,14,21,22,23,24,31,32,33,34)
+                    local input = ctor(A)
+                    local expected =
+                    {
+                        11,12,13,14,
+                        21,22,23,24,
+                        31,32,33,34,
+                    }
                     assert.same(expected, input:totable())
                 end)
             end)
@@ -433,9 +656,9 @@ describe("matrix", function()
                 local input = {11,12,13,14,21,22,23,24,31,32,33,34}
                 local expected =
                 {
-                    11, 12, 13, 14,
-                    21, 22, 23, 24,
-                    31, 32, 33, 34,
+                    11,12,13,14,
+                    21,22,23,24,
+                    31,32,33,34,
                 }
                 for _, k in ipairs(keys) do
                     describe(tostring(k), function()

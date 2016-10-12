@@ -241,6 +241,17 @@ LUACML_API int luaopen_luacml_matrix34_c(lua_State* L);
 /******************************************************************************/
 
 namespace Matrix {
+template < typename T >
+int RowFromIndex(const int index)
+{
+    return (int)(index / T::COLS);
+}
+
+template < typename T >
+int ColFromIndex(const int index)
+{
+    return (int)(index % T::COLS);
+}
 
 template < typename T >
 int New(lua_State* L)
@@ -268,11 +279,20 @@ int New(lua_State* L)
     case 1:
         if (lua_istable(L, 1))
         {
-            Helper::GetNumbersFromTable(L, 1, temp.data(), T::NUM_ELEMENTS, true, true);
+            lua_Number data[T::NUM_ELEMENTS];
+            Helper::GetNumbersFromTable(L, 1, data, T::NUM_ELEMENTS, true, true);
+
+            for (int row = 0, i = 0; row < T::ROWS; ++row)
+            {
+                for (int col = 0; col < T::COLS; ++col, ++i)
+                {
+                    temp(row, col) = data[i];
+                }
+            }
         }
         else if (lua_isuserdata(L, 1))
         {
-            Helper::GetNumbersFromUserdata(L, 1, temp.data(), T::NUM_ELEMENTS, true, true);
+            Helper::GetNumbersFromUserdata< T >(L, 1, temp.data(), T::NUM_ELEMENTS);
         }
         else
         {
@@ -280,11 +300,22 @@ int New(lua_State* L)
         }
         break;
     case T::NUM_ELEMENTS:
-        for (int i = 0; i < T::NUM_ELEMENTS && i < nargs; ++i)
+    {
+        lua_Number data[T::NUM_ELEMENTS];
+        for (int i = 0; i < T::NUM_ELEMENTS; ++i)
         {
-            Helper::GetNumberFromStack(L, i + 1, temp.data() + i);
+            Helper::GetNumberFromStack(L, i + 1, data + i);
         }
-        break;
+
+        for (int row = 0, i = 0; row < T::ROWS; ++row)
+        {
+            for (int col = 0; col < T::COLS; ++col, ++i)
+            {
+                temp(row, col) = data[i];
+            }
+        }
+    }
+    break;
     default:
         return luaL_error(L, "Invalid call.");
     }
@@ -390,7 +421,9 @@ int Index(lua_State* L)
         int key;
         Helper::GetIntegerFromStack(L, 2, &key);
         luaL_argcheck(L, key > 0 && key <= T::NUM_ELEMENTS, 2, "index out of bounds");
-        const lua_Number val = obj->data()[key - 1];
+        const int        row = RowFromIndex< T >(key - 1);
+        const int        col = ColFromIndex< T >(key - 1);
+        const lua_Number val = (*obj)(row, col);
         lua_pushnumber(L, val);
         return 1;
     }
@@ -402,7 +435,9 @@ int Index(lua_State* L)
         {
             static const char* valid[] = {"m11", "m12", "m21", "m22", NULL};
             const int          key     = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
-            const lua_Number   val     = obj->data()[key];
+            const int          row     = RowFromIndex< T >(key);
+            const int          col     = ColFromIndex< T >(key);
+            const lua_Number   val     = (*obj)(row, col);
             lua_pushnumber(L, val);
             return 1;
         }
@@ -412,7 +447,9 @@ int Index(lua_State* L)
             {
                 static const char* valid[] = {"m11", "m12", "m21", "m22", "m31", "m32", NULL};
                 const int          key     = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
-                const lua_Number   val     = obj->data()[key];
+                const int          row     = RowFromIndex< T >(key);
+                const int          col     = ColFromIndex< T >(key);
+                const lua_Number   val     = (*obj)(row, col);
                 lua_pushnumber(L, val);
                 return 1;
             }
@@ -420,7 +457,9 @@ int Index(lua_State* L)
             {
                 static const char* valid[] = {"m11", "m12", "m13", "m21", "m22", "m23", NULL};
                 const int          key     = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
-                const lua_Number   val     = obj->data()[key];
+                const int          row     = RowFromIndex< T >(key);
+                const int          col     = ColFromIndex< T >(key);
+                const lua_Number   val     = (*obj)(row, col);
                 lua_pushnumber(L, val);
                 return 1;
             }
@@ -430,7 +469,9 @@ int Index(lua_State* L)
             static const char* valid[] = {
                 "m11", "m12", "m13", "m21", "m22", "m23", "m31", "m32", "m33", NULL};
             const int        key = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
-            const lua_Number val = obj->data()[key];
+            const int        row = RowFromIndex< T >(key);
+            const int        col = ColFromIndex< T >(key);
+            const lua_Number val = (*obj)(row, col);
             lua_pushnumber(L, val);
             return 1;
         }
@@ -452,7 +493,9 @@ int Index(lua_State* L)
                                               "m43",
                                               NULL};
                 const int        key = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
-                const lua_Number val = obj->data()[key];
+                const int        row = RowFromIndex< T >(key);
+                const int        col = ColFromIndex< T >(key);
+                const lua_Number val = (*obj)(row, col);
                 lua_pushnumber(L, val);
                 return 1;
             }
@@ -472,7 +515,9 @@ int Index(lua_State* L)
                                               "m34",
                                               NULL};
                 const int        key = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
-                const lua_Number val = obj->data()[key];
+                const int        row = RowFromIndex< T >(key);
+                const int        col = ColFromIndex< T >(key);
+                const lua_Number val = (*obj)(row, col);
                 lua_pushnumber(L, val);
                 return 1;
             }
@@ -497,7 +542,9 @@ int Index(lua_State* L)
                                           "m44",
                                           NULL};
             const int        key = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
-            const lua_Number val = obj->data()[key];
+            const int        row = RowFromIndex< T >(key);
+            const int        col = ColFromIndex< T >(key);
+            const lua_Number val = (*obj)(row, col);
             lua_pushnumber(L, val);
             return 1;
         }
@@ -512,6 +559,32 @@ int Index(lua_State* L)
     }
 
     return 0;
+}
+
+template < typename T >
+int Rows(lua_State* L)
+{
+    typedef typename T::Pointer TPointer;
+
+    CHECK_ARG_COUNT(L, 1);
+
+    const TPointer obj = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+
+    lua_pushnumber(L, T::ROWS);
+    return 1;
+}
+
+template < typename T >
+int Cols(lua_State* L)
+{
+    typedef typename T::Pointer TPointer;
+
+    CHECK_ARG_COUNT(L, 1);
+
+    const TPointer obj = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+
+    lua_pushnumber(L, T::COLS);
+    return 1;
 }
 
 } // namespace Matrix

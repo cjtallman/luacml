@@ -20,5 +20,5 @@ install:
   - luarocks make rockspecs/luacml-scm-1.rockspec
 
 script:
-  - luacheck --std max+busted spec
+  - luacheck spec
   - busted --verbose

@@ -153,6 +153,29 @@ static int Print(lua_State* L)
 }
 
 template < typename T >
+static int ToTable(lua_State* L)
+{
+    typedef typename T::Pointer TPointer;
+
+    CHECK_ARG_COUNT(L, 1);
+
+    const TPointer mat = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+
+    lua_newtable(L);
+    for (int row = 0, i = 0; row < T::ROWS; ++row)
+    {
+        for (int col = 0; col < T::COLS; ++col, ++i)
+        {
+            const lua_Number& val = (*mat)(row, col);
+            lua_pushinteger(L, i + 1);
+            lua_pushnumber(L, val);
+            lua_rawset(L, -3);
+        }
+    }
+    return 1;
+}
+
+template < typename T >
 static int Register(lua_State* L)
 {
     static const luaL_Reg funcs[] = {
@@ -161,8 +184,10 @@ static int Register(lua_State* L)
         {"__index", Matrix::Index< T >},
 
         // Methods
-        {"totable", Helper::ToTable< T >},
+        {"totable", ToTable< T >},
         {"set", Matrix::Set< T >},
+        {"rows", Matrix::Rows< T >},
+        {"cols", Matrix::Cols< T >},
 
         // Sentinel
         {NULL, NULL},
