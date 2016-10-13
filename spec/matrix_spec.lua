@@ -985,4 +985,244 @@ describe("matrix", function()
             end)
         end
     end)
+
+    describe("set", function()
+        -- Test 2x2 matrices
+        for name, ctor in pairs(classes_2x2) do
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+
+            local input = {11,12,21,22}
+            local expected = {1,2,3,4}
+
+            describe("by table", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set({1,2,3,4})
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by numbers", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(1,2,3,4)
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by matrix", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(ctor(1,2,3,4))
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+        end
+
+        -- Test 3x3 matrices
+        for name, ctor in pairs(classes_3x3) do
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+
+            local input = {11,12,13,21,22,23,31,32,33}
+            local expected = {1,2,3,4,5,6,7,8,9}
+
+            describe("by table", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set({1,2,3,4,5,6,7,8,9})
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by numbers", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(1,2,3,4,5,6,7,8,9)
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by matrix", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(ctor(1,2,3,4,5,6,7,8,9))
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+        end
+
+        -- Test 4x4 matrices
+        for name, ctor in pairs(classes_4x4) do
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+
+            local input = {11,12,13,14,21,22,23,24,31,32,33,34,41,42,43,44}
+            local expected = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
+
+            describe("by table", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set({1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16})
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by numbers", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by matrix", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(ctor(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16))
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+        end
+
+        -- Test 2x3 matrices
+        do
+            local name, ctor = "matrix23_c", cml.matrix23_c
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+            local input = {11,12,13,21,22,23}
+            local expected = {1,2,3,4,5,6}
+
+            describe("by table", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set({1,2,3,4,5,6})
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by numbers", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(1,2,3,4,5,6)
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by matrix", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(ctor(1,2,3,4,5,6))
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+        end
+
+        -- Test 3x2 matrices
+        do
+            local name, ctor = "matrix32_r", cml.matrix32_r
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+            local input = {11,12,21,22,31,32}
+            local expected = {1,2,3,4,5,6}
+
+            describe("by table", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set({1,2,3,4,5,6})
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by numbers", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(1,2,3,4,5,6)
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by matrix", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(ctor(1,2,3,4,5,6))
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+        end
+
+        -- Test 3x4 matrices
+        do
+            local name, ctor = "matrix34_c", cml.matrix34_c
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+            local input = {11,12,13,14,21,22,23,24,31,32,33,34}
+            local expected = {1,2,3,4,5,6,7,8,9,10,11,12}
+
+            describe("by table", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set({1,2,3,4,5,6,7,8,9,10,11,12})
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by numbers", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(1,2,3,4,5,6,7,8,9,10,11,12)
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by matrix", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(ctor(1,2,3,4,5,6,7,8,9,10,11,12))
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+        end
+
+        -- Test 4x3 matrices
+        do
+            local name, ctor = "matrix43_r", cml.matrix43_r
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+            local input = {11,12,13,21,22,23,31,32,33,41,42,43}
+            local expected = {1,2,3,4,5,6,7,8,9,10,11,12}
+
+            describe("by table", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set({1,2,3,4,5,6,7,8,9,10,11,12})
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by numbers", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(1,2,3,4,5,6,7,8,9,10,11,12)
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+
+            describe("by matrix", function()
+                it(testname, function()
+                    local obj = ctor(input)
+                    obj:set(ctor(1,2,3,4,5,6,7,8,9,10,11,12))
+                    assert.same(expected, obj:totable())
+                end)
+            end)
+        end
+    end)
 end)

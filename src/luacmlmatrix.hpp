@@ -356,11 +356,15 @@ int Set(lua_State* L)
         // Set from table
         else if (lua_istable(L, 2))
         {
-            lua_Number B[T::NUM_ELEMENTS];
-            Helper::GetNumbersFromTable(L, 2, B, T::NUM_ELEMENTS, true, true);
-            for (int i = 0; i < T::NUM_ELEMENTS; ++i)
+            lua_Number data[T::NUM_ELEMENTS];
+            Helper::GetNumbersFromTable(L, 2, data, T::NUM_ELEMENTS, true, true);
+
+            for (int row = 0, i = 0; row < T::ROWS; ++row)
             {
-                A->data()[i] = B[i];
+                for (int col = 0; col < T::COLS; ++col, ++i)
+                {
+                    (*A)(row, col) = data[i];
+                }
             }
 
             // Pop table off.
@@ -370,16 +374,20 @@ int Set(lua_State* L)
         break;
     case T::NUM_ELEMENTS + 1:
     {
-        lua_Number B[T::NUM_ELEMENTS];
+        lua_Number data[T::NUM_ELEMENTS];
         for (int i = 0; i < T::NUM_ELEMENTS; ++i)
         {
-            Helper::GetNumberFromStack(L, i + 2, B + i);
+            Helper::GetNumberFromStack(L, i + 2, data + i);
         }
-        // Don't change A until we get all of B. ^^^
-        for (int i = 0; i < T::NUM_ELEMENTS; ++i)
+
+        for (int row = 0, i = 0; row < T::ROWS; ++row)
         {
-            A->data()[i] = B[i];
+            for (int col = 0; col < T::COLS; ++col, ++i)
+            {
+                (*A)(row, col) = data[i];
+            }
         }
+
         // Pop numbers off.
         lua_pop(L, T::NUM_ELEMENTS);
         return 1;
