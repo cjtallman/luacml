@@ -743,6 +743,20 @@ int Zero(lua_State * L)
     return 1;
 }
 
+template < typename T>
+int Identity(lua_State * L)
+{
+    typedef typename T::Pointer TPointer;
+
+    CHECK_ARG_COUNT(L, 1);
+
+    const TPointer obj = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+
+    obj->identity();
+
+    return 1;
+}
+
 template < typename T >
 int Rows(lua_State* L)
 {

@@ -187,6 +187,7 @@ static int Register(lua_State* L)
         // Methods
         {"totable", ToTable< T >},
         {"set", Matrix::Set< T >},
+        {"identity", Matrix::Identity< T >},
         {"zero", Matrix::Zero< T >},
         {"rows", Matrix::Rows< T >},
         {"cols", Matrix::Cols< T >},
