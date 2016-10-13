@@ -182,6 +182,7 @@ static int Register(lua_State* L)
         // Metamethods
         {"__tostring", Print< T >},
         {"__index", Matrix::Index< T >},
+        {"__newindex", Matrix::NewIndex< T >},
 
         // Methods
         {"totable", ToTable< T >},

@@ -562,6 +562,166 @@ int Index(lua_State* L)
 }
 
 template < typename T >
+int NewIndex(lua_State* L)
+{
+    typedef typename T::Type    TType;
+    typedef typename T::Pointer TPointer;
+
+    CHECK_ARG_COUNT(L, 3);
+
+    TPointer obj = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+
+    // Check valid types.
+    if (lua_isnumber(L, 2))
+    {
+        const lua_Number numkey = luaL_checknumber(L, 2);
+        const int        key    = static_cast< int >(numkey);
+        luaL_argcheck(L, (key >= 1 && key <= T::NUM_ELEMENTS), 2, NULL);
+        luaL_argcheck(L, (key == numkey), 2, "index not integer");
+
+        const lua_Number val = luaL_checknumber(L, 3);
+        const int        row = RowFromIndex< T >(key - 1);
+        const int        col = ColFromIndex< T >(key - 1);
+        (*obj)(row, col) = val;
+        return 0;
+    }
+    else if (lua_isstring(L, 2))
+    {
+        switch (T::NUM_ELEMENTS)
+        {
+        case 4: // 2x2
+        {
+            static const char* valid[] = {"m11", "m12", "m21", "m22", NULL};
+            const int          key     = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
+            const lua_Number   val     = luaL_checknumber(L, 3);
+            const int          row     = RowFromIndex< T >(key);
+            const int          col     = ColFromIndex< T >(key);
+            (*obj)(row, col) = val;
+            return 0;
+        }
+
+        case 6: // 2x3 or 3x2
+        {
+            if (T::ROWS == 3) // 3x2
+            {
+                static const char* valid[] = {"m11", "m12", "m21", "m22", "m31", "m32", NULL};
+                const int          key     = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
+                const lua_Number   val     = luaL_checknumber(L, 3);
+                const int          row     = RowFromIndex< T >(key);
+                const int          col     = ColFromIndex< T >(key);
+                (*obj)(row, col) = val;
+                return 0;
+            }
+            else // 2x3
+            {
+                static const char* valid[] = {"m11", "m12", "m13", "m21", "m22", "m23", NULL};
+                const int          key     = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
+                const lua_Number   val     = luaL_checknumber(L, 3);
+                const int          row     = RowFromIndex< T >(key);
+                const int          col     = ColFromIndex< T >(key);
+                (*obj)(row, col) = val;
+                return 0;
+            }
+        }
+
+        case 9: // 3x3
+        {
+            static const char* valid[] = {
+                "m11", "m12", "m13", "m21", "m22", "m23", "m31", "m32", "m33", NULL};
+            const int        key = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
+            const lua_Number val = luaL_checknumber(L, 3);
+            const int        row = RowFromIndex< T >(key);
+            const int        col = ColFromIndex< T >(key);
+            (*obj)(row, col) = val;
+            return 0;
+        }
+        case 12: // 3x4 or 4x3
+        {
+            if (T::ROWS == 4) // 4x3
+            {
+                static const char* valid[] = {"m11",
+                                              "m12",
+                                              "m13",
+                                              "m21",
+                                              "m22",
+                                              "m23",
+                                              "m31",
+                                              "m32",
+                                              "m33",
+                                              "m41",
+                                              "m42",
+                                              "m43",
+                                              NULL};
+                const int        key = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
+                const lua_Number val = luaL_checknumber(L, 3);
+                const int        row = RowFromIndex< T >(key);
+                const int        col = ColFromIndex< T >(key);
+                (*obj)(row, col) = val;
+                return 0;
+            }
+            else // 3x4
+            {
+                static const char* valid[] = {"m11",
+                                              "m12",
+                                              "m13",
+                                              "m14",
+                                              "m21",
+                                              "m22",
+                                              "m23",
+                                              "m24",
+                                              "m31",
+                                              "m32",
+                                              "m33",
+                                              "m34",
+                                              NULL};
+                const int        key = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
+                const lua_Number val = luaL_checknumber(L, 3);
+                const int        row = RowFromIndex< T >(key);
+                const int        col = ColFromIndex< T >(key);
+                (*obj)(row, col) = val;
+                return 0;
+            }
+        }
+        case 16: // 4x4
+        {
+            static const char* valid[] = {"m11",
+                                          "m12",
+                                          "m13",
+                                          "m14",
+                                          "m21",
+                                          "m22",
+                                          "m23",
+                                          "m24",
+                                          "m31",
+                                          "m32",
+                                          "m33",
+                                          "m34",
+                                          "m41",
+                                          "m42",
+                                          "m43",
+                                          "m44",
+                                          NULL};
+            const int        key = luaL_checkoption(L, 2, NULL, valid) % T::NUM_ELEMENTS;
+            const lua_Number val = luaL_checknumber(L, 3);
+            const int        row = RowFromIndex< T >(key);
+            const int        col = ColFromIndex< T >(key);
+            (*obj)(row, col) = val;
+            return 0;
+        }
+
+        default:
+            return luaL_error(L, "Invalid call.");
+        }
+    }
+    else
+    {
+        return luaL_error(L, "Invalid call. Bad argument type.");
+    }
+
+    return 0;
+}
+
+template < typename T >
 int Rows(lua_State* L)
 {
     typedef typename T::Pointer TPointer;

@@ -697,4 +697,292 @@ describe("matrix", function()
             end)
         end
     end)
+
+    describe("newindex", function()
+        -- Test 2x2 matrices
+        for name, ctor in pairs(classes_2x2) do
+            local testname = testfmt:format(name)
+            describe("with integer", function()
+                local keys = {1,2,3,4,}
+                local input = {11,12,21,22,}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+
+            describe("with string", function()
+                local keys = {"m11","m12","m21","m22"}
+                local input = {11,12,21,22,}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+        end
+
+        -- Test 3x3 matrices
+        for name, ctor in pairs(classes_3x3) do
+            local testname = testfmt:format(name)
+            describe("with integer", function()
+                local keys = {1,2,3,4,5,6,7,8,9,}
+                local input = {11,12,13,21,22,23,31,32,33}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+
+            describe("with string", function()
+                local keys = {"m11","m12","m13","m21","m22","m23","m31","m32","m33"}
+                local input = {11,12,13,21,22,23,31,32,33}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+        end
+
+        -- Test 4x4 matrices
+        for name, ctor in pairs(classes_4x4) do
+            local testname = testfmt:format(name)
+            describe("with integer", function()
+                local keys = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
+                local input = {11,12,13,14,21,22,23,24,31,32,33,34,41,42,43,44}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+
+            describe("with string", function()
+                local keys =
+                {
+                    "m11","m12","m13","m14",
+                    "m21","m22","m23","m24",
+                    "m31","m32","m33","m34",
+                    "m41","m42","m43","m44",
+                }
+                local input = {11,12,13,14,21,22,23,24,31,32,33,34,41,42,43,44}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+        end
+
+        -- Test 3x2 matrices
+        do
+            local name, ctor = "matrix32_r", cml.matrix32_r
+            local testname = testfmt:format(name)
+
+            describe("with integer", function()
+                local keys = {1,2,3,4,5,6}
+                local input = {11,12,21,22,31,32}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+
+            describe("with string", function()
+                local keys =
+                {
+                    "m11","m12",
+                    "m21","m22",
+                    "m31","m32",
+                }
+                local input = {11,12,21,22,31,32}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+        end
+
+        -- Test 2x3 matrices
+        do
+            local name, ctor = "matrix23_c", cml.matrix23_c
+            local testname = testfmt:format(name)
+
+            describe("with integer", function()
+                local keys = {1,2,3,4,5,6}
+                local input = {11,12,13,21,22,23}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+
+            describe("with string", function()
+                local keys =
+                {
+                    "m11","m12","m13",
+                    "m21","m22","m23",
+                }
+                local input = {11,12,13,21,22,23}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+        end
+
+        -- Test 4x3 matrices
+        do
+            local name, ctor = "matrix43_r", cml.matrix43_r
+            local testname = testfmt:format(name)
+
+            describe("with integer", function()
+                local keys = {1,2,3,4,5,6,7,8,9,10,11,12}
+                local input = {11,12,13,21,22,23,31,32,33,41,42,43}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+
+            describe("with string", function()
+                local keys =
+                {
+                    "m11","m12","m13",
+                    "m21","m22","m23",
+                    "m31","m32","m33",
+                    "m41","m42","m43",
+                }
+                local input = {11,12,13,21,22,23,31,32,33,41,42,43}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+        end
+
+        -- Test 3x4 matrices
+        do
+            local name, ctor = "matrix34_c", cml.matrix34_c
+            local testname = testfmt:format(name)
+
+            describe("with integer", function()
+                local keys = {1,2,3,4,5,6,7,8,9,10,11,12}
+                local input = {11,12,13,14,21,22,23,24,31,32,33,34}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+
+            describe("with string", function()
+                local keys =
+                {
+                    "m11","m12","m13","m14",
+                    "m21","m22","m23","m24",
+                    "m31","m32","m33","m34",
+                }
+                local input = {11,12,13,14,21,22,23,24,31,32,33,34}
+                local expected = 100
+                for _, k in ipairs(keys) do
+                    describe(tostring(k), function()
+                        it(testname, function()
+                            local obj = ctor(input)
+                            assert.is_userdata(obj)
+                            obj[k] = 100
+                            assert.same(expected, obj[k])
+                        end)
+                    end)
+                end
+            end)
+        end
+    end)
 end)

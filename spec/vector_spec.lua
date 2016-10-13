@@ -1,7 +1,7 @@
 
 describe("vector", function()
     local cml = require("luacml")
-    local eps = 1e-5
+    --local eps = 1e-5
 
     describe("constructor", function()
         describe("default", function()
