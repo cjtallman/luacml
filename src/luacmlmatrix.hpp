@@ -729,8 +729,8 @@ int NewIndex(lua_State* L)
     return 0;
 }
 
-template < typename T>
-int Zero(lua_State * L)
+template < typename T >
+int Zero(lua_State* L)
 {
     typedef typename T::Pointer TPointer;
 
@@ -743,8 +743,8 @@ int Zero(lua_State * L)
     return 1;
 }
 
-template < typename T>
-int Identity(lua_State * L)
+template < typename T >
+int Identity(lua_State* L)
 {
     typedef typename T::Pointer TPointer;
 
@@ -753,6 +753,20 @@ int Identity(lua_State * L)
     const TPointer obj = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
 
     obj->identity();
+
+    return 1;
+}
+
+template < typename T>
+int Transpose(lua_State* L)
+{
+    typedef typename T::Pointer TPointer;
+
+    CHECK_ARG_COUNT(L, 1);
+
+    const TPointer obj = (TPointer)luaL_checkudata(L, 1, T::UDATA_TYPE_NAME);
+
+    obj->transpose();
 
     return 1;
 }

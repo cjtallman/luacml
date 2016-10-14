@@ -176,7 +176,7 @@ static int ToTable(lua_State* L)
 }
 
 template < typename T >
-static int Register(lua_State* L)
+static int RegisterNonSquare(lua_State* L)
 {
     static const luaL_Reg funcs[] = {
         // Metamethods
@@ -199,6 +199,32 @@ static int Register(lua_State* L)
     return NewClass(L, T::UDATA_TYPE_NAME, funcs);
 }
 
+template < typename T >
+static int RegisterSquare(lua_State* L)
+{
+    static const luaL_Reg funcs[] = {
+
+        // Metamethods
+        {"__tostring", Print< T >},
+        {"__index", Matrix::Index< T >},
+        {"__newindex", Matrix::NewIndex< T >},
+
+        // Methods
+        {"totable", ToTable< T >},
+        {"set", Matrix::Set< T >},
+        {"identity", Matrix::Identity< T >},
+        {"zero", Matrix::Zero< T >},
+        {"rows", Matrix::Rows< T >},
+        {"cols", Matrix::Cols< T >},
+        {"transpose", Matrix::Transpose< T >},
+
+        // Sentinel
+        {NULL, NULL},
+    };
+
+    return NewClass(L, T::UDATA_TYPE_NAME, funcs);
+}
+
 /******************************************************************************/
 
 LUACML_API int luaopen_luacml_matrix22(lua_State* L)
@@ -210,7 +236,7 @@ LUACML_API int luaopen_luacml_matrix22(lua_State* L)
     luaL_setfuncs(L, lib_funcs, 0);
     lua_setmetatable(L, -2);
 
-    Register< Matrix22 >(L);
+    RegisterSquare< Matrix22 >(L);
 
     return 1;
 }
@@ -224,7 +250,7 @@ LUACML_API int luaopen_luacml_matrix22_r(lua_State* L)
     luaL_setfuncs(L, lib_funcs, 0);
     lua_setmetatable(L, -2);
 
-    Register< Matrix22_r >(L);
+    RegisterSquare< Matrix22_r >(L);
 
     return 1;
 }
@@ -238,7 +264,7 @@ LUACML_API int luaopen_luacml_matrix22_c(lua_State* L)
     luaL_setfuncs(L, lib_funcs, 0);
     lua_setmetatable(L, -2);
 
-    Register< Matrix22_c >(L);
+    RegisterSquare< Matrix22_c >(L);
 
     return 1;
 }
@@ -252,7 +278,7 @@ LUACML_API int luaopen_luacml_matrix33(lua_State* L)
     luaL_setfuncs(L, lib_funcs, 0);
     lua_setmetatable(L, -2);
 
-    Register< Matrix33 >(L);
+    RegisterSquare< Matrix33 >(L);
 
     return 1;
 }
@@ -266,7 +292,7 @@ LUACML_API int luaopen_luacml_matrix33_r(lua_State* L)
     luaL_setfuncs(L, lib_funcs, 0);
     lua_setmetatable(L, -2);
 
-    Register< Matrix33_r >(L);
+    RegisterSquare< Matrix33_r >(L);
 
     return 1;
 }
@@ -280,7 +306,7 @@ LUACML_API int luaopen_luacml_matrix33_c(lua_State* L)
     luaL_setfuncs(L, lib_funcs, 0);
     lua_setmetatable(L, -2);
 
-    Register< Matrix33_c >(L);
+    RegisterSquare< Matrix33_c >(L);
 
     return 1;
 }
@@ -294,7 +320,7 @@ LUACML_API int luaopen_luacml_matrix44(lua_State* L)
     luaL_setfuncs(L, lib_funcs, 0);
     lua_setmetatable(L, -2);
 
-    Register< Matrix44 >(L);
+    RegisterSquare< Matrix44 >(L);
 
     return 1;
 }
@@ -308,7 +334,7 @@ LUACML_API int luaopen_luacml_matrix44_r(lua_State* L)
     luaL_setfuncs(L, lib_funcs, 0);
     lua_setmetatable(L, -2);
 
-    Register< Matrix44_r >(L);
+    RegisterSquare< Matrix44_r >(L);
 
     return 1;
 }
@@ -322,7 +348,7 @@ LUACML_API int luaopen_luacml_matrix44_c(lua_State* L)
     luaL_setfuncs(L, lib_funcs, 0);
     lua_setmetatable(L, -2);
 
-    Register< Matrix44_c >(L);
+    RegisterSquare< Matrix44_c >(L);
 
     return 1;
 }
@@ -336,7 +362,7 @@ LUACML_API int luaopen_luacml_matrix32_r(lua_State* L)
     luaL_setfuncs(L, lib_funcs, 0);
     lua_setmetatable(L, -2);
 
-    Register< Matrix32_r >(L);
+    RegisterNonSquare< Matrix32_r >(L);
 
     return 1;
 }
@@ -350,7 +376,7 @@ LUACML_API int luaopen_luacml_matrix23_c(lua_State* L)
     luaL_setfuncs(L, lib_funcs, 0);
     lua_setmetatable(L, -2);
 
-    Register< Matrix23_c >(L);
+    RegisterNonSquare< Matrix23_c >(L);
 
     return 1;
 }
@@ -364,7 +390,7 @@ LUACML_API int luaopen_luacml_matrix43_r(lua_State* L)
     luaL_setfuncs(L, lib_funcs, 0);
     lua_setmetatable(L, -2);
 
-    Register< Matrix43_r >(L);
+    RegisterNonSquare< Matrix43_r >(L);
 
     return 1;
 }
@@ -378,7 +404,7 @@ LUACML_API int luaopen_luacml_matrix34_c(lua_State* L)
     luaL_setfuncs(L, lib_funcs, 0);
     lua_setmetatable(L, -2);
 
-    Register< Matrix34_c >(L);
+    RegisterNonSquare< Matrix34_c >(L);
 
     return 1;
 }

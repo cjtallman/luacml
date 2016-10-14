@@ -1503,4 +1503,78 @@ describe("matrix", function()
             end)
         end
     end)
+
+    describe("transpose", function()
+        -- Test 2x2 matrices
+        for name, ctor in pairs(classes_2x2) do
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+            local input =
+            {
+                11,12,
+                21,22,
+            }
+            local expected =
+            {
+                11,21,
+                12,22,
+            }
+            it(testname, function()
+                local obj = ctor(input)
+                obj:transpose()
+                assert.same(expected, obj:totable())
+            end)
+        end
+
+        -- Test 3x3 matrices
+        for name, ctor in pairs(classes_3x3) do
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+            local input =
+            {
+                11,12,13,
+                21,22,23,
+                31,32,33,
+            }
+            local expected =
+            {
+                11,21,31,
+                12,22,32,
+                13,23,33,
+            }
+            it(testname, function()
+                local obj = ctor(input)
+                obj:transpose()
+                assert.same(expected, obj:totable())
+            end)
+        end
+
+        -- Test 4x4 matrices
+        for name, ctor in pairs(classes_4x4) do
+            local testname = testfmt:format(name)
+            assert.is_table(ctor)
+            assert.is_function((getmetatable(ctor) or {}).__call)
+            local input =
+            {
+                11,12,13,14,
+                21,22,23,24,
+                31,32,33,34,
+                41,42,43,44,
+            }
+            local expected =
+            {
+                11,21,31,41,
+                12,22,32,42,
+                13,23,33,43,
+                14,24,34,44,
+            }
+            it(testname, function()
+                local obj = ctor(input)
+                obj:transpose()
+                assert.same(expected, obj:totable())
+            end)
+        end
+    end)
 end)

@@ -37,9 +37,12 @@ int NewClass(lua_State* L, const char* TYPE_NAME, const luaL_Reg* funcs)
     // Loop over each func and store in metatable.
     for (const luaL_Reg* func = funcs; func->name; ++func)
     {
-        lua_pushstring(L, func->name);
-        lua_pushcfunction(L, func->func);
-        lua_rawset(L, -3);
+        if(func->func)
+        {
+            lua_pushstring(L, func->name);
+            lua_pushcfunction(L, func->func);
+            lua_rawset(L, -3);
+        }
     }
 
     lua_pop(L, 1); // Pop here, since it's already stored in the global registry.
