@@ -5,6 +5,7 @@
 /lua53
 /luajit20
 /luajit21
+/public
 
 *.o
 *.so
