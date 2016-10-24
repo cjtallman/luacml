@@ -1,0 +1,249 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "LuaCML\n\n\nOverview\n\n\nLuaCML is an implementation of the CML library to be used in Lua applications.\nIt works as a Lua module that can be loaded using the \nrequire\n function:\n\n\n-- Load the LuaCML library.\nlocal luacml = require(\nluacml\n)\n\n\n\n\nFeatures\n\n\nThere are a number of predefined types available:\n\n\n\n\nVector types\n\n\nQuaternion types\n\n\nMatrix types\n\n\n\n\nDesign decisions\n\n\nSince CML is a library based on C++ templates, LuaCML is unable to provide the\nsame configurability and instead aims to provide only the most common types.\n\n\nLuaCML also chooses to base the floating point math types around the built-in\n\nlua_Number\n type.\n\n\nInteger types \n(See Lua 5.3)\n is not currently supported, nor planned.\n\n\nDynamic types (vectors, matrices) are not currently supported, not planned.\n\n\nCompatibility\n\n\n\n\n\n\n\n\nLua Version\n\n\nSupported\n\n\n\n\n\n\n\n\n\n\nPUC-Rio Lua 5.1\n\n\nyes\n\n\n\n\n\n\nPUC-Rio Lua 5.2\n\n\nyes\n\n\n\n\n\n\nPUC-Rio Lua 5.3\n\n\nyes\n\n\n\n\n\n\nLuaJit 2.0\n\n\nyes\n\n\n\n\n\n\nLuaJit 2.1\n\n\nyes", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#luacml", 
+            "text": "", 
+            "title": "LuaCML"
+        }, 
+        {
+            "location": "/#overview", 
+            "text": "LuaCML is an implementation of the CML library to be used in Lua applications.\nIt works as a Lua module that can be loaded using the  require  function:  -- Load the LuaCML library.\nlocal luacml = require( luacml )", 
+            "title": "Overview"
+        }, 
+        {
+            "location": "/#features", 
+            "text": "There are a number of predefined types available:   Vector types  Quaternion types  Matrix types", 
+            "title": "Features"
+        }, 
+        {
+            "location": "/#design-decisions", 
+            "text": "Since CML is a library based on C++ templates, LuaCML is unable to provide the\nsame configurability and instead aims to provide only the most common types.  LuaCML also chooses to base the floating point math types around the built-in lua_Number  type.  Integer types  (See Lua 5.3)  is not currently supported, nor planned.  Dynamic types (vectors, matrices) are not currently supported, not planned.", 
+            "title": "Design decisions"
+        }, 
+        {
+            "location": "/#compatibility", 
+            "text": "Lua Version  Supported      PUC-Rio Lua 5.1  yes    PUC-Rio Lua 5.2  yes    PUC-Rio Lua 5.3  yes    LuaJit 2.0  yes    LuaJit 2.1  yes", 
+            "title": "Compatibility"
+        }, 
+        {
+            "location": "/matrix-types/", 
+            "text": "Matrix Docs", 
+            "title": "Matrix types"
+        }, 
+        {
+            "location": "/matrix-types/#matrix-docs", 
+            "text": "", 
+            "title": "Matrix Docs"
+        }, 
+        {
+            "location": "/quaternion-docs/", 
+            "text": "Quaternion Docs", 
+            "title": "Quaternion docs"
+        }, 
+        {
+            "location": "/quaternion-docs/#quaternion-docs", 
+            "text": "", 
+            "title": "Quaternion Docs"
+        }, 
+        {
+            "location": "/vector-docs/", 
+            "text": "Vectors\n\n\nVector types\n\n\nThe following vector types are provided by LuaCML:\n\n\n\n\n\n\n\n\nType\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nvector2\n\n\nA two-element vector based on \nlua_Number\n\n\n\n\n\n\nvector3\n\n\nA three-element vector based on \nlua_Number\n\n\n\n\n\n\nvector4\n\n\nA four-element vector based on \nlua_Number\n\n\n\n\n\n\n\n\nVector functions\n\n\nconstructor\n\n\nVectors have default constructors initialized with zeros:\n\n\nlocal foo = luacml.vector3() -- set to (0,0,0)\n\n\n\n\nVectors can be constructed from individual numbers:\n\n\nlocal foo = luacml.vector4(1,2,3,4)\n\n\n\n\nOr from a table of numbers:\n\n\nlocal foo = luacml.vector2({1,2})\n\n\n\n\nOr from another vector:\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(foo) -- set to (1,2,3)\n\n\n\n\nParameters\n\n\n\n\nN\n numbers.\n\n\nor table of \nN\n numbers.\n\n\nor a vector of size \nN\n.\n\n\n\n\nReturns\n\n\nThe newly constructed vector.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nset()\n\n\nVectors can be set from individual numbers:\n\n\nlocal foo = luacml.vector3()\nfoo:set(1,2,3)\n\n\n\n\nOr from a table of numbers:\n\n\nlocal foo = luacml.vector3()\nfoo:set({1,2,3})\n\n\n\n\nOr from another vector:\n\n\nlocal foo = luacml.vector3()\nfoo:set(luacml.vector3(1,2,3))\n\n\n\n\nParameters\n\n\n\n\nN\n numbers.\n\n\nor table of \nN\n numbers.\n\n\nor a vector of size \nN\n.\n\n\n\n\nReturns\n\n\nThe vector, after it has been set.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\ntotable()\n\n\nVectors can be converted to a table:\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = foo:totable()\nprint(bar[1], bar[2], bar[3]) -- prints: 1 2 3\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nAn array containing the vector's elements.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nlength()\n\n\nThe length of a vector can be found:\n\n\nlocal foo = luacml.vector3(1,2,3)\nprint(foo:length())\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe vector's length as a number.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nlength_squared()\n\n\nThe squared-length of a vector can be found:\n\n\nlocal foo = luacml.vector3(1,2,3)\nprint(foo:length_squared())\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe vector's squared length as a number.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nnormalize()\n\n\nA vector can be normalized in-place:\n\n\nlocal foo = luacml.vector3(1,2,3)\nfoo:normalize()\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe vector, after it has been normalized.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nVector metamethods\n\n\nAll vector types have a set of\n\nmetamethods\n that allow them to\nbe used with several operators.\n\n\n\n\n__index\n\n\nThe __index metamethod permits vector element access.\n\n\nVectors can be indexed with 1-based integer keys:\n\n\nlocal foo = luacml.vector2(10,20)\nprint(foo[1]) -- prints: 10\n\n\n\n\nOr with case-insensitive \"x\", \"y\", \"z\", or \"w\" string keys:\n\n\nlocal foo = luacml.vector3(10,20,30)\nprint(foo.x)    -- prints: 10\nprint(foo.Y)    -- prints: 20\nprint(foo[\nz\n]) -- prints: 30\n\n\n\n\nNote\n\n\nFor the following vector types, only the following keys are valid:\n\n\n\n\n\n\n\n\nVector Type\n\n\nValid Keys\n\n\n\n\n\n\n\n\n\n\nvector2\n\n\n1, 2, x, y\n\n\n\n\n\n\nvector3\n\n\n1, 2, 3, x, y, z\n\n\n\n\n\n\nvector4\n\n\n1, 2, 3, 4, x, y, z, w\n\n\n\n\n\n\n\n\nParameters\n\n\n\n\nAn integer from 1 to \nN\n\n\nor one of {x, y, z, w}, depending on vector size. See note above.\n\n\n\n\nReturns\n\n\nThe vector's element as a number.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nInvalid index value.\n\n\nInvalid index type.\n\n\n\n\n\n\n__newindex\n\n\nThe __newindex metamethod permits vector element setting.\n\n\nVectors can be indexed with 1-based integer keys:\n\n\nlocal foo = luacml.vector2()\nfoo[1] = 10\n\n\n\n\nOr with case-insensitive \"x\", \"y\", \"z\", or \"w\" string keys:\n\n\nlocal foo = luacml.vector3()\nfoo.x = 10\nfoo.Y = 20\nfoo[\nz\n] = 30\n\n\n\n\nNote\n\n\nFor the following vector types, only the following keys are valid:\n\n\n\n\n\n\n\n\nVector Type\n\n\nValid Keys\n\n\n\n\n\n\n\n\n\n\nvector2\n\n\n1, 2, x, y\n\n\n\n\n\n\nvector3\n\n\n1, 2, 3, x, y, z\n\n\n\n\n\n\nvector4\n\n\n1, 2, 3, 4, x, y, z, w\n\n\n\n\n\n\n\n\nParameters\n\n\n\n\nAn integer from 1 to \nN\n\n\nor one of {x, y, z, w}, depending on vector size. See note above.\n\n\n\n\nReturns\n\n\n(None)\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nInvalid index value.\n\n\nInvalid index type.", 
+            "title": "Vector docs"
+        }, 
+        {
+            "location": "/vector-docs/#vectors", 
+            "text": "", 
+            "title": "Vectors"
+        }, 
+        {
+            "location": "/vector-docs/#vector-types", 
+            "text": "The following vector types are provided by LuaCML:     Type  Description      vector2  A two-element vector based on  lua_Number    vector3  A three-element vector based on  lua_Number    vector4  A four-element vector based on  lua_Number", 
+            "title": "Vector types"
+        }, 
+        {
+            "location": "/vector-docs/#vector-functions", 
+            "text": "", 
+            "title": "Vector functions"
+        }, 
+        {
+            "location": "/vector-docs/#constructor", 
+            "text": "Vectors have default constructors initialized with zeros:  local foo = luacml.vector3() -- set to (0,0,0)  Vectors can be constructed from individual numbers:  local foo = luacml.vector4(1,2,3,4)  Or from a table of numbers:  local foo = luacml.vector2({1,2})  Or from another vector:  local foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(foo) -- set to (1,2,3)", 
+            "title": "constructor"
+        }, 
+        {
+            "location": "/vector-docs/#parameters", 
+            "text": "N  numbers.  or table of  N  numbers.  or a vector of size  N .", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns", 
+            "text": "The newly constructed vector.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#set", 
+            "text": "Vectors can be set from individual numbers:  local foo = luacml.vector3()\nfoo:set(1,2,3)  Or from a table of numbers:  local foo = luacml.vector3()\nfoo:set({1,2,3})  Or from another vector:  local foo = luacml.vector3()\nfoo:set(luacml.vector3(1,2,3))", 
+            "title": "set()"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_1", 
+            "text": "N  numbers.  or table of  N  numbers.  or a vector of size  N .", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_1", 
+            "text": "The vector, after it has been set.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_1", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#totable", 
+            "text": "Vectors can be converted to a table:  local foo = luacml.vector3(1,2,3)\nlocal bar = foo:totable()\nprint(bar[1], bar[2], bar[3]) -- prints: 1 2 3", 
+            "title": "totable()"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_2", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_2", 
+            "text": "An array containing the vector's elements.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_2", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#length", 
+            "text": "The length of a vector can be found:  local foo = luacml.vector3(1,2,3)\nprint(foo:length())", 
+            "title": "length()"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_3", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_3", 
+            "text": "The vector's length as a number.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_3", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#length_squared", 
+            "text": "The squared-length of a vector can be found:  local foo = luacml.vector3(1,2,3)\nprint(foo:length_squared())", 
+            "title": "length_squared()"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_4", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_4", 
+            "text": "The vector's squared length as a number.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_4", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#normalize", 
+            "text": "A vector can be normalized in-place:  local foo = luacml.vector3(1,2,3)\nfoo:normalize()", 
+            "title": "normalize()"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_5", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_5", 
+            "text": "The vector, after it has been normalized.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_5", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#vector-metamethods", 
+            "text": "All vector types have a set of metamethods  that allow them to\nbe used with several operators.", 
+            "title": "Vector metamethods"
+        }, 
+        {
+            "location": "/vector-docs/#__index", 
+            "text": "The __index metamethod permits vector element access.  Vectors can be indexed with 1-based integer keys:  local foo = luacml.vector2(10,20)\nprint(foo[1]) -- prints: 10  Or with case-insensitive \"x\", \"y\", \"z\", or \"w\" string keys:  local foo = luacml.vector3(10,20,30)\nprint(foo.x)    -- prints: 10\nprint(foo.Y)    -- prints: 20\nprint(foo[ z ]) -- prints: 30", 
+            "title": "__index"
+        }, 
+        {
+            "location": "/vector-docs/#note", 
+            "text": "For the following vector types, only the following keys are valid:     Vector Type  Valid Keys      vector2  1, 2, x, y    vector3  1, 2, 3, x, y, z    vector4  1, 2, 3, 4, x, y, z, w", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_6", 
+            "text": "An integer from 1 to  N  or one of {x, y, z, w}, depending on vector size. See note above.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_6", 
+            "text": "The vector's element as a number.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_6", 
+            "text": "Missing arguments.  Invalid index value.  Invalid index type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#__newindex", 
+            "text": "The __newindex metamethod permits vector element setting.  Vectors can be indexed with 1-based integer keys:  local foo = luacml.vector2()\nfoo[1] = 10  Or with case-insensitive \"x\", \"y\", \"z\", or \"w\" string keys:  local foo = luacml.vector3()\nfoo.x = 10\nfoo.Y = 20\nfoo[ z ] = 30", 
+            "title": "__newindex"
+        }, 
+        {
+            "location": "/vector-docs/#note_1", 
+            "text": "For the following vector types, only the following keys are valid:     Vector Type  Valid Keys      vector2  1, 2, x, y    vector3  1, 2, 3, x, y, z    vector4  1, 2, 3, 4, x, y, z, w", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_7", 
+            "text": "An integer from 1 to  N  or one of {x, y, z, w}, depending on vector size. See note above.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_7", 
+            "text": "(None)", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_7", 
+            "text": "Missing arguments.  Invalid index value.  Invalid index type.", 
+            "title": "Errors"
+        }
+    ]
+}
