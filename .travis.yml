@@ -24,4 +24,4 @@ script:
     - busted --verbose
 
 after_success:
-    - if [[ $DEPLOY_DOCS == "true" ]]; then echo "Preparing to build and deploy documentation" ; ./scripts/deploy-pages.sh ; echo "Completed deploying documentation" ; fi
+    - if [[ $DEPLOY_DOCS == "true" ]]; then echo "Preparing to build and deploy documentation" ; bash scripts/deploy-pages.sh ; echo "Completed deploying documentation" ; fi
