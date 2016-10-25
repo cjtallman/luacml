@@ -3,7 +3,7 @@
 GH_REPO="@github.com/cjtallman/luacml.git"
 FULL_REPO="https://${GH_TOKEN}$GH_REPO"
 
-pip install --user mkdocs
+pip install mkdocs
 
 git remote add origin $FULL_REPO
 
