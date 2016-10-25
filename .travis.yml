@@ -1,4 +1,3 @@
-
 language: python
 sudo: false
 
@@ -20,5 +19,8 @@ install:
   - luarocks make rockspecs/luacml-scm-1.rockspec
 
 script:
-  - luacheck --std max+busted spec
+  - luacheck spec
   - busted --verbose
+
+after_success:
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash scripts/deploy-pages.sh

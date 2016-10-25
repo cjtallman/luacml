@@ -13,16 +13,11 @@
 
 #include "luacml.hpp"
 #include "luacmlvector.hpp"
-#include "luacmlquaternion.hpp"
+#include "luacmlquat.hpp"
+#include "luacmlmatrix.hpp"
 #include "luacmlhelperfuncs.hpp"
 #include <lua.hpp>
 #include <cml/cml.h>
-
-typedef Vector4::Type Vec4;
-typedef Vector3::Type Vec3;
-typedef Vector2::Type Vec2;
-typedef QuatNeg::Type QNeg;
-typedef QuatPos::Type QPos;
 
 int NewClass(lua_State* L, const char* TYPE_NAME, const luaL_Reg* funcs)
 {
@@ -42,9 +37,12 @@ int NewClass(lua_State* L, const char* TYPE_NAME, const luaL_Reg* funcs)
     // Loop over each func and store in metatable.
     for (const luaL_Reg* func = funcs; func->name; ++func)
     {
-        lua_pushstring(L, func->name);
-        lua_pushcfunction(L, func->func);
-        lua_rawset(L, -3);
+        if(func->func)
+        {
+            lua_pushstring(L, func->name);
+            lua_pushcfunction(L, func->func);
+            lua_rawset(L, -3);
+        }
     }
 
     lua_pop(L, 1); // Pop here, since it's already stored in the global registry.
@@ -63,76 +61,74 @@ int Cross(lua_State* L)
 {
     CHECK_ARG_COUNT(L, 2);
 
-    Vec3* A = (Vec3*)luaL_checkudata(L, 1, Vector3::UDATA_TYPE_NAME);
-    Vec3* B = (Vec3*)luaL_checkudata(L, 2, Vector3::UDATA_TYPE_NAME);
-    Vec3* C = (Vec3*)lua_newuserdata(L, sizeof(Vector3::Type));
+    Vector3::Pointer A = (Vector3::Pointer)luaL_checkudata(L, 1, Vector3::UDATA_TYPE_NAME);
+    Vector3::Pointer B = (Vector3::Pointer)luaL_checkudata(L, 2, Vector3::UDATA_TYPE_NAME);
+    Vector3::Pointer C = (Vector3::Pointer)lua_newuserdata(L, sizeof(Vector3::Type));
 
     *C = cml::cross(*A, *B);
 
     return SetClass(L, Vector3::UDATA_TYPE_NAME);
 }
 
+template < typename T >
+int TDot(lua_State* L)
+{
+    typedef typename T::Pointer Pointer;
+    if (const Pointer A = (Pointer)luaL_testudata(L, 1, T::UDATA_TYPE_NAME))
+    {
+        Pointer B = (Pointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+        lua_pushnumber(L, cml::dot(*A, *B));
+        return 1;
+    }
+    return 0;
+}
+
 int Dot(lua_State* L)
 {
     CHECK_ARG_COUNT(L, 2);
 
-    if (const Vec4* A = (Vec4*)luaL_testudata(L, 1, Vector4::UDATA_TYPE_NAME))
-    {
-        Vec4* B = (Vec4*)luaL_checkudata(L, 2, Vector4::UDATA_TYPE_NAME);
-        lua_pushnumber(L, cml::dot(*A, *B));
+    if (TDot< Vector4 >(L) || TDot< Vector3 >(L) || TDot< Vector2 >(L) || TDot< QuatDef >(L) ||
+        TDot< QuatPos >(L) || TDot< QuatNeg >(L))
         return 1;
-    }
-    else if (const Vec3* A = (Vec3*)luaL_testudata(L, 1, Vector3::UDATA_TYPE_NAME))
-    {
-        Vec3* B = (Vec3*)luaL_checkudata(L, 2, Vector3::UDATA_TYPE_NAME);
-        lua_pushnumber(L, cml::dot(*A, *B));
-        return 1;
-    }
-    else if (const Vec2* A = (Vec2*)luaL_testudata(L, 1, Vector2::UDATA_TYPE_NAME))
-    {
-        Vec2* B = (Vec2*)luaL_checkudata(L, 2, Vector2::UDATA_TYPE_NAME);
-        lua_pushnumber(L, cml::dot(*A, *B));
-        return 1;
-    }
-    else if (const QNeg* A = (QNeg*)luaL_testudata(L, 1, QuatNeg::UDATA_TYPE_NAME))
-    {
-        if (const QNeg* B = (QNeg*)luaL_checkudata(L, 2, QuatNeg::UDATA_TYPE_NAME))
-        {
-            lua_pushnumber(L, cml::dot(*A, *B));
-            return 1;
-        }
-    }
-    else if (const QPos* A = (QPos*)luaL_testudata(L, 1, QuatPos::UDATA_TYPE_NAME))
-    {
-        if (const QPos* B = (QPos*)luaL_checkudata(L, 2, QuatPos::UDATA_TYPE_NAME))
-        {
-            lua_pushnumber(L, cml::dot(*A, *B));
-            return 1;
-        }
-    }
-
-    return luaL_argerror(L, 1, "Expected vector2, vector3, vector4, quat_p, quat_n");
+    else
+        return luaL_argerror(L, 1, "Expected vector2, vector3, vector4, quat, quat_p, quat_n");
 }
+
+#define REGISTER_LIB(L, name, func)                                                                \
+    do                                                                                             \
+    {                                                                                              \
+        lua_pushliteral(L, name);                                                                  \
+        lua_pushcfunction(L, func);                                                                \
+        lua_call(L, 0, 1);                                                                         \
+        lua_rawset(L, -3);                                                                         \
+    } while (0)
 
 LUACML_API int luaopen_luacml(lua_State* L)
 {
-    static luaL_Reg funcs[] = {{"vector2", Vector2::New},
-                               {"vector3", Vector3::New},
-                               {"vector4", Vector4::New},
-                               {"quat_n", QuatNeg::New},
-                               {"quat_p", QuatPos::New},
-                               {"cross", Cross},
-                               {"dot", Dot},
-                               {NULL, NULL}};
+    static luaL_Reg funcs[] = {{"cross", Cross}, {"dot", Dot}, {NULL, NULL}};
 
     lua_newtable(L);
     luaL_setfuncs(L, funcs, 0);
 
-    Vector2::Register(L);
-    Vector3::Register(L);
-    Vector4::Register(L);
-    QuatPos::Register(L);
-    QuatNeg::Register(L);
+    REGISTER_LIB(L, "vector2", luaopen_luacml_vector2);
+    REGISTER_LIB(L, "vector3", luaopen_luacml_vector3);
+    REGISTER_LIB(L, "vector4", luaopen_luacml_vector4);
+    REGISTER_LIB(L, "quat", luaopen_luacml_quat);
+    REGISTER_LIB(L, "quat_p", luaopen_luacml_quatpos);
+    REGISTER_LIB(L, "quat_n", luaopen_luacml_quatneg);
+    REGISTER_LIB(L, "matrix22", luaopen_luacml_matrix22);
+    REGISTER_LIB(L, "matrix22_r", luaopen_luacml_matrix22_r);
+    REGISTER_LIB(L, "matrix22_c", luaopen_luacml_matrix22_c);
+    REGISTER_LIB(L, "matrix33", luaopen_luacml_matrix33);
+    REGISTER_LIB(L, "matrix33_r", luaopen_luacml_matrix33_r);
+    REGISTER_LIB(L, "matrix33_c", luaopen_luacml_matrix33_c);
+    REGISTER_LIB(L, "matrix44", luaopen_luacml_matrix44);
+    REGISTER_LIB(L, "matrix44_r", luaopen_luacml_matrix44_r);
+    REGISTER_LIB(L, "matrix44_c", luaopen_luacml_matrix44_c);
+    REGISTER_LIB(L, "matrix32_r", luaopen_luacml_matrix32_r);
+    REGISTER_LIB(L, "matrix23_c", luaopen_luacml_matrix23_c);
+    REGISTER_LIB(L, "matrix43_r", luaopen_luacml_matrix43_r);
+    REGISTER_LIB(L, "matrix34_c", luaopen_luacml_matrix34_c);
 
     return 1;
 }
