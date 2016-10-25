@@ -1,10 +1,7 @@
-
 language: python
 sudo: false
 
 env:
-  global:
-    - secure: "y9WdD/Lt4z0o5RU6J+/dJ9TqlNrIu9OLrR1Scknp/u5oKvjX7bvkDMtAPf/EIdQmUhmn48AMAIHFyule2ysOaHXbg8lTDzF6N61cxYTN9Z5EUC6NKkRrD0lbKGwxrg7SgTmaV7OsqwV9uJNrGvmfo98JMCN2Qmp1X8EDtxalD8RawgmLaR85uH1Rt/uFqbhgkK57qiaY0U6zHlhmaTa/YLikPyR+UJ2MymBuDjnuH1WjHdtTxLSI9KZoH7DEMv5VoFtArT/8Tesrd3jtsoSyp8A8v+n51FaKHzjcL1vKt9cPXFbFFDu3NdHij+5ALzun6j2aoqqoSBIG4ESj5eXPQ31tInoL99plDsT+5rSItG6NscJ8w0TM3AXIS5hTeiYsyKI/g26u+QBwlbjdb0E1AQpOT0uOPL58QRxd6LRSthCwdPKGPMJ8K+ixlxtd0mSwwj17xiAXVIa8MnBJ7P3ojzBPd7op9Y0rL5w0Tg9GjRBsaUDgCME27u/Wq2ko8/Cw5IB6GwEp2L0WMZkMbFLPf/+VMNy7Zo1nPAnyNsPSpNuOkhg/fpK3dQArJaGnyINbgsTwaq5Hk9zTKYs3A6iPBwOO44ufXmKlDQfYmxOEqvB8LPwSaBkqRrBfE+6WFgfxKYCAyNvtr9GhJPWzjCtK4vddh83mGzJtL1ac5D6uTUs="
   - LUA="lua 5.1"
   - LUA="lua 5.2"
   - LUA="lua 5.3"
@@ -26,4 +23,4 @@ script:
   - busted --verbose
 
 after_success:
-  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && mkdocs gh-deploy --clean
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash scripts/deploy-pages.sh
