@@ -1,10 +1,11 @@
 #!/bin/bash
 
-GH_REPO="@github.com/cjtallman/luacml.git"
-FULL_REPO="https://${GH_TOKEN}$GH_REPO"
+FULL_REPO="https://$GH_TOKEN@github.com/cjtallman/luacml.git"
+
+git remote -v
+git remote set-url origin $FULL_REPO
+git remote -v
 
 pip install mkdocs
-
-git remote set-url origin $FULL_REPO
 
 mkdocs gh-deploy --clean
