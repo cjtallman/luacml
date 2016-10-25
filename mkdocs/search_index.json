@@ -52,7 +52,7 @@
         }, 
         {
             "location": "/vector-docs/", 
-            "text": "Vectors\n\n\nVector types\n\n\nThe following vector types are provided by LuaCML:\n\n\n\n\n\n\n\n\nType\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nvector2\n\n\nA two-element vector based on \nlua_Number\n\n\n\n\n\n\nvector3\n\n\nA three-element vector based on \nlua_Number\n\n\n\n\n\n\nvector4\n\n\nA four-element vector based on \nlua_Number\n\n\n\n\n\n\n\n\nVector functions\n\n\nconstructor\n\n\nVectors have default constructors initialized with zeros:\n\n\nlocal foo = luacml.vector3() -- set to (0,0,0)\n\n\n\n\nVectors can be constructed from individual numbers:\n\n\nlocal foo = luacml.vector4(1,2,3,4)\n\n\n\n\nOr from a table of numbers:\n\n\nlocal foo = luacml.vector2({1,2})\n\n\n\n\nOr from another vector:\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(foo) -- set to (1,2,3)\n\n\n\n\nParameters\n\n\n\n\nN\n numbers.\n\n\nor table of \nN\n numbers.\n\n\nor a vector of size \nN\n.\n\n\n\n\nReturns\n\n\nThe newly constructed vector.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nset()\n\n\nVectors can be set from individual numbers:\n\n\nlocal foo = luacml.vector3()\nfoo:set(1,2,3)\n\n\n\n\nOr from a table of numbers:\n\n\nlocal foo = luacml.vector3()\nfoo:set({1,2,3})\n\n\n\n\nOr from another vector:\n\n\nlocal foo = luacml.vector3()\nfoo:set(luacml.vector3(1,2,3))\n\n\n\n\nParameters\n\n\n\n\nN\n numbers.\n\n\nor table of \nN\n numbers.\n\n\nor a vector of size \nN\n.\n\n\n\n\nReturns\n\n\nThe vector, after it has been set.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\ntotable()\n\n\nVectors can be converted to a table:\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = foo:totable()\nprint(bar[1], bar[2], bar[3]) -- prints: 1 2 3\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nAn array containing the vector's elements.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nlength()\n\n\nThe length of a vector can be found:\n\n\nlocal foo = luacml.vector3(1,2,3)\nprint(foo:length())\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe vector's length as a number.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nlength_squared()\n\n\nThe squared-length of a vector can be found:\n\n\nlocal foo = luacml.vector3(1,2,3)\nprint(foo:length_squared())\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe vector's squared length as a number.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nnormalize()\n\n\nA vector can be normalized in-place:\n\n\nlocal foo = luacml.vector3(1,2,3)\nfoo:normalize()\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe vector, after it has been normalized.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nVector metamethods\n\n\nAll vector types have a set of\n\nmetamethods\n that allow them to\nbe used with several operators.\n\n\n\n\n__index\n\n\nThe __index metamethod permits vector element access.\n\n\nVectors can be indexed with 1-based integer keys:\n\n\nlocal foo = luacml.vector2(10,20)\nprint(foo[1]) -- prints: 10\n\n\n\n\nOr with case-insensitive \"x\", \"y\", \"z\", or \"w\" string keys:\n\n\nlocal foo = luacml.vector3(10,20,30)\nprint(foo.x)    -- prints: 10\nprint(foo.Y)    -- prints: 20\nprint(foo[\nz\n]) -- prints: 30\n\n\n\n\nNote\n\n\nFor the following vector types, only the following keys are valid:\n\n\n\n\n\n\n\n\nVector Type\n\n\nValid Keys\n\n\n\n\n\n\n\n\n\n\nvector2\n\n\n1, 2, x, y\n\n\n\n\n\n\nvector3\n\n\n1, 2, 3, x, y, z\n\n\n\n\n\n\nvector4\n\n\n1, 2, 3, 4, x, y, z, w\n\n\n\n\n\n\n\n\nParameters\n\n\n\n\nAn integer from 1 to \nN\n\n\nor one of {x, y, z, w}, depending on vector size. See note above.\n\n\n\n\nReturns\n\n\nThe vector's element as a number.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nInvalid index value.\n\n\nInvalid index type.\n\n\n\n\n\n\n__newindex\n\n\nThe __newindex metamethod permits vector element setting.\n\n\nVectors can be indexed with 1-based integer keys:\n\n\nlocal foo = luacml.vector2()\nfoo[1] = 10\n\n\n\n\nOr with case-insensitive \"x\", \"y\", \"z\", or \"w\" string keys:\n\n\nlocal foo = luacml.vector3()\nfoo.x = 10\nfoo.Y = 20\nfoo[\nz\n] = 30\n\n\n\n\nNote\n\n\nFor the following vector types, only the following keys are valid:\n\n\n\n\n\n\n\n\nVector Type\n\n\nValid Keys\n\n\n\n\n\n\n\n\n\n\nvector2\n\n\n1, 2, x, y\n\n\n\n\n\n\nvector3\n\n\n1, 2, 3, x, y, z\n\n\n\n\n\n\nvector4\n\n\n1, 2, 3, 4, x, y, z, w\n\n\n\n\n\n\n\n\nParameters\n\n\n\n\nAn integer from 1 to \nN\n\n\nor one of {x, y, z, w}, depending on vector size. See note above.\n\n\n\n\nReturns\n\n\n(None)\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nInvalid index value.\n\n\nInvalid index type.", 
+            "text": "Vectors\n\n\nVector types\n\n\nThe following vector types are provided by LuaCML:\n\n\n\n\n\n\n\n\nType\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nvector2\n\n\nA two-element vector based on \nlua_Number\n\n\n\n\n\n\nvector3\n\n\nA three-element vector based on \nlua_Number\n\n\n\n\n\n\nvector4\n\n\nA four-element vector based on \nlua_Number\n\n\n\n\n\n\n\n\nVector functions\n\n\nconstructor\n\n\nVectors have default constructors initialized with zeros:\n\n\nlocal foo = luacml.vector3() -- set to (0,0,0)\n\n\n\n\nVectors can be constructed from individual numbers:\n\n\nlocal foo = luacml.vector4(1,2,3,4)\n\n\n\n\nOr from a table of numbers:\n\n\nlocal foo = luacml.vector2({1,2})\n\n\n\n\nOr from another vector:\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(foo) -- set to (1,2,3)\n\n\n\n\nParameters\n\n\n\n\nN\n numbers.\n\n\nor table of \nN\n numbers.\n\n\nor a vector of size \nN\n.\n\n\n\n\nReturns\n\n\nThe newly constructed vector.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nset()\n\n\nVectors can be set from individual numbers:\n\n\nlocal foo = luacml.vector3()\nfoo:set(1,2,3)\n\n\n\n\nOr from a table of numbers:\n\n\nlocal foo = luacml.vector3()\nfoo:set({1,2,3})\n\n\n\n\nOr from another vector:\n\n\nlocal foo = luacml.vector3()\nfoo:set(luacml.vector3(1,2,3))\n\n\n\n\nParameters\n\n\n\n\nN\n numbers.\n\n\nor table of \nN\n numbers.\n\n\nor a vector of size \nN\n.\n\n\n\n\nReturns\n\n\nThe vector, after it has been set.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\ntotable()\n\n\nVectors can be converted to a table:\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = foo:totable()\nprint(bar[1], bar[2], bar[3]) -- prints: 1 2 3\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nAn array containing the vector's elements.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nlength()\n\n\nThe length of a vector can be found:\n\n\nlocal foo = luacml.vector3(1,2,3)\nprint(foo:length())\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe vector's length as a number.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nlength_squared()\n\n\nThe squared-length of a vector can be found:\n\n\nlocal foo = luacml.vector3(1,2,3)\nprint(foo:length_squared())\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe vector's squared length as a number.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nnormalize()\n\n\nA vector can be normalized in-place:\n\n\nlocal foo = luacml.vector3(1,2,3)\nfoo:normalize()\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe vector, after it has been normalized.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nzero()\n\n\nA vector can be zeroed in-place:\n\n\nlocal foo = luacml.vector3(1,2,3)\nfoo:zero()\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe vector, after it has been zeroed.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\ncardinal()\n\n\nA vector can be set to a cardinal axis:\n\n\nlocal foo = luacml.vector3(1,2,3)\nfoo:cardinal(1) -- sets to \n1,0,0\n\nfoo:cardinal(2) -- sets to \n0,1,0\n\nfoo:cardinal(3) -- sets to \n0,0,1\n\n\n\n\n\nParameters\n\n\nAn integer from 1 to \nN\n for a vector of size \nN\n.\n\n\nReturns\n\n\nThe vector, after it has been set.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nminimize()\n\n\nA vector can be set to the element-wise minimum of itself and another vector.\n\n\nlocal foo = luacml.vector3(10,20,30)\nlocal bar = luacml.vector3(1,200,29)\nfoo:minimize(bar) -- sets to \n1,20,29\n\n\n\n\n\nParameters\n\n\nA vector of same size.\n\n\nReturns\n\n\n(None)\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nmaximize()\n\n\nA vector can be set to the element-wise maximum of itself and another vector.\n\n\nlocal foo = luacml.vector3(10,20,30)\nlocal bar = luacml.vector3(1,200,29)\nfoo:maximize(bar) -- sets to \n10,200,30\n\n\n\n\n\nParameters\n\n\nA vector of same size.\n\n\nReturns\n\n\n(None)\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nrandom()\n\n\nA vector can be set to a random vector with elements between specified minimum\nand maximum values.\n\n\nlocal foo = luacml.vector3()\nfoo:random(-1,1) -- sets each element to a random value between -1 and 1.\n\n\n\n\nParameters\n\n\n\n\nThe minimum number.\n\n\nThe maximum number.\n\n\n\n\nReturns\n\n\n(None)\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nadd()\n\n\nA vector can be added with another vector.\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(1,2,3)\nprint(foo:add(bar)) -- prints: vector3:\n2,4,6\n\nprint(foo)          -- prints: vector3:\n1,2,3\n\n\n\n\n\nNote\n\n\nThe original vectors are unchanged.\n\n\nInternally, this equivalent to the \n__add\n metamethod.\n\n\nParameters\n\n\nA vector of same type.\n\n\nReturns\n\n\nA new vector representing the element-wise sum.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nsub()\n\n\nA vector can be added with another vector.\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(1,2,3)\nprint(foo:sub(bar)) -- prints: vector3:\n0,0,0\n\nprint(foo)          -- prints: vector3:\n1,2,3\n\n\n\n\n\nNote\n\n\nThe original vectors are unchanged.\n\n\nInternally, this function is equivalent to the \n__sub\n metamethod.\n\n\nParameters\n\n\nA vector of same type.\n\n\nReturns\n\n\nA new vector representing the element-wise difference.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nmul()\n\n\nA vector can be scaled with a number.\n\n\nlocal foo = luacml.vector3(1,2,3)\nprint(foo:mul(2)) -- prints: vector3:\n2,4,6\n\nprint(foo)        -- prints: vector3:\n1,2,3\n\n\n\n\n\nNote\n\n\nThe original vector is unchanged.\n\n\nInternally, this function is equivalent to the \n__mul\n metamethod.\n\n\nParameters\n\n\nA scalar number.\n\n\nReturns\n\n\nA new vector representing the element-wise scale.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\ndiv()\n\n\nA vector can be inverse-scaled with a number.\n\n\nlocal foo = luacml.vector3(2,4,6)\nprint(foo:div(2)) -- prints: vector3:\n1,2,3\n\nprint(foo)        -- prints: vector3:\n2,4,6\n\n\n\n\n\nNote\n\n\nThe original vector is unchanged.\n\n\nInternally, this function is equivalent to the \n__div\n metamethod.\n\n\nParameters\n\n\nA scalar number.\n\n\nReturns\n\n\nA new vector representing the element-wise division.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\naddeq()\n\n\nA vector can be incremented in-place with another vector.\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(1,2,3)\nprint(foo:addeq(bar)) -- prints: vector3:\n2,4,6\n\nprint(foo)            -- prints: vector3:\n2,4,6\n\n\n\n\n\nNote\n\n\nThe original vector (not the parameter) is updated.\n\n\nParameters\n\n\nA vector of same type.\n\n\nReturns\n\n\nThe updated vector after the element-wise sum.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nsubeq()\n\n\nA vector can be subtracted in-place with another vector.\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(1,2,3)\nprint(foo:subeq(bar)) -- prints: vector3:\n0,0,0\n\nprint(foo)            -- prints: vector3:\n0,0,0\n\n\n\n\n\nNote\n\n\nThe original vector (not the parameter) is updated.\n\n\nParameters\n\n\nA vector of same type.\n\n\nReturns\n\n\nThe updated vector after the element-wise subtraction.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nmuleq()\n\n\nA vector can be scaled in-place with a number.\n\n\nlocal foo = luacml.vector3(1,2,3)\nprint(foo:muleq(2)) -- prints: vector3:\n2,4,6\n\nprint(foo)          -- prints: vector3:\n2,4,6\n\n\n\n\n\nNote\n\n\nThe original vector (not the parameter) is updated.\n\n\nParameters\n\n\nA scalar number.\n\n\nReturns\n\n\nThe updated vector after the element-wise multiplication.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\ndiveq()\n\n\nA vector can be inverse-scaled with a number.\n\n\nlocal foo = luacml.vector3(2,4,6)\nprint(foo:diveq(2)) -- prints: vector3:\n1,2,3\n\nprint(foo)          -- prints: vector3:\n1,2,3\n\n\n\n\n\nNote\n\n\nThe original vector (not the parameter) is updated.\n\n\nParameters\n\n\nA scalar number.\n\n\nReturns\n\n\nThe updated vector after the element-wise division.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nVector metamethods\n\n\nAll vector types have a set of\n\nmetamethods\n that allow them to\nbe used with several operators.\n\n\n\n\n__index\n\n\nThe __index metamethod permits vector element access.\n\n\nVectors can be indexed with 1-based integer keys:\n\n\nlocal foo = luacml.vector2(10,20)\nprint(foo[1]) -- prints: 10\n\n\n\n\nOr with case-insensitive \"x\", \"y\", \"z\", or \"w\" string keys:\n\n\nlocal foo = luacml.vector3(10,20,30)\nprint(foo.x)    -- prints: 10\nprint(foo.Y)    -- prints: 20\nprint(foo[\nz\n]) -- prints: 30\n\n\n\n\nNote\n\n\nFor the following vector types, only the following keys are valid:\n\n\n\n\n\n\n\n\nVector Type\n\n\nValid Keys\n\n\n\n\n\n\n\n\n\n\nvector2\n\n\n1, 2, x, y\n\n\n\n\n\n\nvector3\n\n\n1, 2, 3, x, y, z\n\n\n\n\n\n\nvector4\n\n\n1, 2, 3, 4, x, y, z, w\n\n\n\n\n\n\n\n\nParameters\n\n\n\n\nAn integer from 1 to \nN\n\n\nor one of {x, y, z, w}, depending on vector size. See note above.\n\n\n\n\nReturns\n\n\nThe vector's element as a number.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nInvalid index value.\n\n\nInvalid index type.\n\n\n\n\n\n\n__newindex\n\n\nThe __newindex metamethod permits vector element setting.\n\n\nVectors can be indexed with 1-based integer keys:\n\n\nlocal foo = luacml.vector2()\nfoo[1] = 10\n\n\n\n\nOr with case-insensitive \"x\", \"y\", \"z\", or \"w\" string keys:\n\n\nlocal foo = luacml.vector3()\nfoo.x = 10\nfoo.Y = 20\nfoo[\nz\n] = 30\n\n\n\n\nNote\n\n\nFor the following vector types, only the following keys are valid:\n\n\n\n\n\n\n\n\nVector Type\n\n\nValid Keys\n\n\n\n\n\n\n\n\n\n\nvector2\n\n\n1, 2, x, y\n\n\n\n\n\n\nvector3\n\n\n1, 2, 3, x, y, z\n\n\n\n\n\n\nvector4\n\n\n1, 2, 3, 4, x, y, z, w\n\n\n\n\n\n\n\n\nParameters\n\n\n\n\nAn integer from 1 to \nN\n\n\nor one of {x, y, z, w}, depending on vector size. See note above.\n\n\n\n\nReturns\n\n\n(None)\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nInvalid index value.\n\n\nInvalid index type.\n\n\n\n\n\n\n__tostring\n\n\nVectors can be converted to strings for easy printing.\n\n\nlocal foo = luacml.vector2(1,2)\nprint(foo) -- prints: vector2:\n1,2\n\n\n\n\n\nlocal foo = luacml.vector4(1,2,3,4)\nprint(foo) -- prints: vector4:\n1,2,3,4\n\n\n\n\n\nNote\n\n\nThis function internally uses \nlua_pushfstring\n to format the output, so be\naware of different formatting across versions of Lua.\n\n\nParameters\n\n\nA vector.\n\n\nReturns\n\n\nThe vector formatted as a string.\n\n\nErrors\n\n\n(None)\n\n\n\n\n__unm\n\n\nThe negative of a vector can be generated.\n\n\nlocal foo = luacml.vector3(1,2,-3)\nprint(-foo) -- prints: vector3:\n-1,-2,3\n\n\n\n\n\nNote\n\n\nThe original vector is unchanged.\n\n\nParameters\n\n\nA vector.\n\n\nReturns\n\n\nA new vector representing the negative of the original.\n\n\nErrors\n\n\n(None)\n\n\n\n\n__add\n\n\nTwo vectors can be added together.\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(3,2,1)\nprint(foo + bar) -- prints: vector3\n4,4,4\n\n\n\n\n\nNote\n\n\nThe original vectors are unchanged.\n\n\nParameters\n\n\nTwo vectors of same type.\n\n\nReturns\n\n\nA new vector representing the element-wise sum.\n\n\nErrors\n\n\n\n\nInvalid types.\n\n\n\n\n\n\n__sub\n\n\nTwo vectors can be subtracted.\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(3,2,1)\nprint(foo - bar) -- prints: vector3\n-2,0,2\n\n\n\n\n\nNote\n\n\nThe original vectors are unchanged.\n\n\nParameters\n\n\nTwo vectors of same type.\n\n\nReturns\n\n\nA new vector representing the element-wise difference.\n\n\nErrors\n\n\n\n\nInvalid types.\n\n\n\n\n\n\n__mul\n\n\nVectors can be scaled.\n\n\nlocal foo = luacml.vector3(1,2,3)\nprint(2.0 * foo) -- prints: vector3\n2,4,6\n\nprint(foo * 3.0) -- prints: vector3\n3,6,9\n\n\n\n\n\nNote\n\n\nThe original vector is unchanged.\n\n\nParameters\n\n\nA vector and a number, in either order.\n\n\nReturns\n\n\nA new vector representing the element-wise scale.\n\n\nErrors\n\n\n\n\nInvalid types.\n\n\n\n\n\n\n__div\n\n\nVectors can be inverse divided.\n\n\nlocal foo = luacml.vector3(2,4,6)\nprint(foo / 2.0) -- prints: vector3\n1,2,3\n\n\n\n\n\nNote\n\n\nThe original vector is unchanged.\n\n\nParameters\n\n\nA vector and a number.\n\n\nReturns\n\n\nA new vector representing the element-wise division.\n\n\nErrors\n\n\n\n\nInvalid types.\n\n\n\n\n\n\n__eq\n\n\nVectors can be compared.\n\n\nlocal foo = luacml.vector3(2,4,6)\nlocal bar = luacml.vector3(2,4,6)\nprint(foo == bar) -- prints: true\n\n\n\n\nNote\n\n\nThe original vectors are unchanged.\n\n\nParameters\n\n\nTwo vectors of same type.\n\n\nReturns\n\n\nBoolean represent element-wise equality.\n\n\nErrors\n\n\n\n\nInvalid types.", 
             "title": "Vector docs"
         }, 
         {
@@ -191,6 +191,306 @@
             "title": "Errors"
         }, 
         {
+            "location": "/vector-docs/#zero", 
+            "text": "A vector can be zeroed in-place:  local foo = luacml.vector3(1,2,3)\nfoo:zero()", 
+            "title": "zero()"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_6", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_6", 
+            "text": "The vector, after it has been zeroed.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_6", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#cardinal", 
+            "text": "A vector can be set to a cardinal axis:  local foo = luacml.vector3(1,2,3)\nfoo:cardinal(1) -- sets to  1,0,0 \nfoo:cardinal(2) -- sets to  0,1,0 \nfoo:cardinal(3) -- sets to  0,0,1", 
+            "title": "cardinal()"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_7", 
+            "text": "An integer from 1 to  N  for a vector of size  N .", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_7", 
+            "text": "The vector, after it has been set.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_7", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#minimize", 
+            "text": "A vector can be set to the element-wise minimum of itself and another vector.  local foo = luacml.vector3(10,20,30)\nlocal bar = luacml.vector3(1,200,29)\nfoo:minimize(bar) -- sets to  1,20,29", 
+            "title": "minimize()"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_8", 
+            "text": "A vector of same size.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_8", 
+            "text": "(None)", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_8", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#maximize", 
+            "text": "A vector can be set to the element-wise maximum of itself and another vector.  local foo = luacml.vector3(10,20,30)\nlocal bar = luacml.vector3(1,200,29)\nfoo:maximize(bar) -- sets to  10,200,30", 
+            "title": "maximize()"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_9", 
+            "text": "A vector of same size.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_9", 
+            "text": "(None)", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_9", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#random", 
+            "text": "A vector can be set to a random vector with elements between specified minimum\nand maximum values.  local foo = luacml.vector3()\nfoo:random(-1,1) -- sets each element to a random value between -1 and 1.", 
+            "title": "random()"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_10", 
+            "text": "The minimum number.  The maximum number.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_10", 
+            "text": "(None)", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_10", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#add", 
+            "text": "A vector can be added with another vector.  local foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(1,2,3)\nprint(foo:add(bar)) -- prints: vector3: 2,4,6 \nprint(foo)          -- prints: vector3: 1,2,3", 
+            "title": "add()"
+        }, 
+        {
+            "location": "/vector-docs/#note", 
+            "text": "The original vectors are unchanged.  Internally, this equivalent to the  __add  metamethod.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_11", 
+            "text": "A vector of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_11", 
+            "text": "A new vector representing the element-wise sum.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_11", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#sub", 
+            "text": "A vector can be added with another vector.  local foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(1,2,3)\nprint(foo:sub(bar)) -- prints: vector3: 0,0,0 \nprint(foo)          -- prints: vector3: 1,2,3", 
+            "title": "sub()"
+        }, 
+        {
+            "location": "/vector-docs/#note_1", 
+            "text": "The original vectors are unchanged.  Internally, this function is equivalent to the  __sub  metamethod.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_12", 
+            "text": "A vector of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_12", 
+            "text": "A new vector representing the element-wise difference.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_12", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#mul", 
+            "text": "A vector can be scaled with a number.  local foo = luacml.vector3(1,2,3)\nprint(foo:mul(2)) -- prints: vector3: 2,4,6 \nprint(foo)        -- prints: vector3: 1,2,3", 
+            "title": "mul()"
+        }, 
+        {
+            "location": "/vector-docs/#note_2", 
+            "text": "The original vector is unchanged.  Internally, this function is equivalent to the  __mul  metamethod.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_13", 
+            "text": "A scalar number.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_13", 
+            "text": "A new vector representing the element-wise scale.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_13", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#div", 
+            "text": "A vector can be inverse-scaled with a number.  local foo = luacml.vector3(2,4,6)\nprint(foo:div(2)) -- prints: vector3: 1,2,3 \nprint(foo)        -- prints: vector3: 2,4,6", 
+            "title": "div()"
+        }, 
+        {
+            "location": "/vector-docs/#note_3", 
+            "text": "The original vector is unchanged.  Internally, this function is equivalent to the  __div  metamethod.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_14", 
+            "text": "A scalar number.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_14", 
+            "text": "A new vector representing the element-wise division.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_14", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#addeq", 
+            "text": "A vector can be incremented in-place with another vector.  local foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(1,2,3)\nprint(foo:addeq(bar)) -- prints: vector3: 2,4,6 \nprint(foo)            -- prints: vector3: 2,4,6", 
+            "title": "addeq()"
+        }, 
+        {
+            "location": "/vector-docs/#note_4", 
+            "text": "The original vector (not the parameter) is updated.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_15", 
+            "text": "A vector of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_15", 
+            "text": "The updated vector after the element-wise sum.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_15", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#subeq", 
+            "text": "A vector can be subtracted in-place with another vector.  local foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(1,2,3)\nprint(foo:subeq(bar)) -- prints: vector3: 0,0,0 \nprint(foo)            -- prints: vector3: 0,0,0", 
+            "title": "subeq()"
+        }, 
+        {
+            "location": "/vector-docs/#note_5", 
+            "text": "The original vector (not the parameter) is updated.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_16", 
+            "text": "A vector of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_16", 
+            "text": "The updated vector after the element-wise subtraction.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_16", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#muleq", 
+            "text": "A vector can be scaled in-place with a number.  local foo = luacml.vector3(1,2,3)\nprint(foo:muleq(2)) -- prints: vector3: 2,4,6 \nprint(foo)          -- prints: vector3: 2,4,6", 
+            "title": "muleq()"
+        }, 
+        {
+            "location": "/vector-docs/#note_6", 
+            "text": "The original vector (not the parameter) is updated.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_17", 
+            "text": "A scalar number.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_17", 
+            "text": "The updated vector after the element-wise multiplication.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_17", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#diveq", 
+            "text": "A vector can be inverse-scaled with a number.  local foo = luacml.vector3(2,4,6)\nprint(foo:diveq(2)) -- prints: vector3: 1,2,3 \nprint(foo)          -- prints: vector3: 1,2,3", 
+            "title": "diveq()"
+        }, 
+        {
+            "location": "/vector-docs/#note_7", 
+            "text": "The original vector (not the parameter) is updated.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_18", 
+            "text": "A scalar number.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_18", 
+            "text": "The updated vector after the element-wise division.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_18", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
             "location": "/vector-docs/#vector-metamethods", 
             "text": "All vector types have a set of metamethods  that allow them to\nbe used with several operators.", 
             "title": "Vector metamethods"
@@ -201,22 +501,22 @@
             "title": "__index"
         }, 
         {
-            "location": "/vector-docs/#note", 
+            "location": "/vector-docs/#note_8", 
             "text": "For the following vector types, only the following keys are valid:     Vector Type  Valid Keys      vector2  1, 2, x, y    vector3  1, 2, 3, x, y, z    vector4  1, 2, 3, 4, x, y, z, w", 
             "title": "Note"
         }, 
         {
-            "location": "/vector-docs/#parameters_6", 
+            "location": "/vector-docs/#parameters_19", 
             "text": "An integer from 1 to  N  or one of {x, y, z, w}, depending on vector size. See note above.", 
             "title": "Parameters"
         }, 
         {
-            "location": "/vector-docs/#returns_6", 
+            "location": "/vector-docs/#returns_19", 
             "text": "The vector's element as a number.", 
             "title": "Returns"
         }, 
         {
-            "location": "/vector-docs/#errors_6", 
+            "location": "/vector-docs/#errors_19", 
             "text": "Missing arguments.  Invalid index value.  Invalid index type.", 
             "title": "Errors"
         }, 
@@ -226,23 +526,198 @@
             "title": "__newindex"
         }, 
         {
-            "location": "/vector-docs/#note_1", 
+            "location": "/vector-docs/#note_9", 
             "text": "For the following vector types, only the following keys are valid:     Vector Type  Valid Keys      vector2  1, 2, x, y    vector3  1, 2, 3, x, y, z    vector4  1, 2, 3, 4, x, y, z, w", 
             "title": "Note"
         }, 
         {
-            "location": "/vector-docs/#parameters_7", 
+            "location": "/vector-docs/#parameters_20", 
             "text": "An integer from 1 to  N  or one of {x, y, z, w}, depending on vector size. See note above.", 
             "title": "Parameters"
         }, 
         {
-            "location": "/vector-docs/#returns_7", 
+            "location": "/vector-docs/#returns_20", 
             "text": "(None)", 
             "title": "Returns"
         }, 
         {
-            "location": "/vector-docs/#errors_7", 
+            "location": "/vector-docs/#errors_20", 
             "text": "Missing arguments.  Invalid index value.  Invalid index type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#__tostring", 
+            "text": "Vectors can be converted to strings for easy printing.  local foo = luacml.vector2(1,2)\nprint(foo) -- prints: vector2: 1,2   local foo = luacml.vector4(1,2,3,4)\nprint(foo) -- prints: vector4: 1,2,3,4", 
+            "title": "__tostring"
+        }, 
+        {
+            "location": "/vector-docs/#note_10", 
+            "text": "This function internally uses  lua_pushfstring  to format the output, so be\naware of different formatting across versions of Lua.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_21", 
+            "text": "A vector.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_21", 
+            "text": "The vector formatted as a string.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_21", 
+            "text": "(None)", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#__unm", 
+            "text": "The negative of a vector can be generated.  local foo = luacml.vector3(1,2,-3)\nprint(-foo) -- prints: vector3: -1,-2,3", 
+            "title": "__unm"
+        }, 
+        {
+            "location": "/vector-docs/#note_11", 
+            "text": "The original vector is unchanged.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_22", 
+            "text": "A vector.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_22", 
+            "text": "A new vector representing the negative of the original.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_22", 
+            "text": "(None)", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#__add", 
+            "text": "Two vectors can be added together.  local foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(3,2,1)\nprint(foo + bar) -- prints: vector3 4,4,4", 
+            "title": "__add"
+        }, 
+        {
+            "location": "/vector-docs/#note_12", 
+            "text": "The original vectors are unchanged.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_23", 
+            "text": "Two vectors of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_23", 
+            "text": "A new vector representing the element-wise sum.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_23", 
+            "text": "Invalid types.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#__sub", 
+            "text": "Two vectors can be subtracted.  local foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(3,2,1)\nprint(foo - bar) -- prints: vector3 -2,0,2", 
+            "title": "__sub"
+        }, 
+        {
+            "location": "/vector-docs/#note_13", 
+            "text": "The original vectors are unchanged.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_24", 
+            "text": "Two vectors of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_24", 
+            "text": "A new vector representing the element-wise difference.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_24", 
+            "text": "Invalid types.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#__mul", 
+            "text": "Vectors can be scaled.  local foo = luacml.vector3(1,2,3)\nprint(2.0 * foo) -- prints: vector3 2,4,6 \nprint(foo * 3.0) -- prints: vector3 3,6,9", 
+            "title": "__mul"
+        }, 
+        {
+            "location": "/vector-docs/#note_14", 
+            "text": "The original vector is unchanged.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_25", 
+            "text": "A vector and a number, in either order.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_25", 
+            "text": "A new vector representing the element-wise scale.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_25", 
+            "text": "Invalid types.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#__div", 
+            "text": "Vectors can be inverse divided.  local foo = luacml.vector3(2,4,6)\nprint(foo / 2.0) -- prints: vector3 1,2,3", 
+            "title": "__div"
+        }, 
+        {
+            "location": "/vector-docs/#note_15", 
+            "text": "The original vector is unchanged.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_26", 
+            "text": "A vector and a number.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_26", 
+            "text": "A new vector representing the element-wise division.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_26", 
+            "text": "Invalid types.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/vector-docs/#__eq", 
+            "text": "Vectors can be compared.  local foo = luacml.vector3(2,4,6)\nlocal bar = luacml.vector3(2,4,6)\nprint(foo == bar) -- prints: true", 
+            "title": "__eq"
+        }, 
+        {
+            "location": "/vector-docs/#note_16", 
+            "text": "The original vectors are unchanged.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/vector-docs/#parameters_27", 
+            "text": "Two vectors of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/vector-docs/#returns_27", 
+            "text": "Boolean represent element-wise equality.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/vector-docs/#errors_27", 
+            "text": "Invalid types.", 
             "title": "Errors"
         }
     ]

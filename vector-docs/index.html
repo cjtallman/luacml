@@ -12,9 +12,9 @@
 	<title>Vector docs - LuaCML Documentation</title>
 
         <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -32,6 +32,7 @@
 
         <!-- Collapsed navigation -->
         <div class="navbar-header">
+            
             <!-- Expander button -->
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -39,6 +40,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            
 
             <!-- Main title -->
             <a class="navbar-brand" href="..">LuaCML Documentation</a>
@@ -46,59 +48,62 @@
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
-            <!-- Main navigation -->
-            <ul class="nav navbar-nav">
             
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../matrix-types/">Matrix types</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../quaternion-docs/">Quaternion docs</a>
+                    </li>
+                
+                
+                
+                    <li class="active">
+                        <a href="./">Vector docs</a>
+                    </li>
+                
+                
+                </ul>
             
-                <li >
-                    <a href="..">Home</a>
-                </li>
-            
-            
-            
-                <li >
-                    <a href="../matrix-types/">Matrix types</a>
-                </li>
-            
-            
-            
-                <li >
-                    <a href="../quaternion-docs/">Quaternion docs</a>
-                </li>
-            
-            
-            
-                <li class="active">
-                    <a href="./">Vector docs</a>
-                </li>
-            
-            
-            </ul>
 
-            <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
                         <i class="fa fa-search"></i> Search
                     </a>
                 </li>
-                <li >
-                    <a rel="next" href="../quaternion-docs/">
-                        <i class="fa fa-arrow-left"></i> Previous
-                    </a>
-                </li>
-                <li class="disabled">
-                    <a rel="prev" >
-                        Next <i class="fa fa-arrow-right"></i>
-                    </a>
-                </li>
                 
-                <li>
-                    <a href="https://github.com/cjtallman/luacml">
-                        
-                        luacml
-                    </a>
-                </li>
+                    <li >
+                        <a rel="next" href="../quaternion-docs/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li class="disabled">
+                        <a rel="prev" >
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a href="https://github.com/cjtallman/luacml">
+                            
+                            luacml
+                        </a>
+                    </li>
                 
             </ul>
         </div>
@@ -106,7 +111,8 @@
 </div>
 
         <div class="container">
-            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
         <li class="main active"><a href="#vectors">Vectors</a></li>
@@ -120,7 +126,7 @@
     
     </ul>
 </div></div>
-            <div class="col-md-9" role="main">
+                <div class="col-md-9" role="main">
 
 <h1 id="vectors">Vectors</h1>
 <h2 id="vector-types">Vector types</h2>
@@ -273,6 +279,265 @@ foo:normalize()
 <li>Extra arguments.</li>
 </ul>
 <hr />
+<h3 id="zero">zero()</h3>
+<p>A vector can be zeroed in-place:</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+foo:zero()
+</code></pre>
+
+<h4 id="parameters_6">Parameters</h4>
+<p>(None)</p>
+<h4 id="returns_6">Returns</h4>
+<p>The vector, after it has been zeroed.</p>
+<h4 id="errors_6">Errors</h4>
+<ul>
+<li>Extra arguments.</li>
+</ul>
+<hr />
+<h3 id="cardinal">cardinal()</h3>
+<p>A vector can be set to a cardinal axis:</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+foo:cardinal(1) -- sets to &lt;1,0,0&gt;
+foo:cardinal(2) -- sets to &lt;0,1,0&gt;
+foo:cardinal(3) -- sets to &lt;0,0,1&gt;
+</code></pre>
+
+<h4 id="parameters_7">Parameters</h4>
+<p>An integer from 1 to <strong>N</strong> for a vector of size <strong>N</strong>.</p>
+<h4 id="returns_7">Returns</h4>
+<p>The vector, after it has been set.</p>
+<h4 id="errors_7">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="minimize">minimize()</h3>
+<p>A vector can be set to the element-wise minimum of itself and another vector.</p>
+<pre><code class="lua">local foo = luacml.vector3(10,20,30)
+local bar = luacml.vector3(1,200,29)
+foo:minimize(bar) -- sets to &lt;1,20,29&gt;
+</code></pre>
+
+<h4 id="parameters_8">Parameters</h4>
+<p>A vector of same size.</p>
+<h4 id="returns_8">Returns</h4>
+<p>(None)</p>
+<h4 id="errors_8">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="maximize">maximize()</h3>
+<p>A vector can be set to the element-wise maximum of itself and another vector.</p>
+<pre><code class="lua">local foo = luacml.vector3(10,20,30)
+local bar = luacml.vector3(1,200,29)
+foo:maximize(bar) -- sets to &lt;10,200,30&gt;
+</code></pre>
+
+<h4 id="parameters_9">Parameters</h4>
+<p>A vector of same size.</p>
+<h4 id="returns_9">Returns</h4>
+<p>(None)</p>
+<h4 id="errors_9">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="random">random()</h3>
+<p>A vector can be set to a random vector with elements between specified minimum
+and maximum values.</p>
+<pre><code class="lua">local foo = luacml.vector3()
+foo:random(-1,1) -- sets each element to a random value between -1 and 1.
+</code></pre>
+
+<h4 id="parameters_10">Parameters</h4>
+<ul>
+<li>The minimum number.</li>
+<li>The maximum number.</li>
+</ul>
+<h4 id="returns_10">Returns</h4>
+<p>(None)</p>
+<h4 id="errors_10">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="add">add()</h3>
+<p>A vector can be added with another vector.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+local bar = luacml.vector3(1,2,3)
+print(foo:add(bar)) -- prints: vector3:&lt;2,4,6&gt;
+print(foo)          -- prints: vector3:&lt;1,2,3&gt;
+</code></pre>
+
+<h4 id="note">Note</h4>
+<p>The original vectors are unchanged.</p>
+<p>Internally, this equivalent to the <a href="#__add">__add</a> metamethod.</p>
+<h4 id="parameters_11">Parameters</h4>
+<p>A vector of same type.</p>
+<h4 id="returns_11">Returns</h4>
+<p>A new vector representing the element-wise sum.</p>
+<h4 id="errors_11">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="sub">sub()</h3>
+<p>A vector can be added with another vector.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+local bar = luacml.vector3(1,2,3)
+print(foo:sub(bar)) -- prints: vector3:&lt;0,0,0&gt;
+print(foo)          -- prints: vector3:&lt;1,2,3&gt;
+</code></pre>
+
+<h4 id="note_1">Note</h4>
+<p>The original vectors are unchanged.</p>
+<p>Internally, this function is equivalent to the <a href="#__sub">__sub</a> metamethod.</p>
+<h4 id="parameters_12">Parameters</h4>
+<p>A vector of same type.</p>
+<h4 id="returns_12">Returns</h4>
+<p>A new vector representing the element-wise difference.</p>
+<h4 id="errors_12">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="mul">mul()</h3>
+<p>A vector can be scaled with a number.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+print(foo:mul(2)) -- prints: vector3:&lt;2,4,6&gt;
+print(foo)        -- prints: vector3:&lt;1,2,3&gt;
+</code></pre>
+
+<h4 id="note_2">Note</h4>
+<p>The original vector is unchanged.</p>
+<p>Internally, this function is equivalent to the <a href="#__mul">__mul</a> metamethod.</p>
+<h4 id="parameters_13">Parameters</h4>
+<p>A scalar number.</p>
+<h4 id="returns_13">Returns</h4>
+<p>A new vector representing the element-wise scale.</p>
+<h4 id="errors_13">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="div">div()</h3>
+<p>A vector can be inverse-scaled with a number.</p>
+<pre><code class="lua">local foo = luacml.vector3(2,4,6)
+print(foo:div(2)) -- prints: vector3:&lt;1,2,3&gt;
+print(foo)        -- prints: vector3:&lt;2,4,6&gt;
+</code></pre>
+
+<h4 id="note_3">Note</h4>
+<p>The original vector is unchanged.</p>
+<p>Internally, this function is equivalent to the <a href="#__div">__div</a> metamethod.</p>
+<h4 id="parameters_14">Parameters</h4>
+<p>A scalar number.</p>
+<h4 id="returns_14">Returns</h4>
+<p>A new vector representing the element-wise division.</p>
+<h4 id="errors_14">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="addeq">addeq()</h3>
+<p>A vector can be incremented in-place with another vector.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+local bar = luacml.vector3(1,2,3)
+print(foo:addeq(bar)) -- prints: vector3:&lt;2,4,6&gt;
+print(foo)            -- prints: vector3:&lt;2,4,6&gt;
+</code></pre>
+
+<h4 id="note_4">Note</h4>
+<p>The original vector (not the parameter) is updated.</p>
+<h4 id="parameters_15">Parameters</h4>
+<p>A vector of same type.</p>
+<h4 id="returns_15">Returns</h4>
+<p>The updated vector after the element-wise sum.</p>
+<h4 id="errors_15">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="subeq">subeq()</h3>
+<p>A vector can be subtracted in-place with another vector.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+local bar = luacml.vector3(1,2,3)
+print(foo:subeq(bar)) -- prints: vector3:&lt;0,0,0&gt;
+print(foo)            -- prints: vector3:&lt;0,0,0&gt;
+</code></pre>
+
+<h4 id="note_5">Note</h4>
+<p>The original vector (not the parameter) is updated.</p>
+<h4 id="parameters_16">Parameters</h4>
+<p>A vector of same type.</p>
+<h4 id="returns_16">Returns</h4>
+<p>The updated vector after the element-wise subtraction.</p>
+<h4 id="errors_16">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="muleq">muleq()</h3>
+<p>A vector can be scaled in-place with a number.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+print(foo:muleq(2)) -- prints: vector3:&lt;2,4,6&gt;
+print(foo)          -- prints: vector3:&lt;2,4,6&gt;
+</code></pre>
+
+<h4 id="note_6">Note</h4>
+<p>The original vector (not the parameter) is updated.</p>
+<h4 id="parameters_17">Parameters</h4>
+<p>A scalar number.</p>
+<h4 id="returns_17">Returns</h4>
+<p>The updated vector after the element-wise multiplication.</p>
+<h4 id="errors_17">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="diveq">diveq()</h3>
+<p>A vector can be inverse-scaled with a number.</p>
+<pre><code class="lua">local foo = luacml.vector3(2,4,6)
+print(foo:diveq(2)) -- prints: vector3:&lt;1,2,3&gt;
+print(foo)          -- prints: vector3:&lt;1,2,3&gt;
+</code></pre>
+
+<h4 id="note_7">Note</h4>
+<p>The original vector (not the parameter) is updated.</p>
+<h4 id="parameters_18">Parameters</h4>
+<p>A scalar number.</p>
+<h4 id="returns_18">Returns</h4>
+<p>The updated vector after the element-wise division.</p>
+<h4 id="errors_18">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
 <h2 id="vector-metamethods">Vector metamethods</h2>
 <p>All vector types have a set of
 <a href="http://www.lua.org/manual/5.3/manual.html#2.4">metamethods</a> that allow them to
@@ -292,7 +557,7 @@ print(foo.Y)    -- prints: 20
 print(foo[&quot;z&quot;]) -- prints: 30
 </code></pre>
 
-<h4 id="note">Note</h4>
+<h4 id="note_8">Note</h4>
 <p>For the following vector types, only the following keys are valid:</p>
 <table>
 <thead>
@@ -316,14 +581,14 @@ print(foo[&quot;z&quot;]) -- prints: 30
 </tr>
 </tbody>
 </table>
-<h4 id="parameters_6">Parameters</h4>
+<h4 id="parameters_19">Parameters</h4>
 <ul>
 <li>An integer from 1 to <strong><em>N</em></strong></li>
 <li>or one of {x, y, z, w}, depending on vector size. See note above.</li>
 </ul>
-<h4 id="returns_6">Returns</h4>
+<h4 id="returns_19">Returns</h4>
 <p>The vector's element as a number.</p>
-<h4 id="errors_6">Errors</h4>
+<h4 id="errors_19">Errors</h4>
 <ul>
 <li>Missing arguments.</li>
 <li>Invalid index value.</li>
@@ -344,7 +609,7 @@ foo.Y = 20
 foo[&quot;z&quot;] = 30
 </code></pre>
 
-<h4 id="note_1">Note</h4>
+<h4 id="note_9">Note</h4>
 <p>For the following vector types, only the following keys are valid:</p>
 <table>
 <thead>
@@ -368,26 +633,150 @@ foo[&quot;z&quot;] = 30
 </tr>
 </tbody>
 </table>
-<h4 id="parameters_7">Parameters</h4>
+<h4 id="parameters_20">Parameters</h4>
 <ul>
 <li>An integer from 1 to <strong><em>N</em></strong></li>
 <li>or one of {x, y, z, w}, depending on vector size. See note above.</li>
 </ul>
-<h4 id="returns_7">Returns</h4>
+<h4 id="returns_20">Returns</h4>
 <p>(None)</p>
-<h4 id="errors_7">Errors</h4>
+<h4 id="errors_20">Errors</h4>
 <ul>
 <li>Missing arguments.</li>
 <li>Invalid index value.</li>
 <li>Invalid index type.</li>
 </ul>
-<hr /></div>
+<hr />
+<h3 id="__tostring">__tostring</h3>
+<p>Vectors can be converted to strings for easy printing.</p>
+<pre><code class="lua">local foo = luacml.vector2(1,2)
+print(foo) -- prints: vector2:&lt;1,2&gt;
+</code></pre>
+
+<pre><code class="lua">local foo = luacml.vector4(1,2,3,4)
+print(foo) -- prints: vector4:&lt;1,2,3,4&gt;
+</code></pre>
+
+<h4 id="note_10">Note</h4>
+<p>This function internally uses <code>lua_pushfstring</code> to format the output, so be
+aware of different formatting across versions of Lua.</p>
+<h4 id="parameters_21">Parameters</h4>
+<p>A vector.</p>
+<h4 id="returns_21">Returns</h4>
+<p>The vector formatted as a string.</p>
+<h4 id="errors_21">Errors</h4>
+<p>(None)</p>
+<hr />
+<h3 id="__unm">__unm</h3>
+<p>The negative of a vector can be generated.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,-3)
+print(-foo) -- prints: vector3:&lt;-1,-2,3&gt;
+</code></pre>
+
+<h4 id="note_11">Note</h4>
+<p>The original vector is unchanged.</p>
+<h4 id="parameters_22">Parameters</h4>
+<p>A vector.</p>
+<h4 id="returns_22">Returns</h4>
+<p>A new vector representing the negative of the original.</p>
+<h4 id="errors_22">Errors</h4>
+<p>(None)</p>
+<hr />
+<h3 id="__add">__add</h3>
+<p>Two vectors can be added together.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+local bar = luacml.vector3(3,2,1)
+print(foo + bar) -- prints: vector3&lt;4,4,4&gt;
+</code></pre>
+
+<h4 id="note_12">Note</h4>
+<p>The original vectors are unchanged.</p>
+<h4 id="parameters_23">Parameters</h4>
+<p>Two vectors of same type.</p>
+<h4 id="returns_23">Returns</h4>
+<p>A new vector representing the element-wise sum.</p>
+<h4 id="errors_23">Errors</h4>
+<ul>
+<li>Invalid types.</li>
+</ul>
+<hr />
+<h3 id="__sub">__sub</h3>
+<p>Two vectors can be subtracted.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+local bar = luacml.vector3(3,2,1)
+print(foo - bar) -- prints: vector3&lt;-2,0,2&gt;
+</code></pre>
+
+<h4 id="note_13">Note</h4>
+<p>The original vectors are unchanged.</p>
+<h4 id="parameters_24">Parameters</h4>
+<p>Two vectors of same type.</p>
+<h4 id="returns_24">Returns</h4>
+<p>A new vector representing the element-wise difference.</p>
+<h4 id="errors_24">Errors</h4>
+<ul>
+<li>Invalid types.</li>
+</ul>
+<hr />
+<h3 id="__mul">__mul</h3>
+<p>Vectors can be scaled.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+print(2.0 * foo) -- prints: vector3&lt;2,4,6&gt;
+print(foo * 3.0) -- prints: vector3&lt;3,6,9&gt;
+</code></pre>
+
+<h4 id="note_14">Note</h4>
+<p>The original vector is unchanged.</p>
+<h4 id="parameters_25">Parameters</h4>
+<p>A vector and a number, in either order.</p>
+<h4 id="returns_25">Returns</h4>
+<p>A new vector representing the element-wise scale.</p>
+<h4 id="errors_25">Errors</h4>
+<ul>
+<li>Invalid types.</li>
+</ul>
+<hr />
+<h3 id="__div">__div</h3>
+<p>Vectors can be inverse divided.</p>
+<pre><code class="lua">local foo = luacml.vector3(2,4,6)
+print(foo / 2.0) -- prints: vector3&lt;1,2,3&gt;
+</code></pre>
+
+<h4 id="note_15">Note</h4>
+<p>The original vector is unchanged.</p>
+<h4 id="parameters_26">Parameters</h4>
+<p>A vector and a number.</p>
+<h4 id="returns_26">Returns</h4>
+<p>A new vector representing the element-wise division.</p>
+<h4 id="errors_26">Errors</h4>
+<ul>
+<li>Invalid types.</li>
+</ul>
+<hr />
+<h3 id="__eq">__eq</h3>
+<p>Vectors can be compared.</p>
+<pre><code class="lua">local foo = luacml.vector3(2,4,6)
+local bar = luacml.vector3(2,4,6)
+print(foo == bar) -- prints: true
+</code></pre>
+
+<h4 id="note_16">Note</h4>
+<p>The original vectors are unchanged.</p>
+<h4 id="parameters_27">Parameters</h4>
+<p>Two vectors of same type.</p>
+<h4 id="returns_27">Returns</h4>
+<p>Boolean represent element-wise equality.</p>
+<h4 id="errors_27">Errors</h4>
+<ul>
+<li>Invalid types.</li>
+</ul></div>
+            
         </div>
 
         <footer class="col-md-12">
             <hr>
             
-            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
 
         <script src="../js/jquery-1.10.2.min.js"></script>
@@ -421,5 +810,6 @@ foo[&quot;z&quot;] = 30
                 </div>
             </div>
         </div>
+
     </body>
 </html>
