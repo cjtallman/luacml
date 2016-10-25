@@ -2,26 +2,26 @@ language: python
 sudo: false
 
 env:
-  - LUA="lua 5.1"
-  - LUA="lua 5.2"
-  - LUA="lua 5.3"
-  - LUA="luajit 2.0"
-  - LUA="luajit 2.1"
-    EXECUTE_BUILD_DOCS=true
+    - LUA="lua 5.1"
+      DEPLOY_DOCS="$(if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then echo -n 'true' ; else echo -n 'false' ; fi)"
+    - LUA="lua 5.2"
+    - LUA="lua 5.3"
+    - LUA="luajit 2.0"
+    - LUA="luajit 2.1"
 
 before_install:
-  - pip install hererocks
-  - hererocks env --$LUA -rlatest
-  - source env/bin/activate
-  - luarocks install busted
-  - luarocks install luacheck
+    - pip install hererocks
+    - hererocks env --$LUA -rlatest
+    - source env/bin/activate
+    - luarocks install busted
+    - luarocks install luacheck
 
 install:
-  - luarocks make rockspecs/luacml-scm-1.rockspec
+    - luarocks make rockspecs/luacml-scm-1.rockspec
 
 script:
-  - luacheck spec
-  - busted --verbose
+    - luacheck spec
+    - busted --verbose
 
 after_success:
-  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && $EXECUTE_BUILD_DOCS == "true" && bash scripts/deploy-pages.sh
+    - if [[ $DEPLOY_DOCS == "true" ]]; then echo "Preparing to build and deploy documentation" ; ./scripts/deploy-pages.sh ; echo "Completed deploying documentation" ; fi
