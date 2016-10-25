@@ -5,6 +5,6 @@ FULL_REPO="https://${GH_TOKEN}$GH_REPO"
 
 pip install mkdocs
 
-git remote add origin $FULL_REPO
+git remote set-url origin $FULL_REPO
 
 mkdocs gh-deploy --clean
