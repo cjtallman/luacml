@@ -2,4 +2,4 @@ site_name: LuaCML Documentation
 site_dir: public
 repo_url: https://github.com/cjtallman/luacml
 repo_name: luacml
-theme: cosmo
+#theme: cosmo
