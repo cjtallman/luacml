@@ -31,14 +31,269 @@
             "title": "Compatibility"
         }, 
         {
-            "location": "/matrix-types/", 
-            "text": "Matrix Docs", 
+            "location": "/matrix-docs/", 
+            "text": "Matrices\n\n\nMatrix types\n\n\nThe following vector types are provided by LuaCML:\n\n\n\n\n\n\n\n\nType\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nmatrix22\n\n\nA 2x2 row major, column basis matrix based on \nlua_Number\n\n\n\n\n\n\nmatrix22_c\n\n\nA 2x2 column major, column basis matrix based on \nlua_Number\n\n\n\n\n\n\nmatrix22_r\n\n\nA 2x2 row major, row basis matrix based on \nlua_Number\n\n\n\n\n\n\nmatrix33\n\n\nA 3x3 row major, column basis matrix based on \nlua_Number\n\n\n\n\n\n\nmatrix33_c\n\n\nA 3x3 column major, column basis matrix based on \nlua_Number\n\n\n\n\n\n\nmatrix33_r\n\n\nA 3x3 row major, row basis matrix based on \nlua_Number\n\n\n\n\n\n\nmatrix44\n\n\nA 4x4 row major, column basis matrix based on \nlua_Number\n\n\n\n\n\n\nmatrix44_c\n\n\nA 4x4 column major, column basis matrix based on \nlua_Number\n\n\n\n\n\n\nmatrix44_r\n\n\nA 4x4 row major, row basis matrix based on \nlua_Number\n\n\n\n\n\n\nmatrix23_c\n\n\nA 2x3 column major, column basis matrix based on \nlua_Number\n\n\n\n\n\n\nmatrix32_r\n\n\nA 3x2 row major, row basis matrix based on \nlua_Number\n\n\n\n\n\n\nmatrix34_c\n\n\nA 3x4 column major, column basis matrix based on \nlua_Number\n\n\n\n\n\n\nmatrix43_r\n\n\nA 4x3 row major, row basis matrix based on \nlua_Number\n\n\n\n\n\n\n\n\nMatrix functions\n\n\nconstructor\n\n\nMatrices have default constructors, initialized with identity:\n\n\nlocal foo = luacml.matrix22()\n-- Set to: |1 0|\n--         |0 1|\n\n\n\n\nMatrices can be constructed from individual numbers:\n\n\nlocal foo = luacml.matrix33(1,2,3,4,5,6,7,8,9)\n-- Set to: |1 2 3|\n--         |4 5 6|\n--         |7 8 9|\n\n\n\n\nOr from a table of numbers:\n\n\nlocal foo = luacml.matrix22({1,2,3,4})\n-- Set to: |1 2|\n--         |3 4|\n\n\n\n\nOr from another matrix:\n\n\nlocal foo = luacml.matrix22(1,2,3,4)\nlocal bar = luacml.matrix22(foo)\n-- Set to: |1 2|\n--         |3 4|\n\n\n\n\nParameters\n\n\n\n\nM*N\n numbers.\n\n\nor table of \nM*N\n numbers.\n\n\nor a matrix of same type.\n\n\n\n\nReturns\n\n\nThe newly constructed matrix.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\ntotable()\n\n\nMatrices can be converted to a table:\n\n\nlocal foo = luacml.matrix33(1,2,3,4,5,6,7,8,9)\nlocal bar = foo:totable()\nprint(bar[1], bar[2], bar[3]) -- prints: 1 2 3\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nAn array containing the matrix's elements.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nset()\n\n\nMatrices can be set from individual numbers:\n\n\nlocal foo = luacml.matrix33()\nfoo:set(1,2,3,4,5,6,7,8,9)\n\n\n\n\nOr from a table of numbers:\n\n\nlocal foo = luacml.matrix33()\nfoo:set({1,2,3,4,5,6,7,8,9})\n\n\n\n\nOr from another matrix:\n\n\nlocal foo = luacml.matrix33()\nfoo:set(luacml.matrix33(1,2,3,4,5,6,7,8,9))\n\n\n\n\nParameters\n\n\n\n\nM*N\n numbers.\n\n\nor table of \nM*N\n numbers.\n\n\nor a matrix of same type.\n\n\n\n\nReturns\n\n\nThe matrix, after it has been set.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nidentity()\n\n\nA matrix can be set to identity in-place:\n\n\nlocal foo = luacml.matrix33(1,2,3,4,5,6,7,8,9)\nfoo:identity()\n-- Set to: |1 0 0|\n--         |0 1 0|\n--         |0 0 1|\n\n\n\n\nlocal foo = luacml.matrix23_c(1,2,3,4,5,6)\nfoo:identity()\n-- Set to: |1 0 0|\n--         |0 1 0|\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe matrix, after it has been set.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nzero()\n\n\nA matrix can be set to zero in-place:\n\n\nlocal foo = luacml.matrix33(1,2,3,4,5,6,7,8,9)\nfoo:zero()\n-- Set to: |0 0 0|\n--         |0 0 0|\n--         |0 0 0|\n\n\n\n\nlocal foo = luacml.matrix23_c(1,2,3,4,5,6)\nfoo:zero()\n-- Set to: |0 0 0|\n--         |0 0 0|\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe matrix, after it has been zeroed.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nrows()\n\n\nThe number of rows for a matrix can be read:\n\n\nlocal foo = luacml.matrix33()\nprint(foo:rows()) -- Prints: 3\n\n\n\n\nlocal foo = luacml.matrix23_c()\nprint(foo:rows()) -- Prints: 2\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe number of matrix rows, as an integer.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\ncols()\n\n\nThe number of columns for a matrix can be read:\n\n\nlocal foo = luacml.matrix33()\nprint(foo:cols()) -- Prints: 3\n\n\n\n\nlocal foo = luacml.matrix23_c()\nprint(foo:cols()) -- Prints: 3\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe number of matrix columns, as an integer.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\ntranspose()\n\n\nA square matrix can be transposed:\n\n\nlocal foo = luacml.matrix33(1,2,3,4,5,6,7,8,9)\nfoo:transpose()\n-- Set to: |1 4 7|\n--         |2 5 8|\n--         |3 6 9|\n\n\n\n\nNote\n\n\nOnly square matrices have this function. Calling it with a non-square matrix\nwill throw an error.\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe matrix after it has been transposed.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nMatrix metamethods\n\n\nAll matrix types have a set of\n\nmetamethods\n that allow them to\nbe used with several operators.\n\n\n\n\n__tostring\n\n\nMatrices can be converted to strings for easy printing.\n\n\nlocal foo = luacml.matrix33(1,2,3,4,5,6,7,8,9)\nprint(foo) -- prints: matrix33:|1,2,3|4,5,6|7,8,9|\n\n\n\n\nlocal foo = luacml.matrix23_c(1,2,3,4,5,6)\nprint(foo) -- prints: matrix23_c:|1,2,3|4,5,6|\n\n\n\n\nNote\n\n\nThis function internally uses \nlua_pushfstring\n to format the output, so be\naware of slightly different formatting across versions of Lua.\n\n\nParameters\n\n\nA matrix.\n\n\nReturns\n\n\nThe matrix formatted as a string.\n\n\nErrors\n\n\n(None)\n\n\n\n\n__index\n\n\nThe __index metamethod permits vector element access.\n\n\nMatrices can be indexed with 1-based integer keys (1 through \nM*N\n):\n\n\nlocal foo = luacml.matrix22(10,20,30,40)\nprint(foo[1],foo[2],foo[3],foo[4]) -- prints: 10 20 30 40\n\n\n\n\nOr with case-insensitive \"m\\\n\\\n\" string keys:\n\n\nlocal foo = luacml.matrix22(10,20,30,40)\nprint(foo.m11, foo.m12, foo.m21, foo.m22) -- prints: 10 20 30 40\n\n\n\n\nNote\n\n\nThe \nmatrix22\n, \nmatrix22_c\n and \nmatrix22_r\n types use the following indices\nand mappings:\n\n\n| 1 | 2 |\n| 3 | 4 |\n\n\n\n\nor\n\n\n| m11 | m12 |\n| m21 | m22 |\n\n\n\n\nThe \nmatrix33\n, \nmatrix33_c\n and \nmatrix33_r\n types use the following indices\nand mappings:\n\n\n| 1 | 2 | 3 |\n| 4 | 5 | 6 |\n| 7 | 8 | 9 |\n\n\n\n\nor\n\n\n| m11 | m12 | m13 |\n| m21 | m22 | m23 |\n| m31 | m32 | m33 |\n\n\n\n\nThe \nmatrix44\n, \nmatrix44_c\n and \nmatrix44_r\n types use the following indices\nand mappings:\n\n\n|  1 |  2 |  3 |  4 |\n|  5 |  6 |  7 |  8 |\n|  9 | 10 | 11 | 12 |\n| 13 | 14 | 15 | 16 |\n\n\n\n\nor\n\n\n| m11 | m12 | m13 | m14 |\n| m21 | m22 | m23 | m24 |\n| m31 | m32 | m33 | m34 |\n| m41 | m42 | m43 | m44 |\n\n\n\n\nThe \nmatrix23_c\n type uses the following indices and map:\n\n\n| 1 | 2 | 3 |\n| 4 | 5 | 6 |\n\n\n\n\nor\n\n\n| m11 | m12 | m13 |\n| m21 | m22 | m23 |\n\n\n\n\nThe \nmatrix32_r\n type uses the following indices and map:\n\n\n| 1 | 2 |\n| 3 | 4 |\n| 5 | 6 |\n\n\n\n\nor\n\n\n| m11 | m12 |\n| m21 | m22 |\n| m31 | m32 |\n\n\n\n\nThe \nmatrix34_c\n type uses the following indices and map:\n\n\n|  1 |  2 |  3 |  4 |\n|  5 |  6 |  7 |  8 |\n|  9 | 10 | 11 | 12 |\n\n\n\n\nor\n\n\n| m11 | m12 | m13 | m14 |\n| m21 | m22 | m23 | m24 |\n| m31 | m32 | m33 | m34 |\n\n\n\n\nThe \nmatrix43_r\n type uses the following indices and map:\n\n\n|  1 |  2 |  3 |\n|  4 |  5 |  6 |\n|  7 |  8 |  9 |\n| 10 | 11 | 12 |\n\n\n\n\nor\n\n\n| m11 | m12 | m13 |\n| m21 | m22 | m23 |\n| m31 | m32 | m33 |\n| m41 | m42 | m43 |\n\n\n\n\nParameters\n\n\n\n\nAn integer from 1 to \nM*N\n, where M is rows, N is columns.\n\n\nor one of the string keys following the \"m\\\n\\\n\" convention (ie \"m12\"\n    for the element in the first row, second column).\n\n\n\n\nReturns\n\n\nThe matrix's element as a number.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nInvalid index value.\n\n\nInvalid index type.\n\n\n\n\n\n\n__newindex\n\n\nThe __newindex metamethod permits matrix element setting.\n\n\nMatrices can be indexed with 1-based integer keys:\n\n\nlocal foo = luacml.matrix22()\nfoo[1] = 10\nfoo[2] = 20\nfoo[3] = 30\nfoo[4] = 40\n-- Sets to: | 10 20 |\n--          | 30 40 |\n\n\n\n\nOr with case-insensitive \"m\\\n\\\n\" string keys:\n\n\nlocal foo = luacml.matrix22()\nfoo.m11 = 10\nfoo.m12 = 20\nfoo.m21 = 30\nfoo.m22 = 40\n-- Sets to: | 10 20 |\n--          | 30 40 |\n\n\n\n\nNote\n\n\nSee Note for \n__index\n about valid keys for each type of matrix.\n\n\nParameters\n\n\n\n\nAn integer from 1 to \nM*N\n, where M is rows, N is columns.\n\n\nor one of the string keys following the \"m\\\n\\\n\" convention (ie \"m12\"\n    for the element in the first row, second column).\n\n\n\n\nReturns\n\n\n(None)\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nInvalid index value.\n\n\nInvalid index type.", 
+            "title": "Matrix docs"
+        }, 
+        {
+            "location": "/matrix-docs/#matrices", 
+            "text": "", 
+            "title": "Matrices"
+        }, 
+        {
+            "location": "/matrix-docs/#matrix-types", 
+            "text": "The following vector types are provided by LuaCML:     Type  Description      matrix22  A 2x2 row major, column basis matrix based on  lua_Number    matrix22_c  A 2x2 column major, column basis matrix based on  lua_Number    matrix22_r  A 2x2 row major, row basis matrix based on  lua_Number    matrix33  A 3x3 row major, column basis matrix based on  lua_Number    matrix33_c  A 3x3 column major, column basis matrix based on  lua_Number    matrix33_r  A 3x3 row major, row basis matrix based on  lua_Number    matrix44  A 4x4 row major, column basis matrix based on  lua_Number    matrix44_c  A 4x4 column major, column basis matrix based on  lua_Number    matrix44_r  A 4x4 row major, row basis matrix based on  lua_Number    matrix23_c  A 2x3 column major, column basis matrix based on  lua_Number    matrix32_r  A 3x2 row major, row basis matrix based on  lua_Number    matrix34_c  A 3x4 column major, column basis matrix based on  lua_Number    matrix43_r  A 4x3 row major, row basis matrix based on  lua_Number", 
             "title": "Matrix types"
         }, 
         {
-            "location": "/matrix-types/#matrix-docs", 
+            "location": "/matrix-docs/#matrix-functions", 
             "text": "", 
-            "title": "Matrix Docs"
+            "title": "Matrix functions"
+        }, 
+        {
+            "location": "/matrix-docs/#constructor", 
+            "text": "Matrices have default constructors, initialized with identity:  local foo = luacml.matrix22()\n-- Set to: |1 0|\n--         |0 1|  Matrices can be constructed from individual numbers:  local foo = luacml.matrix33(1,2,3,4,5,6,7,8,9)\n-- Set to: |1 2 3|\n--         |4 5 6|\n--         |7 8 9|  Or from a table of numbers:  local foo = luacml.matrix22({1,2,3,4})\n-- Set to: |1 2|\n--         |3 4|  Or from another matrix:  local foo = luacml.matrix22(1,2,3,4)\nlocal bar = luacml.matrix22(foo)\n-- Set to: |1 2|\n--         |3 4|", 
+            "title": "constructor"
+        }, 
+        {
+            "location": "/matrix-docs/#parameters", 
+            "text": "M*N  numbers.  or table of  M*N  numbers.  or a matrix of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/matrix-docs/#returns", 
+            "text": "The newly constructed matrix.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/matrix-docs/#errors", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/matrix-docs/#totable", 
+            "text": "Matrices can be converted to a table:  local foo = luacml.matrix33(1,2,3,4,5,6,7,8,9)\nlocal bar = foo:totable()\nprint(bar[1], bar[2], bar[3]) -- prints: 1 2 3", 
+            "title": "totable()"
+        }, 
+        {
+            "location": "/matrix-docs/#parameters_1", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/matrix-docs/#returns_1", 
+            "text": "An array containing the matrix's elements.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/matrix-docs/#errors_1", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/matrix-docs/#set", 
+            "text": "Matrices can be set from individual numbers:  local foo = luacml.matrix33()\nfoo:set(1,2,3,4,5,6,7,8,9)  Or from a table of numbers:  local foo = luacml.matrix33()\nfoo:set({1,2,3,4,5,6,7,8,9})  Or from another matrix:  local foo = luacml.matrix33()\nfoo:set(luacml.matrix33(1,2,3,4,5,6,7,8,9))", 
+            "title": "set()"
+        }, 
+        {
+            "location": "/matrix-docs/#parameters_2", 
+            "text": "M*N  numbers.  or table of  M*N  numbers.  or a matrix of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/matrix-docs/#returns_2", 
+            "text": "The matrix, after it has been set.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/matrix-docs/#errors_2", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/matrix-docs/#identity", 
+            "text": "A matrix can be set to identity in-place:  local foo = luacml.matrix33(1,2,3,4,5,6,7,8,9)\nfoo:identity()\n-- Set to: |1 0 0|\n--         |0 1 0|\n--         |0 0 1|  local foo = luacml.matrix23_c(1,2,3,4,5,6)\nfoo:identity()\n-- Set to: |1 0 0|\n--         |0 1 0|", 
+            "title": "identity()"
+        }, 
+        {
+            "location": "/matrix-docs/#parameters_3", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/matrix-docs/#returns_3", 
+            "text": "The matrix, after it has been set.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/matrix-docs/#errors_3", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/matrix-docs/#zero", 
+            "text": "A matrix can be set to zero in-place:  local foo = luacml.matrix33(1,2,3,4,5,6,7,8,9)\nfoo:zero()\n-- Set to: |0 0 0|\n--         |0 0 0|\n--         |0 0 0|  local foo = luacml.matrix23_c(1,2,3,4,5,6)\nfoo:zero()\n-- Set to: |0 0 0|\n--         |0 0 0|", 
+            "title": "zero()"
+        }, 
+        {
+            "location": "/matrix-docs/#parameters_4", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/matrix-docs/#returns_4", 
+            "text": "The matrix, after it has been zeroed.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/matrix-docs/#errors_4", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/matrix-docs/#rows", 
+            "text": "The number of rows for a matrix can be read:  local foo = luacml.matrix33()\nprint(foo:rows()) -- Prints: 3  local foo = luacml.matrix23_c()\nprint(foo:rows()) -- Prints: 2", 
+            "title": "rows()"
+        }, 
+        {
+            "location": "/matrix-docs/#parameters_5", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/matrix-docs/#returns_5", 
+            "text": "The number of matrix rows, as an integer.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/matrix-docs/#errors_5", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/matrix-docs/#cols", 
+            "text": "The number of columns for a matrix can be read:  local foo = luacml.matrix33()\nprint(foo:cols()) -- Prints: 3  local foo = luacml.matrix23_c()\nprint(foo:cols()) -- Prints: 3", 
+            "title": "cols()"
+        }, 
+        {
+            "location": "/matrix-docs/#parameters_6", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/matrix-docs/#returns_6", 
+            "text": "The number of matrix columns, as an integer.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/matrix-docs/#errors_6", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/matrix-docs/#transpose", 
+            "text": "A square matrix can be transposed:  local foo = luacml.matrix33(1,2,3,4,5,6,7,8,9)\nfoo:transpose()\n-- Set to: |1 4 7|\n--         |2 5 8|\n--         |3 6 9|", 
+            "title": "transpose()"
+        }, 
+        {
+            "location": "/matrix-docs/#note", 
+            "text": "Only square matrices have this function. Calling it with a non-square matrix\nwill throw an error.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/matrix-docs/#parameters_7", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/matrix-docs/#returns_7", 
+            "text": "The matrix after it has been transposed.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/matrix-docs/#errors_7", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/matrix-docs/#matrix-metamethods", 
+            "text": "All matrix types have a set of metamethods  that allow them to\nbe used with several operators.", 
+            "title": "Matrix metamethods"
+        }, 
+        {
+            "location": "/matrix-docs/#__tostring", 
+            "text": "Matrices can be converted to strings for easy printing.  local foo = luacml.matrix33(1,2,3,4,5,6,7,8,9)\nprint(foo) -- prints: matrix33:|1,2,3|4,5,6|7,8,9|  local foo = luacml.matrix23_c(1,2,3,4,5,6)\nprint(foo) -- prints: matrix23_c:|1,2,3|4,5,6|", 
+            "title": "__tostring"
+        }, 
+        {
+            "location": "/matrix-docs/#note_1", 
+            "text": "This function internally uses  lua_pushfstring  to format the output, so be\naware of slightly different formatting across versions of Lua.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/matrix-docs/#parameters_8", 
+            "text": "A matrix.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/matrix-docs/#returns_8", 
+            "text": "The matrix formatted as a string.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/matrix-docs/#errors_8", 
+            "text": "(None)", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/matrix-docs/#__index", 
+            "text": "The __index metamethod permits vector element access.  Matrices can be indexed with 1-based integer keys (1 through  M*N ):  local foo = luacml.matrix22(10,20,30,40)\nprint(foo[1],foo[2],foo[3],foo[4]) -- prints: 10 20 30 40  Or with case-insensitive \"m\\ \\ \" string keys:  local foo = luacml.matrix22(10,20,30,40)\nprint(foo.m11, foo.m12, foo.m21, foo.m22) -- prints: 10 20 30 40", 
+            "title": "__index"
+        }, 
+        {
+            "location": "/matrix-docs/#note_2", 
+            "text": "The  matrix22 ,  matrix22_c  and  matrix22_r  types use the following indices\nand mappings:  | 1 | 2 |\n| 3 | 4 |  or  | m11 | m12 |\n| m21 | m22 |  The  matrix33 ,  matrix33_c  and  matrix33_r  types use the following indices\nand mappings:  | 1 | 2 | 3 |\n| 4 | 5 | 6 |\n| 7 | 8 | 9 |  or  | m11 | m12 | m13 |\n| m21 | m22 | m23 |\n| m31 | m32 | m33 |  The  matrix44 ,  matrix44_c  and  matrix44_r  types use the following indices\nand mappings:  |  1 |  2 |  3 |  4 |\n|  5 |  6 |  7 |  8 |\n|  9 | 10 | 11 | 12 |\n| 13 | 14 | 15 | 16 |  or  | m11 | m12 | m13 | m14 |\n| m21 | m22 | m23 | m24 |\n| m31 | m32 | m33 | m34 |\n| m41 | m42 | m43 | m44 |  The  matrix23_c  type uses the following indices and map:  | 1 | 2 | 3 |\n| 4 | 5 | 6 |  or  | m11 | m12 | m13 |\n| m21 | m22 | m23 |  The  matrix32_r  type uses the following indices and map:  | 1 | 2 |\n| 3 | 4 |\n| 5 | 6 |  or  | m11 | m12 |\n| m21 | m22 |\n| m31 | m32 |  The  matrix34_c  type uses the following indices and map:  |  1 |  2 |  3 |  4 |\n|  5 |  6 |  7 |  8 |\n|  9 | 10 | 11 | 12 |  or  | m11 | m12 | m13 | m14 |\n| m21 | m22 | m23 | m24 |\n| m31 | m32 | m33 | m34 |  The  matrix43_r  type uses the following indices and map:  |  1 |  2 |  3 |\n|  4 |  5 |  6 |\n|  7 |  8 |  9 |\n| 10 | 11 | 12 |  or  | m11 | m12 | m13 |\n| m21 | m22 | m23 |\n| m31 | m32 | m33 |\n| m41 | m42 | m43 |", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/matrix-docs/#parameters_9", 
+            "text": "An integer from 1 to  M*N , where M is rows, N is columns.  or one of the string keys following the \"m\\ \\ \" convention (ie \"m12\"\n    for the element in the first row, second column).", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/matrix-docs/#returns_9", 
+            "text": "The matrix's element as a number.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/matrix-docs/#errors_9", 
+            "text": "Missing arguments.  Invalid index value.  Invalid index type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/matrix-docs/#__newindex", 
+            "text": "The __newindex metamethod permits matrix element setting.  Matrices can be indexed with 1-based integer keys:  local foo = luacml.matrix22()\nfoo[1] = 10\nfoo[2] = 20\nfoo[3] = 30\nfoo[4] = 40\n-- Sets to: | 10 20 |\n--          | 30 40 |  Or with case-insensitive \"m\\ \\ \" string keys:  local foo = luacml.matrix22()\nfoo.m11 = 10\nfoo.m12 = 20\nfoo.m21 = 30\nfoo.m22 = 40\n-- Sets to: | 10 20 |\n--          | 30 40 |", 
+            "title": "__newindex"
+        }, 
+        {
+            "location": "/matrix-docs/#note_3", 
+            "text": "See Note for  __index  about valid keys for each type of matrix.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/matrix-docs/#parameters_10", 
+            "text": "An integer from 1 to  M*N , where M is rows, N is columns.  or one of the string keys following the \"m\\ \\ \" convention (ie \"m12\"\n    for the element in the first row, second column).", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/matrix-docs/#returns_10", 
+            "text": "(None)", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/matrix-docs/#errors_10", 
+            "text": "Missing arguments.  Invalid index value.  Invalid index type.", 
+            "title": "Errors"
         }, 
         {
             "location": "/quaternion-docs/", 
