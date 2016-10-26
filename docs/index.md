@@ -17,7 +17,7 @@ There are a number of predefined types available:
 
 - [Vector types](./vector-docs.md)
 - [Quaternion types](./quaternion-docs.md)
-- [Matrix types](./matrix-types.md)
+- [Matrix types](./matrix-docs.md)
 
 ## Design decisions
 
