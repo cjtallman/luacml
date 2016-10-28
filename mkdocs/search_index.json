@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "LuaCML\n\n\nOverview\n\n\nLuaCML is an implementation of the CML library to be used in Lua applications.\nIt works as a Lua module that can be loaded using the \nrequire\n function:\n\n\n-- Load the LuaCML library.\nlocal luacml = require(\nluacml\n)\n\n\n\n\nFeatures\n\n\nThere are a number of predefined types available:\n\n\n\n\nVector types\n\n\nQuaternion types\n\n\nMatrix types\n\n\n\n\nDesign decisions\n\n\nSince CML is a library based on C++ templates, LuaCML is unable to provide the\nsame configurability and instead aims to provide only the most common types.\n\n\nLuaCML also chooses to base the floating point math types around the built-in\n\nlua_Number\n type.\n\n\nInteger types \n(See Lua 5.3)\n is not currently supported, nor planned.\n\n\nDynamic types (vectors, matrices) are not currently supported, not planned.\n\n\nCompatibility\n\n\n\n\n\n\n\n\nLua Version\n\n\nSupported\n\n\n\n\n\n\n\n\n\n\nPUC-Rio Lua 5.1\n\n\nyes\n\n\n\n\n\n\nPUC-Rio Lua 5.2\n\n\nyes\n\n\n\n\n\n\nPUC-Rio Lua 5.3\n\n\nyes\n\n\n\n\n\n\nLuaJit 2.0\n\n\nyes\n\n\n\n\n\n\nLuaJit 2.1\n\n\nyes", 
+            "text": "LuaCML\n\n\nOverview\n\n\nLuaCML is an implementation of the CML library to be used in Lua applications.\nIt works as a Lua module that can be loaded using the \nrequire\n function:\n\n\n-- Load the LuaCML library.\nlocal luacml = require(\nluacml\n)\n\n\n\n\nFeatures\n\n\nThere are a number of predefined types available:\n\n\n\n\nVector types\n\n\nQuaternion types\n\n\nMatrix types\n\n\n\n\nDesign decisions\n\n\nSince CML is a library based on C++ templates, LuaCML is unable to provide the\nsame configurability and instead aims to provide only the most common types.\n\n\nLuaCML also chooses to base the floating point math types around the built-in\n\nlua_Number\n type.\n\n\nInteger types \n(See Lua 5.3)\n is not currently supported, nor planned.\n\n\nDynamic types (vectors of size \n 4, matrices \n 4x4) are not currently supported,\nnor planned.\n\n\nCompatibility\n\n\n\n\n\n\n\n\nLua Version\n\n\nSupported\n\n\n\n\n\n\n\n\n\n\nPUC-Rio Lua 5.1\n\n\nyes\n\n\n\n\n\n\nPUC-Rio Lua 5.2\n\n\nyes\n\n\n\n\n\n\nPUC-Rio Lua 5.3\n\n\nyes\n\n\n\n\n\n\nLuaJit 2.0\n\n\nyes\n\n\n\n\n\n\nLuaJit 2.1\n\n\nyes", 
             "title": "Home"
         }, 
         {
@@ -22,7 +22,7 @@
         }, 
         {
             "location": "/#design-decisions", 
-            "text": "Since CML is a library based on C++ templates, LuaCML is unable to provide the\nsame configurability and instead aims to provide only the most common types.  LuaCML also chooses to base the floating point math types around the built-in lua_Number  type.  Integer types  (See Lua 5.3)  is not currently supported, nor planned.  Dynamic types (vectors, matrices) are not currently supported, not planned.", 
+            "text": "Since CML is a library based on C++ templates, LuaCML is unable to provide the\nsame configurability and instead aims to provide only the most common types.  LuaCML also chooses to base the floating point math types around the built-in lua_Number  type.  Integer types  (See Lua 5.3)  is not currently supported, nor planned.  Dynamic types (vectors of size   4, matrices   4x4) are not currently supported,\nnor planned.", 
             "title": "Design decisions"
         }, 
         {
