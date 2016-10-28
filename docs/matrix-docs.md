@@ -347,7 +347,8 @@ local foo = luacml.matrix22(10,20,30,40)
 print(foo[1],foo[2],foo[3],foo[4]) -- prints: 10 20 30 40
 ```
 
-Or with case-insensitive "m\<row>\<col>" string keys:
+Or with case-insensitive "mRC" string keys, where R is the row number, and C is
+the column number:
 
 ```lua
 local foo = luacml.matrix22(10,20,30,40)
@@ -467,8 +468,8 @@ or
 #### Parameters
 
 -   An integer from 1 to ***M\*N***, where M is rows, N is columns.
--   or one of the string keys following the "m\<row>\<col>" convention (ie "m12"
-    for the element in the first row, second column).
+-   or one of the string keys following the "mRC" convention (ie "m12" for the
+    element in the first row, second column).
 
 #### Returns
 
@@ -498,7 +499,7 @@ foo[4] = 40
 --          | 30 40 |
 ```
 
-Or with case-insensitive "m\<row>\<col>" string keys:
+Or with case-insensitive "mRC" string keys:
 
 ```lua
 local foo = luacml.matrix22()
@@ -517,8 +518,8 @@ See Note for [__index](#__index) about valid keys for each type of matrix.
 #### Parameters
 
 -   An integer from 1 to ***M\*N***, where M is rows, N is columns.
--   or one of the string keys following the "m\<row>\<col>" convention (ie "m12"
-    for the element in the first row, second column).
+-   or one of the string keys following the "mRC" convention (ie "m12" for the
+    element in the first row, second column).
 
 #### Returns
 
