@@ -29,7 +29,8 @@ LuaCML also chooses to base the floating point math types around the built-in
 
 Integer types *(See Lua 5.3)* is not currently supported, nor planned.
 
-Dynamic types (vectors, matrices) are not currently supported, not planned.
+Dynamic types (vectors of size > 4, matrices > 4x4) are not currently supported,
+nor planned.
 
 ## Compatibility
 
