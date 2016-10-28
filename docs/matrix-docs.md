@@ -61,8 +61,9 @@ local bar = luacml.matrix22(foo)
 
 #### Parameters
 
--   ***M\*N*** numbers.
--   or table of ***M\*N*** numbers.
+-   **N** numbers, where N is the number of rows times the number of columns.
+-   or a table of **N** numbers, where N is the number of rows times the number
+    of columns.
 -   or a matrix of same type.
 
 #### Returns
@@ -126,8 +127,9 @@ foo:set(luacml.matrix33(1,2,3,4,5,6,7,8,9))
 
 #### Parameters
 
--   ***M\*N*** numbers.
--   or table of ***M\*N*** numbers.
+-   **N** numbers, where N is the number of rows times the number of columns.
+-   or a table of **N** numbers, where N is the number of rows times the number
+    of columns.
 -   or a matrix of same type.
 
 #### Returns
@@ -340,7 +342,8 @@ The matrix formatted as a string.
 
 The __index metamethod permits vector element access.
 
-Matrices can be indexed with 1-based integer keys (1 through ***M\*N***):
+Matrices can be indexed with 1-based integer keys (1 through **N**, where N is
+number of rows times the number of columns):
 
 ```lua
 local foo = luacml.matrix22(10,20,30,40)
@@ -467,7 +470,8 @@ or
 
 #### Parameters
 
--   An integer from 1 to ***M\*N***, where M is rows, N is columns.
+-   An integer from 1 to **N**, where N is the number of rows times the number
+    of columns.
 -   or one of the string keys following the "mRC" convention (ie "m12" for the
     element in the first row, second column).
 
@@ -517,7 +521,8 @@ See Note for [__index](#__index) about valid keys for each type of matrix.
 
 #### Parameters
 
--   An integer from 1 to ***M\*N***, where M is rows, N is columns.
+-   An integer from 1 to **N**, where N is the number of rows times the number
+    of columns.
 -   or one of the string keys following the "mRC" convention (ie "m12" for the
     element in the first row, second column).
 
