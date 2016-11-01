@@ -297,13 +297,688 @@
         }, 
         {
             "location": "/quaternion-docs/", 
-            "text": "Quaternion Docs", 
+            "text": "Quaternions\n\n\nQuaternion types\n\n\nThe following quaternion types are provided by LuaCML:\n\n\n\n\n\n\n\n\nType\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nquat\n\n\nA scalar-first, positive cross quaternion based on \nlua_Number\n\n\n\n\n\n\nquat_p\n\n\nA vector-first, positive cross quaternion based on \nlua_Number\n\n\n\n\n\n\nquat_n\n\n\nA vector-first, negative cross quaternion based on \nlua_Number\n\n\n\n\n\n\n\n\nNote:\n\n\nThe \nquat\n type is a scalar-first quaternion, ie: (w,x,y,z).\n\n\nThe \nquat_p\n and \nquat_n\n types are vector-first quaternions, ie: (x,y,z,w).\n\n\nThe \nquat_p\n (or positive cross) type determines the multiplication order of two\nquaternions in \"standard\" form. A multiplication of \nq1*q2\n represents the\nrotation of \nq2\n applied first, followed by \nq1\n.\n\n\nThe \nquat_n\n (or negative cross) type determines the multiplication order of two\nquaternions in \"reverse\" form. A multiplication of \nq1*q2\n represents the\nrotation of \nq1\n applied first, followed by \nq2\n.\n\n\nQuaternion functions\n\n\nconstructor\n\n\nQuaternions have default constructors initialized with identity:\n\n\nlocal foo = luacml.quat()   -- set to (1,0,0,0)\nlocal bar = luacml.quat_p() -- set to (0,0,0,1)\nlocal baz = luacml.quat_n() -- set to (0,0,0,1)\n\n\n\n\nQuaternions can be constructed from individual numbers:\n\n\nlocal foo = luacml.quat(1,2,3,4)   -- set to (1,2,3,4)\nlocal bar = luacml.quat_p(1,2,3,4) -- set to (1,2,3,4)\nlocal baz = luacml.quat_n(1,2,3,4) -- set to (1,2,3,4)\n\n\n\n\nOr from a table of numbers:\n\n\nlocal foo = luacml.quat({1,2,3,4})   -- set to (1,2,3,4)\nlocal bar = luacml.quat_p({1,2,3,4}) -- set to (1,2,3,4)\nlocal baz = luacml.quat_n({1,2,3,4}) -- set to (1,2,3,4)\n\n\n\n\nOr from a \nvector4\n:\n\n\nlocal foo = luacml.quat(luacml.vector4(1,2,3,4))   -- set to (1,2,3,4)\nlocal bar = luacml.quat_p(luacml.vector4(1,2,3,4)) -- set to (1,2,3,4)\nlocal baz = luacml.quat_n(luacml.vector4(1,2,3,4)) -- set to (1,2,3,4)\n\n\n\n\nOr from a table and a number (or a number and a table):\n\n\nlocal foo = luacml.quat(1, {2,3,4}) -- set to (1,2,3,4)\nlocal bar = luacml.quat({2,3,4}, 1) -- set to (1,2,3,4)\n\n\n\n\nOr from a \nvector3\n and a number (or a number and a \nvector3\n):\n\n\nlocal foo = luacml.quat(luacml.vector3(2,3,4), 1) -- set to (1,2,3,4)\nlocal bar = luacml.quat(1, luacml.vector3(2,3,4)) -- set to (1,2,3,4)\n\n\n\n\nOr from another quaternion of same type:\n\n\nlocal foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(foo) -- set to (1,2,3,4)\n\n\n\n\nParameters\n\n\n\n\n4 numbers.\n\n\nor 1 table of 4 numbers.\n\n\nor 1 \nvector4\n.\n\n\nor 1 table of 3 numbers and 1 number.\n\n\nor 1 number and a table of 3 numbers.\n\n\nor 1 \nvector3\n and 1 number.\n\n\nor 1 number and 1 \nvector3\n.\n\n\nor 1 quaternion of same type.\n\n\n\n\nReturns\n\n\nThe newly constructed quaternion.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nset()\n\n\nQuaternions can be set from individual numbers:\n\n\nlocal foo = luacml.quat()\nfoo:set(1,2,3,4) -- set to (1,2,3,4)\n\n\n\n\nOr from a table of numbers:\n\n\nlocal foo = luacml.quat()\nfoo:set({1,2,3,4}) -- set to (1,2,3,4)\n\n\n\n\nOr from a \nvector4\n:\n\n\nlocal foo = luacml.quat_p()\nfoo:set(luacml.vector4(1,2,3,4)) -- set to (1,2,3,4)\n\n\n\n\nOr from a table and a number (or a number and a table):\n\n\nlocal foo = luacml.quat_p()\nfoo:set({2,3,4}, 1) -- set to (2,3,4,1)\nfoo:set(1, {2,3,4}) -- set to (2,3,4,1)\n\n\n\n\nOr from a \nvector3\n and a number (or a number and a \nvector3\n):\n\n\nlocal foo = luacml.quat_n()\nfoo:set(luacml.vector3(1,2,3), 4) -- set to (1,2,3,4)\nfoo:set(4, luacml.vector3(1,2,3)) -- set to (1,2,3,4)\n\n\n\n\nOr from another quaternion of same type:\n\n\nlocal foo = luacml.quat_n()\nfoo:set(luacml.quat_n(1,2,3,4)) -- set to (1,2,3,4)\n\n\n\n\nParameters\n\n\n\n\n4 numbers.\n\n\nor 1 table of 4 numbers.\n\n\nor 1 \nvector4\n.\n\n\nor 1 table of 3 numbers and 1 number.\n\n\nor 1 number and a table of 3 numbers.\n\n\nor 1 \nvector3\n and 1 number.\n\n\nor 1 number and 1 \nvector3\n.\n\n\nor 1 quaternion of same type.\n\n\n\n\nReturns\n\n\nThe quaternion, after it has been set.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\ntotable()\n\n\nQuaternions can be converted to a table:\n\n\nlocal foo = luacml.quat_p(1,2,3,4)\nlocal bar = foo:totable()\nprint(bar[1], bar[2], bar[3], bar[4]) -- prints: 1 2 3 4\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nAn array containing the quaternion's elements.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nlength()\n\n\nThe length of a quaternion can be found:\n\n\nlocal foo = luacml.quat_p(1,2,3,4)\nprint(foo:length()) -- prints: 5.4772255750517\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe quaternion's length as a number.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nlength_squared()\n\n\nThe squared-length of a quaternion can be found:\n\n\nlocal foo = luacml.quat_p(1,2,3,4)\nprint(foo:length_squared()) -- prints: 30\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe quaternion's squared length as a number.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nnormalize()\n\n\nA quaternion can be normalized in-place:\n\n\nlocal foo = luacml.quat_p(1,1,1,1)\nfoo:normalize() -- set to (0.5,0.5,0.5,0.5)\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe quaternion, after it has been normalized.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\ninverse()\n\n\nA quaternion can be set to its inverse:\n\n\nlocal foo = luacml.quat_p(1,1,1,1)\nfoo:inverse() -- set to (-0.25,-0.25,-0.25,0.25)\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe quaternion, after it has been inverted.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nconjugate()\n\n\nA quaternion can be set to its conjugate:\n\n\nlocal foo = luacml.quat_p(1,1,1,1)\nfoo:conjugate() -- set to (-1,-1,-1,1)\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe quaternion, after it has been set to its conjugate.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nidentity()\n\n\nA quaternion can be set to its identity:\n\n\nlocal foo = luacml.quat_p(1,2,3,4)\nfoo:identity() -- set to (0,0,0,1)\n\nlocal bar = luacml.quat(1,2,3,4)\nbar:identity() -- set to (1,0,0,0)\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nThe quaternion, after it has been set to its identity.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nrandom()\n\n\nA quaternion can be set to a random quaternion with elements between specified\nminimum and maximum values.\n\n\nlocal foo = luacml.quat()\nfoo:random(-1,1) -- sets each element to a random value between -1 and 1.\n\n\n\n\nParameters\n\n\n\n\nThe minimum number.\n\n\nThe maximum number.\n\n\n\n\nReturns\n\n\n(None)\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nimaginary()\n\n\nA quaternion's imaginary/vector part can be retrieved.\n\n\nlocal foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat_p(1,2,3,4)\nprint(foo:imaginary()) -- prints: vector3:\n2,3,4\n\nprint(bar:imaginary()) -- prints: vector3:\n1,2,3\n\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nReturns a \nvector3\n representing the imaginary (\ni,j,k\n) or (\nx,y,z\n)\ncomponents.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nreal()\n\n\nA quaternion's real/scalar part can be retrieved.\n\n\nlocal foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat_p(1,2,3,4)\nprint(foo:real()) -- prints: 1\nprint(bar:real()) -- prints: 4\n\n\n\n\nParameters\n\n\n(None)\n\n\nReturns\n\n\nReturns a number representing the real (\nw\n) component.\n\n\nErrors\n\n\n\n\nExtra arguments.\n\n\n\n\n\n\nadd()\n\n\nA quaternion can be added with another quaternion of same type.\n\n\nlocal foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(1,2,3,4)\nprint(foo:add(bar)) -- prints: quat:\n2,4,6,8\n\nprint(foo)          -- prints: quat:\n1,2,3,4\n\n\n\n\n\nNote\n\n\nThe original quaternions are unchanged.\n\n\nInternally, this equivalent to the \n__add\n metamethod.\n\n\nParameters\n\n\nA quaternion of same type.\n\n\nReturns\n\n\nA new quaternion representing the element-wise sum.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nsub()\n\n\nA quaternion can be subtracted from another quaternion.\n\n\nlocal foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(1,2,3,4)\nprint(foo:sub(bar)) -- prints: quat:\n0,0,0,0\n\nprint(foo)          -- prints: quat:\n1,2,3,4\n\n\n\n\n\nNote\n\n\nThe original quaternions are unchanged.\n\n\nInternally, this function is equivalent to the \n__sub\n metamethod.\n\n\nParameters\n\n\nA quaternion of same type.\n\n\nReturns\n\n\nA new quaternion representing the element-wise difference.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nmul()\n\n\nA quaternion can multiplied with another quaternion or with a number.\n\n\nlocal foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(4,3,2,1)\nprint(foo:mul(bar)) -- prints: quat:\n-12,6,24,12\n\n\n\n\n\nlocal foo = luacml.quat_p(1,2,3,4)\nlocal bar = luacml.quat_p(4,3,2,1)\nprint(foo:mul(bar)) -- prints: quat_p:\n12,24,6,-12\n\n\n\n\n\nlocal foo = luacml.quat_n(1,2,3,4)\nlocal bar = luacml.quat_n(4,3,2,1)\nprint(foo:mul(bar)) -- prints: quat_n:\n22,4,16,-12\n\n\n\n\n\nlocal foo = luacml.quat_p(1,2,3,4)\nprint(foo:mul(2)) -- prints: quat_p:\n2,4,6,8\n\n\n\n\n\nNote\n\n\nThe original quaternion(s) are unchanged.\n\n\nInternally, this function is equivalent to the \n__mul\n metamethod.\n\n\nParameters\n\n\n\n\n1 scalar number.\n\n\nor 1 quaternion of same type.\n\n\n\n\nReturns\n\n\nA new quaternion representing the multiplication result.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\ndiv()\n\n\nA quaternion can be can be divided by a number.\n\n\nlocal foo = luacml.quat_n(2,4,6,8)\nprint(foo:div(2)) -- prints: quat_n:\n1,2,3,4\n\nprint(foo)        -- prints: quat_n:\n2,4,6,8\n\n\n\n\n\nNote\n\n\nThe original quaternion is unchanged.\n\n\nInternally, this function is equivalent to the \n__div\n metamethod.\n\n\nParameters\n\n\n\n\n1 scalar number.\n\n\n\n\nReturns\n\n\nA new quaternion representing the element-wise division.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\naddeq()\n\n\nA quaternion can be incremented in-place with another quaternion.\n\n\nlocal foo = luacml.quat_n(1,2,3,4)\nlocal bar = luacml.quat_n(1,2,3,4)\nprint(foo:addeq(bar)) -- prints: quat_n:\n2,4,6,8\n\nprint(foo)            -- prints: quat_n:\n2,4,6,8\n\n\n\n\n\nNote\n\n\nThe original quaternion (but not the input parameter) is updated.\n\n\nParameters\n\n\n\n\n1 quaternion of same type.\n\n\n\n\nReturns\n\n\nThe updated quaternion after the element-wise sum.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nsubeq()\n\n\nA quaternion can be subtracted in-place with another quaternion.\n\n\nlocal foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(1,2,3,4)\nprint(foo:subeq(bar)) -- prints: quat:\n0,0,0,0\n\nprint(foo)            -- prints: quat:\n0,0,0,0\n\n\n\n\n\nNote\n\n\nThe original quaternion (but not the parameter) is updated.\n\n\nParameters\n\n\n\n\n1 quaternion of same type.\n\n\n\n\nReturns\n\n\nThe updated quaternion after the element-wise subtraction.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nmuleq()\n\n\nA quaternion can be multiplied in-place with another quaternion or a number.\n\n\nlocal foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(4,3,2,1)\nprint(foo:muleq(bar)) -- prints: quat:\n-12,6,24,12\n\nprint(foo)            -- prints: quat:\n-12,6,24,12\n\n\n\n\n\nlocal foo = luacml.quat_p(1,2,3,4)\nlocal bar = luacml.quat_p(4,3,2,1)\nprint(foo:muleq(bar)) -- prints: quat_p:\n12,24,6,-12\n\nprint(foo)            -- prints: quat_p:\n12,24,6,-12\n\n\n\n\n\nlocal foo = luacml.quat_n(1,2,3,4)\nlocal bar = luacml.quat_n(4,3,2,1)\nprint(foo:muleq(bar)) -- prints: quat_n:\n22,4,16,-12\n\nprint(foo)            -- prints: quat_n:\n22,4,16,-12\n\n\n\n\n\nlocal foo = luacml.quat_p(1,2,3,4)\nprint(foo:muleq(2)) -- prints: quat_p:\n2,4,6,8\n\nprint(foo)          -- prints: quat_p:\n2,4,6,8\n\n\n\n\n\nNote\n\n\nThe original quaternion (not the parameter) is updated.\n\n\nParameters\n\n\n\n\n1 quaternion of same type.\n\n\nor 1 scalar number.\n\n\n\n\nReturns\n\n\nThe updated quaternion after the multiplication.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\ndiv()\n\n\nA quaternion can be can be divided in-place by a number.\n\n\nlocal foo = luacml.quat_n(2,4,6,8)\nprint(foo:diveq(2)) -- prints: quat_n:\n1,2,3,4\n\nprint(foo)          -- prints: quat_n:\n1,2,3,4\n\n\n\n\n\nNote\n\n\nThe original quaternion is updated.\n\n\nParameters\n\n\n\n\n1 scalar number.\n\n\n\n\nReturns\n\n\nA new quaternion representing the element-wise division.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nQuaternion metamethods\n\n\nAll vector types have a set of\n\nmetamethods\n that allow them to\nbe used with several operators.\n\n\n\n\n__index\n\n\nThe __index metamethod permits quaternion element access.\n\n\nQuaternions can be indexed with 1-based integer keys:\n\n\nlocal foo = luacml.quat(10,20,30,40)\nlocal bar = luacml.quat_p(10,20,30,40)\nprint(foo[1]) -- prints: 10\nprint(bar[1]) -- prints: 10\n\n\n\n\nOr with case-insensitive \"x\", \"y\", \"z\", or \"w\" string keys:\n\n\nlocal foo = luacml.quat(10,20,30,40)\nlocal bar = luacml.quat_p(10,20,30,40)\nprint(foo.x)    -- prints: 20\nprint(foo.W)    -- prints: 10\nprint(bar[\nw\n]) -- prints: 40\nprint(bar[\nZ\n]) -- prints: 30\n\n\n\n\nParameters\n\n\n\n\nAn integer from 1 to 4.\n\n\nor one of {x, y, z, w}.\n\n\n\n\nReturns\n\n\nThe quaternion's element as a number.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nInvalid index value.\n\n\nInvalid index type.\n\n\n\n\n\n\n__newindex\n\n\nThe __newindex metamethod permits vector element setting.\n\n\nQuaternions can be indexed with 1-based integer keys:\n\n\nlocal foo = luacml.quat(0,0,0,0)\nlocal bar = luacml.quat_p(0,0,0,0)\nfoo[1] = 10 -- Set to (1,0,0,0)\nbar[1] = 10 -- Set to (1,0,0,0)\n\n\n\n\nOr with case-insensitive \"x\", \"y\", \"z\", or \"w\" string keys:\n\n\nlocal foo = luacml.quat(0,0,0,0)\nfoo.x = 10\nfoo.Y = 20\nfoo[\nz\n] = 30\n-- Set to (0,10,20,30)\n\n\n\n\nParameters\n\n\n\n\nAn integer from 1 to 4.\n\n\nor one of {x, y, z, w}.\n\n\n\n\nReturns\n\n\n(None)\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nInvalid index value.\n\n\nInvalid index type.\n\n\n\n\n\n\n__tostring\n\n\nQuaternions can be converted to strings for easy printing.\n\n\nlocal foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat_p(1,2,3,4)\nlocal baz = luacml.quat_n(1,2,3,4)\nprint(foo) -- prints: quat:\n1,2,3,4\n\nprint(bar) -- prints: quat_p:\n1,2,3,4\n\nprint(baz) -- prints: quat_n:\n1,2,3,4\n\n\n\n\n\nNote\n\n\nThis function internally uses \nlua_pushfstring\n to format the output, so be\naware of different formatting across versions of Lua.\n\n\nParameters\n\n\n\n\n1 quaternion.\n\n\n\n\nReturns\n\n\nThe quaternion formatted as a string.\n\n\nErrors\n\n\n(None)\n\n\n\n\n__unm\n\n\nThe negative of a quaternion can be generated.\n\n\nlocal foo = luacml.quat(1,2,-3,-4)\nprint(-foo) -- prints: quat:\n-1,-2,3,4\n\n\n\n\n\nNote\n\n\nThe original quaternion is unchanged.\n\n\nParameters\n\n\n\n\n1 quaternion.\n\n\n\n\nReturns\n\n\nA new quaternion representing the negative of the original.\n\n\nErrors\n\n\n(None)\n\n\n\n\n__add\n\n\nTwo quaternions can be added together.\n\n\nlocal foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(4,3,2,1)\nprint(foo + bar) -- prints: quat\n5,5,5,5\n\n\n\n\n\nNote\n\n\nThe original quaternions are unchanged.\n\n\nParameters\n\n\n\n\n2 quaternions of same type.\n\n\n\n\nReturns\n\n\nA new quaternion representing the element-wise sum.\n\n\nErrors\n\n\n\n\nInvalid types.\n\n\n\n\n\n\n__sub\n\n\nTwo quaternions can be subtracted.\n\n\nlocal foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(4,3,2,1)\nprint(foo - bar) -- prints: quat\n-3,-1,1,3\n\n\n\n\n\nNote\n\n\nThe original quaternions are unchanged.\n\n\nParameters\n\n\n\n\n2 quaternions of same type.\n\n\n\n\nReturns\n\n\nA new quaternion representing the element-wise difference.\n\n\nErrors\n\n\n\n\nInvalid types.\n\n\n\n\n\n\n__mul\n\n\nQuaternions can be scaled.\n\n\nlocal foo = luacml.quat_p(1,2,3,4)\nprint(2.0 * foo) -- prints: quat_p\n2,4,6,8\n\nprint(foo * 3.0) -- prints: quat_p\n3,6,9,12\n\n\n\n\n\nNote\n\n\nThe original quaternion is unchanged.\n\n\nParameters\n\n\n\n\n1 quaternion and 1 number.\n\n\nor 1 number and 1 quaternion.\n\n\n\n\nReturns\n\n\nA new quaternion representing the element-wise scale.\n\n\nErrors\n\n\n\n\nInvalid types.\n\n\n\n\n\n\n__div\n\n\nQuaternions can be inverse divided.\n\n\nlocal foo = luacml.quat_p(2,4,6,8)\nprint(foo / 2.0) -- prints: quat_p\n1,2,3,4\n\n\n\n\n\nNote\n\n\nThe original quaternion is unchanged.\n\n\nParameters\n\n\n\n\n1 quaternion and 1 number.\n\n\n\n\nReturns\n\n\nA new quaternion representing the element-wise division.\n\n\nErrors\n\n\n\n\nInvalid types.\n\n\n\n\n\n\n__eq\n\n\nQuaternions can be compared.\n\n\nlocal foo = luacml.quat_p(2,4,6)\nlocal bar = luacml.quat_p(2,4,6)\nlocal baz = luacml.quat_p(1,2,3)\nprint(foo == bar) -- prints: true\nprint(foo ~= baz) -- prints: false\n\n\n\n\nNote\n\n\nThe original quaternions are unchanged.\n\n\nParameters\n\n\n\n\n2 quaternions of same type.\n\n\n\n\nReturns\n\n\nBoolean representing element-wise equality.\n\n\nErrors\n\n\n\n\nInvalid types.", 
             "title": "Quaternion docs"
         }, 
         {
-            "location": "/quaternion-docs/#quaternion-docs", 
+            "location": "/quaternion-docs/#quaternions", 
             "text": "", 
-            "title": "Quaternion Docs"
+            "title": "Quaternions"
+        }, 
+        {
+            "location": "/quaternion-docs/#quaternion-types", 
+            "text": "The following quaternion types are provided by LuaCML:     Type  Description      quat  A scalar-first, positive cross quaternion based on  lua_Number    quat_p  A vector-first, positive cross quaternion based on  lua_Number    quat_n  A vector-first, negative cross quaternion based on  lua_Number", 
+            "title": "Quaternion types"
+        }, 
+        {
+            "location": "/quaternion-docs/#note", 
+            "text": "The  quat  type is a scalar-first quaternion, ie: (w,x,y,z).  The  quat_p  and  quat_n  types are vector-first quaternions, ie: (x,y,z,w).  The  quat_p  (or positive cross) type determines the multiplication order of two\nquaternions in \"standard\" form. A multiplication of  q1*q2  represents the\nrotation of  q2  applied first, followed by  q1 .  The  quat_n  (or negative cross) type determines the multiplication order of two\nquaternions in \"reverse\" form. A multiplication of  q1*q2  represents the\nrotation of  q1  applied first, followed by  q2 .", 
+            "title": "Note:"
+        }, 
+        {
+            "location": "/quaternion-docs/#quaternion-functions", 
+            "text": "", 
+            "title": "Quaternion functions"
+        }, 
+        {
+            "location": "/quaternion-docs/#constructor", 
+            "text": "Quaternions have default constructors initialized with identity:  local foo = luacml.quat()   -- set to (1,0,0,0)\nlocal bar = luacml.quat_p() -- set to (0,0,0,1)\nlocal baz = luacml.quat_n() -- set to (0,0,0,1)  Quaternions can be constructed from individual numbers:  local foo = luacml.quat(1,2,3,4)   -- set to (1,2,3,4)\nlocal bar = luacml.quat_p(1,2,3,4) -- set to (1,2,3,4)\nlocal baz = luacml.quat_n(1,2,3,4) -- set to (1,2,3,4)  Or from a table of numbers:  local foo = luacml.quat({1,2,3,4})   -- set to (1,2,3,4)\nlocal bar = luacml.quat_p({1,2,3,4}) -- set to (1,2,3,4)\nlocal baz = luacml.quat_n({1,2,3,4}) -- set to (1,2,3,4)  Or from a  vector4 :  local foo = luacml.quat(luacml.vector4(1,2,3,4))   -- set to (1,2,3,4)\nlocal bar = luacml.quat_p(luacml.vector4(1,2,3,4)) -- set to (1,2,3,4)\nlocal baz = luacml.quat_n(luacml.vector4(1,2,3,4)) -- set to (1,2,3,4)  Or from a table and a number (or a number and a table):  local foo = luacml.quat(1, {2,3,4}) -- set to (1,2,3,4)\nlocal bar = luacml.quat({2,3,4}, 1) -- set to (1,2,3,4)  Or from a  vector3  and a number (or a number and a  vector3 ):  local foo = luacml.quat(luacml.vector3(2,3,4), 1) -- set to (1,2,3,4)\nlocal bar = luacml.quat(1, luacml.vector3(2,3,4)) -- set to (1,2,3,4)  Or from another quaternion of same type:  local foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(foo) -- set to (1,2,3,4)", 
+            "title": "constructor"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters", 
+            "text": "4 numbers.  or 1 table of 4 numbers.  or 1  vector4 .  or 1 table of 3 numbers and 1 number.  or 1 number and a table of 3 numbers.  or 1  vector3  and 1 number.  or 1 number and 1  vector3 .  or 1 quaternion of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns", 
+            "text": "The newly constructed quaternion.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#set", 
+            "text": "Quaternions can be set from individual numbers:  local foo = luacml.quat()\nfoo:set(1,2,3,4) -- set to (1,2,3,4)  Or from a table of numbers:  local foo = luacml.quat()\nfoo:set({1,2,3,4}) -- set to (1,2,3,4)  Or from a  vector4 :  local foo = luacml.quat_p()\nfoo:set(luacml.vector4(1,2,3,4)) -- set to (1,2,3,4)  Or from a table and a number (or a number and a table):  local foo = luacml.quat_p()\nfoo:set({2,3,4}, 1) -- set to (2,3,4,1)\nfoo:set(1, {2,3,4}) -- set to (2,3,4,1)  Or from a  vector3  and a number (or a number and a  vector3 ):  local foo = luacml.quat_n()\nfoo:set(luacml.vector3(1,2,3), 4) -- set to (1,2,3,4)\nfoo:set(4, luacml.vector3(1,2,3)) -- set to (1,2,3,4)  Or from another quaternion of same type:  local foo = luacml.quat_n()\nfoo:set(luacml.quat_n(1,2,3,4)) -- set to (1,2,3,4)", 
+            "title": "set()"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_1", 
+            "text": "4 numbers.  or 1 table of 4 numbers.  or 1  vector4 .  or 1 table of 3 numbers and 1 number.  or 1 number and a table of 3 numbers.  or 1  vector3  and 1 number.  or 1 number and 1  vector3 .  or 1 quaternion of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_1", 
+            "text": "The quaternion, after it has been set.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_1", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#totable", 
+            "text": "Quaternions can be converted to a table:  local foo = luacml.quat_p(1,2,3,4)\nlocal bar = foo:totable()\nprint(bar[1], bar[2], bar[3], bar[4]) -- prints: 1 2 3 4", 
+            "title": "totable()"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_2", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_2", 
+            "text": "An array containing the quaternion's elements.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_2", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#length", 
+            "text": "The length of a quaternion can be found:  local foo = luacml.quat_p(1,2,3,4)\nprint(foo:length()) -- prints: 5.4772255750517", 
+            "title": "length()"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_3", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_3", 
+            "text": "The quaternion's length as a number.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_3", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#length_squared", 
+            "text": "The squared-length of a quaternion can be found:  local foo = luacml.quat_p(1,2,3,4)\nprint(foo:length_squared()) -- prints: 30", 
+            "title": "length_squared()"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_4", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_4", 
+            "text": "The quaternion's squared length as a number.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_4", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#normalize", 
+            "text": "A quaternion can be normalized in-place:  local foo = luacml.quat_p(1,1,1,1)\nfoo:normalize() -- set to (0.5,0.5,0.5,0.5)", 
+            "title": "normalize()"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_5", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_5", 
+            "text": "The quaternion, after it has been normalized.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_5", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#inverse", 
+            "text": "A quaternion can be set to its inverse:  local foo = luacml.quat_p(1,1,1,1)\nfoo:inverse() -- set to (-0.25,-0.25,-0.25,0.25)", 
+            "title": "inverse()"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_6", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_6", 
+            "text": "The quaternion, after it has been inverted.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_6", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#conjugate", 
+            "text": "A quaternion can be set to its conjugate:  local foo = luacml.quat_p(1,1,1,1)\nfoo:conjugate() -- set to (-1,-1,-1,1)", 
+            "title": "conjugate()"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_7", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_7", 
+            "text": "The quaternion, after it has been set to its conjugate.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_7", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#identity", 
+            "text": "A quaternion can be set to its identity:  local foo = luacml.quat_p(1,2,3,4)\nfoo:identity() -- set to (0,0,0,1)\n\nlocal bar = luacml.quat(1,2,3,4)\nbar:identity() -- set to (1,0,0,0)", 
+            "title": "identity()"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_8", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_8", 
+            "text": "The quaternion, after it has been set to its identity.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_8", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#random", 
+            "text": "A quaternion can be set to a random quaternion with elements between specified\nminimum and maximum values.  local foo = luacml.quat()\nfoo:random(-1,1) -- sets each element to a random value between -1 and 1.", 
+            "title": "random()"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_9", 
+            "text": "The minimum number.  The maximum number.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_9", 
+            "text": "(None)", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_9", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#imaginary", 
+            "text": "A quaternion's imaginary/vector part can be retrieved.  local foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat_p(1,2,3,4)\nprint(foo:imaginary()) -- prints: vector3: 2,3,4 \nprint(bar:imaginary()) -- prints: vector3: 1,2,3", 
+            "title": "imaginary()"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_10", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_10", 
+            "text": "Returns a  vector3  representing the imaginary ( i,j,k ) or ( x,y,z )\ncomponents.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_10", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#real", 
+            "text": "A quaternion's real/scalar part can be retrieved.  local foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat_p(1,2,3,4)\nprint(foo:real()) -- prints: 1\nprint(bar:real()) -- prints: 4", 
+            "title": "real()"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_11", 
+            "text": "(None)", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_11", 
+            "text": "Returns a number representing the real ( w ) component.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_11", 
+            "text": "Extra arguments.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#add", 
+            "text": "A quaternion can be added with another quaternion of same type.  local foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(1,2,3,4)\nprint(foo:add(bar)) -- prints: quat: 2,4,6,8 \nprint(foo)          -- prints: quat: 1,2,3,4", 
+            "title": "add()"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_1", 
+            "text": "The original quaternions are unchanged.  Internally, this equivalent to the  __add  metamethod.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_12", 
+            "text": "A quaternion of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_12", 
+            "text": "A new quaternion representing the element-wise sum.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_12", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#sub", 
+            "text": "A quaternion can be subtracted from another quaternion.  local foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(1,2,3,4)\nprint(foo:sub(bar)) -- prints: quat: 0,0,0,0 \nprint(foo)          -- prints: quat: 1,2,3,4", 
+            "title": "sub()"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_2", 
+            "text": "The original quaternions are unchanged.  Internally, this function is equivalent to the  __sub  metamethod.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_13", 
+            "text": "A quaternion of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_13", 
+            "text": "A new quaternion representing the element-wise difference.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_13", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#mul", 
+            "text": "A quaternion can multiplied with another quaternion or with a number.  local foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(4,3,2,1)\nprint(foo:mul(bar)) -- prints: quat: -12,6,24,12   local foo = luacml.quat_p(1,2,3,4)\nlocal bar = luacml.quat_p(4,3,2,1)\nprint(foo:mul(bar)) -- prints: quat_p: 12,24,6,-12   local foo = luacml.quat_n(1,2,3,4)\nlocal bar = luacml.quat_n(4,3,2,1)\nprint(foo:mul(bar)) -- prints: quat_n: 22,4,16,-12   local foo = luacml.quat_p(1,2,3,4)\nprint(foo:mul(2)) -- prints: quat_p: 2,4,6,8", 
+            "title": "mul()"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_3", 
+            "text": "The original quaternion(s) are unchanged.  Internally, this function is equivalent to the  __mul  metamethod.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_14", 
+            "text": "1 scalar number.  or 1 quaternion of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_14", 
+            "text": "A new quaternion representing the multiplication result.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_14", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#div", 
+            "text": "A quaternion can be can be divided by a number.  local foo = luacml.quat_n(2,4,6,8)\nprint(foo:div(2)) -- prints: quat_n: 1,2,3,4 \nprint(foo)        -- prints: quat_n: 2,4,6,8", 
+            "title": "div()"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_4", 
+            "text": "The original quaternion is unchanged.  Internally, this function is equivalent to the  __div  metamethod.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_15", 
+            "text": "1 scalar number.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_15", 
+            "text": "A new quaternion representing the element-wise division.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_15", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#addeq", 
+            "text": "A quaternion can be incremented in-place with another quaternion.  local foo = luacml.quat_n(1,2,3,4)\nlocal bar = luacml.quat_n(1,2,3,4)\nprint(foo:addeq(bar)) -- prints: quat_n: 2,4,6,8 \nprint(foo)            -- prints: quat_n: 2,4,6,8", 
+            "title": "addeq()"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_5", 
+            "text": "The original quaternion (but not the input parameter) is updated.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_16", 
+            "text": "1 quaternion of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_16", 
+            "text": "The updated quaternion after the element-wise sum.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_16", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#subeq", 
+            "text": "A quaternion can be subtracted in-place with another quaternion.  local foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(1,2,3,4)\nprint(foo:subeq(bar)) -- prints: quat: 0,0,0,0 \nprint(foo)            -- prints: quat: 0,0,0,0", 
+            "title": "subeq()"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_6", 
+            "text": "The original quaternion (but not the parameter) is updated.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_17", 
+            "text": "1 quaternion of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_17", 
+            "text": "The updated quaternion after the element-wise subtraction.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_17", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#muleq", 
+            "text": "A quaternion can be multiplied in-place with another quaternion or a number.  local foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(4,3,2,1)\nprint(foo:muleq(bar)) -- prints: quat: -12,6,24,12 \nprint(foo)            -- prints: quat: -12,6,24,12   local foo = luacml.quat_p(1,2,3,4)\nlocal bar = luacml.quat_p(4,3,2,1)\nprint(foo:muleq(bar)) -- prints: quat_p: 12,24,6,-12 \nprint(foo)            -- prints: quat_p: 12,24,6,-12   local foo = luacml.quat_n(1,2,3,4)\nlocal bar = luacml.quat_n(4,3,2,1)\nprint(foo:muleq(bar)) -- prints: quat_n: 22,4,16,-12 \nprint(foo)            -- prints: quat_n: 22,4,16,-12   local foo = luacml.quat_p(1,2,3,4)\nprint(foo:muleq(2)) -- prints: quat_p: 2,4,6,8 \nprint(foo)          -- prints: quat_p: 2,4,6,8", 
+            "title": "muleq()"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_7", 
+            "text": "The original quaternion (not the parameter) is updated.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_18", 
+            "text": "1 quaternion of same type.  or 1 scalar number.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_18", 
+            "text": "The updated quaternion after the multiplication.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_18", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#div_1", 
+            "text": "A quaternion can be can be divided in-place by a number.  local foo = luacml.quat_n(2,4,6,8)\nprint(foo:diveq(2)) -- prints: quat_n: 1,2,3,4 \nprint(foo)          -- prints: quat_n: 1,2,3,4", 
+            "title": "div()"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_8", 
+            "text": "The original quaternion is updated.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_19", 
+            "text": "1 scalar number.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_19", 
+            "text": "A new quaternion representing the element-wise division.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_19", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#quaternion-metamethods", 
+            "text": "All vector types have a set of metamethods  that allow them to\nbe used with several operators.", 
+            "title": "Quaternion metamethods"
+        }, 
+        {
+            "location": "/quaternion-docs/#__index", 
+            "text": "The __index metamethod permits quaternion element access.  Quaternions can be indexed with 1-based integer keys:  local foo = luacml.quat(10,20,30,40)\nlocal bar = luacml.quat_p(10,20,30,40)\nprint(foo[1]) -- prints: 10\nprint(bar[1]) -- prints: 10  Or with case-insensitive \"x\", \"y\", \"z\", or \"w\" string keys:  local foo = luacml.quat(10,20,30,40)\nlocal bar = luacml.quat_p(10,20,30,40)\nprint(foo.x)    -- prints: 20\nprint(foo.W)    -- prints: 10\nprint(bar[ w ]) -- prints: 40\nprint(bar[ Z ]) -- prints: 30", 
+            "title": "__index"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_20", 
+            "text": "An integer from 1 to 4.  or one of {x, y, z, w}.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_20", 
+            "text": "The quaternion's element as a number.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_20", 
+            "text": "Missing arguments.  Invalid index value.  Invalid index type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#__newindex", 
+            "text": "The __newindex metamethod permits vector element setting.  Quaternions can be indexed with 1-based integer keys:  local foo = luacml.quat(0,0,0,0)\nlocal bar = luacml.quat_p(0,0,0,0)\nfoo[1] = 10 -- Set to (1,0,0,0)\nbar[1] = 10 -- Set to (1,0,0,0)  Or with case-insensitive \"x\", \"y\", \"z\", or \"w\" string keys:  local foo = luacml.quat(0,0,0,0)\nfoo.x = 10\nfoo.Y = 20\nfoo[ z ] = 30\n-- Set to (0,10,20,30)", 
+            "title": "__newindex"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_21", 
+            "text": "An integer from 1 to 4.  or one of {x, y, z, w}.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_21", 
+            "text": "(None)", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_21", 
+            "text": "Missing arguments.  Invalid index value.  Invalid index type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#__tostring", 
+            "text": "Quaternions can be converted to strings for easy printing.  local foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat_p(1,2,3,4)\nlocal baz = luacml.quat_n(1,2,3,4)\nprint(foo) -- prints: quat: 1,2,3,4 \nprint(bar) -- prints: quat_p: 1,2,3,4 \nprint(baz) -- prints: quat_n: 1,2,3,4", 
+            "title": "__tostring"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_9", 
+            "text": "This function internally uses  lua_pushfstring  to format the output, so be\naware of different formatting across versions of Lua.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_22", 
+            "text": "1 quaternion.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_22", 
+            "text": "The quaternion formatted as a string.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_22", 
+            "text": "(None)", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#__unm", 
+            "text": "The negative of a quaternion can be generated.  local foo = luacml.quat(1,2,-3,-4)\nprint(-foo) -- prints: quat: -1,-2,3,4", 
+            "title": "__unm"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_10", 
+            "text": "The original quaternion is unchanged.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_23", 
+            "text": "1 quaternion.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_23", 
+            "text": "A new quaternion representing the negative of the original.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_23", 
+            "text": "(None)", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#__add", 
+            "text": "Two quaternions can be added together.  local foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(4,3,2,1)\nprint(foo + bar) -- prints: quat 5,5,5,5", 
+            "title": "__add"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_11", 
+            "text": "The original quaternions are unchanged.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_24", 
+            "text": "2 quaternions of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_24", 
+            "text": "A new quaternion representing the element-wise sum.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_24", 
+            "text": "Invalid types.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#__sub", 
+            "text": "Two quaternions can be subtracted.  local foo = luacml.quat(1,2,3,4)\nlocal bar = luacml.quat(4,3,2,1)\nprint(foo - bar) -- prints: quat -3,-1,1,3", 
+            "title": "__sub"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_12", 
+            "text": "The original quaternions are unchanged.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_25", 
+            "text": "2 quaternions of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_25", 
+            "text": "A new quaternion representing the element-wise difference.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_25", 
+            "text": "Invalid types.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#__mul", 
+            "text": "Quaternions can be scaled.  local foo = luacml.quat_p(1,2,3,4)\nprint(2.0 * foo) -- prints: quat_p 2,4,6,8 \nprint(foo * 3.0) -- prints: quat_p 3,6,9,12", 
+            "title": "__mul"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_13", 
+            "text": "The original quaternion is unchanged.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_26", 
+            "text": "1 quaternion and 1 number.  or 1 number and 1 quaternion.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_26", 
+            "text": "A new quaternion representing the element-wise scale.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_26", 
+            "text": "Invalid types.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#__div", 
+            "text": "Quaternions can be inverse divided.  local foo = luacml.quat_p(2,4,6,8)\nprint(foo / 2.0) -- prints: quat_p 1,2,3,4", 
+            "title": "__div"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_14", 
+            "text": "The original quaternion is unchanged.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_27", 
+            "text": "1 quaternion and 1 number.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_27", 
+            "text": "A new quaternion representing the element-wise division.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_27", 
+            "text": "Invalid types.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/quaternion-docs/#__eq", 
+            "text": "Quaternions can be compared.  local foo = luacml.quat_p(2,4,6)\nlocal bar = luacml.quat_p(2,4,6)\nlocal baz = luacml.quat_p(1,2,3)\nprint(foo == bar) -- prints: true\nprint(foo ~= baz) -- prints: false", 
+            "title": "__eq"
+        }, 
+        {
+            "location": "/quaternion-docs/#note_15", 
+            "text": "The original quaternions are unchanged.", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/quaternion-docs/#parameters_28", 
+            "text": "2 quaternions of same type.", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/quaternion-docs/#returns_28", 
+            "text": "Boolean representing element-wise equality.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/quaternion-docs/#errors_28", 
+            "text": "Invalid types.", 
+            "title": "Errors"
         }, 
         {
             "location": "/vector-docs/", 

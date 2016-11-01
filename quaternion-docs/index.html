@@ -115,14 +115,754 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#quaternion-docs">Quaternion Docs</a></li>
+        <li class="main active"><a href="#quaternions">Quaternions</a></li>
+        
+            <li><a href="#quaternion-types">Quaternion types</a></li>
+        
+            <li><a href="#quaternion-functions">Quaternion functions</a></li>
+        
+            <li><a href="#quaternion-metamethods">Quaternion metamethods</a></li>
         
     
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="quaternion-docs">Quaternion Docs</h1></div>
+<h1 id="quaternions">Quaternions</h1>
+<h2 id="quaternion-types">Quaternion types</h2>
+<p>The following quaternion types are provided by LuaCML:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quat</code></td>
+<td>A scalar-first, positive cross quaternion based on <code>lua_Number</code></td>
+</tr>
+<tr>
+<td><code>quat_p</code></td>
+<td>A vector-first, positive cross quaternion based on <code>lua_Number</code></td>
+</tr>
+<tr>
+<td><code>quat_n</code></td>
+<td>A vector-first, negative cross quaternion based on <code>lua_Number</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="note">Note:</h3>
+<p>The <code>quat</code> type is a scalar-first quaternion, ie: (w,x,y,z).</p>
+<p>The <code>quat_p</code> and <code>quat_n</code> types are vector-first quaternions, ie: (x,y,z,w).</p>
+<p>The <code>quat_p</code> (or positive cross) type determines the multiplication order of two
+quaternions in "standard" form. A multiplication of <code>q1*q2</code> represents the
+rotation of <code>q2</code> applied first, followed by <code>q1</code>.</p>
+<p>The <code>quat_n</code> (or negative cross) type determines the multiplication order of two
+quaternions in "reverse" form. A multiplication of <code>q1*q2</code> represents the
+rotation of <code>q1</code> applied first, followed by <code>q2</code>.</p>
+<h2 id="quaternion-functions">Quaternion functions</h2>
+<h3 id="constructor">constructor</h3>
+<p>Quaternions have default constructors initialized with identity:</p>
+<pre><code class="lua">local foo = luacml.quat()   -- set to (1,0,0,0)
+local bar = luacml.quat_p() -- set to (0,0,0,1)
+local baz = luacml.quat_n() -- set to (0,0,0,1)
+</code></pre>
+
+<p>Quaternions can be constructed from individual numbers:</p>
+<pre><code class="lua">local foo = luacml.quat(1,2,3,4)   -- set to (1,2,3,4)
+local bar = luacml.quat_p(1,2,3,4) -- set to (1,2,3,4)
+local baz = luacml.quat_n(1,2,3,4) -- set to (1,2,3,4)
+</code></pre>
+
+<p>Or from a table of numbers:</p>
+<pre><code class="lua">local foo = luacml.quat({1,2,3,4})   -- set to (1,2,3,4)
+local bar = luacml.quat_p({1,2,3,4}) -- set to (1,2,3,4)
+local baz = luacml.quat_n({1,2,3,4}) -- set to (1,2,3,4)
+</code></pre>
+
+<p>Or from a <code>vector4</code>:</p>
+<pre><code class="lua">local foo = luacml.quat(luacml.vector4(1,2,3,4))   -- set to (1,2,3,4)
+local bar = luacml.quat_p(luacml.vector4(1,2,3,4)) -- set to (1,2,3,4)
+local baz = luacml.quat_n(luacml.vector4(1,2,3,4)) -- set to (1,2,3,4)
+</code></pre>
+
+<p>Or from a table and a number (or a number and a table):</p>
+<pre><code class="lua">local foo = luacml.quat(1, {2,3,4}) -- set to (1,2,3,4)
+local bar = luacml.quat({2,3,4}, 1) -- set to (1,2,3,4)
+</code></pre>
+
+<p>Or from a <code>vector3</code> and a number (or a number and a <code>vector3</code>):</p>
+<pre><code class="lua">local foo = luacml.quat(luacml.vector3(2,3,4), 1) -- set to (1,2,3,4)
+local bar = luacml.quat(1, luacml.vector3(2,3,4)) -- set to (1,2,3,4)
+</code></pre>
+
+<p>Or from another quaternion of same type:</p>
+<pre><code class="lua">local foo = luacml.quat(1,2,3,4)
+local bar = luacml.quat(foo) -- set to (1,2,3,4)
+</code></pre>
+
+<h4 id="parameters">Parameters</h4>
+<ul>
+<li>4 numbers.</li>
+<li>or 1 table of 4 numbers.</li>
+<li>or 1 <code>vector4</code>.</li>
+<li>or 1 table of 3 numbers and 1 number.</li>
+<li>or 1 number and a table of 3 numbers.</li>
+<li>or 1 <code>vector3</code> and 1 number.</li>
+<li>or 1 number and 1 <code>vector3</code>.</li>
+<li>or 1 quaternion of same type.</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<p>The newly constructed quaternion.</p>
+<h4 id="errors">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="set">set()</h3>
+<p>Quaternions can be set from individual numbers:</p>
+<pre><code class="lua">local foo = luacml.quat()
+foo:set(1,2,3,4) -- set to (1,2,3,4)
+</code></pre>
+
+<p>Or from a table of numbers:</p>
+<pre><code class="lua">local foo = luacml.quat()
+foo:set({1,2,3,4}) -- set to (1,2,3,4)
+</code></pre>
+
+<p>Or from a <code>vector4</code>:</p>
+<pre><code class="lua">local foo = luacml.quat_p()
+foo:set(luacml.vector4(1,2,3,4)) -- set to (1,2,3,4)
+</code></pre>
+
+<p>Or from a table and a number (or a number and a table):</p>
+<pre><code class="lua">local foo = luacml.quat_p()
+foo:set({2,3,4}, 1) -- set to (2,3,4,1)
+foo:set(1, {2,3,4}) -- set to (2,3,4,1)
+</code></pre>
+
+<p>Or from a <code>vector3</code> and a number (or a number and a <code>vector3</code>):</p>
+<pre><code class="lua">local foo = luacml.quat_n()
+foo:set(luacml.vector3(1,2,3), 4) -- set to (1,2,3,4)
+foo:set(4, luacml.vector3(1,2,3)) -- set to (1,2,3,4)
+</code></pre>
+
+<p>Or from another quaternion of same type:</p>
+<pre><code class="lua">local foo = luacml.quat_n()
+foo:set(luacml.quat_n(1,2,3,4)) -- set to (1,2,3,4)
+</code></pre>
+
+<h4 id="parameters_1">Parameters</h4>
+<ul>
+<li>4 numbers.</li>
+<li>or 1 table of 4 numbers.</li>
+<li>or 1 <code>vector4</code>.</li>
+<li>or 1 table of 3 numbers and 1 number.</li>
+<li>or 1 number and a table of 3 numbers.</li>
+<li>or 1 <code>vector3</code> and 1 number.</li>
+<li>or 1 number and 1 <code>vector3</code>.</li>
+<li>or 1 quaternion of same type.</li>
+</ul>
+<h4 id="returns_1">Returns</h4>
+<p>The quaternion, after it has been set.</p>
+<h4 id="errors_1">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="totable">totable()</h3>
+<p>Quaternions can be converted to a table:</p>
+<pre><code class="lua">local foo = luacml.quat_p(1,2,3,4)
+local bar = foo:totable()
+print(bar[1], bar[2], bar[3], bar[4]) -- prints: 1 2 3 4
+</code></pre>
+
+<h4 id="parameters_2">Parameters</h4>
+<p>(None)</p>
+<h4 id="returns_2">Returns</h4>
+<p>An array containing the quaternion's elements.</p>
+<h4 id="errors_2">Errors</h4>
+<ul>
+<li>Extra arguments.</li>
+</ul>
+<hr />
+<h3 id="length">length()</h3>
+<p>The length of a quaternion can be found:</p>
+<pre><code class="lua">local foo = luacml.quat_p(1,2,3,4)
+print(foo:length()) -- prints: 5.4772255750517
+</code></pre>
+
+<h4 id="parameters_3">Parameters</h4>
+<p>(None)</p>
+<h4 id="returns_3">Returns</h4>
+<p>The quaternion's length as a number.</p>
+<h4 id="errors_3">Errors</h4>
+<ul>
+<li>Extra arguments.</li>
+</ul>
+<hr />
+<h3 id="length_squared">length_squared()</h3>
+<p>The squared-length of a quaternion can be found:</p>
+<pre><code class="lua">local foo = luacml.quat_p(1,2,3,4)
+print(foo:length_squared()) -- prints: 30
+</code></pre>
+
+<h4 id="parameters_4">Parameters</h4>
+<p>(None)</p>
+<h4 id="returns_4">Returns</h4>
+<p>The quaternion's squared length as a number.</p>
+<h4 id="errors_4">Errors</h4>
+<ul>
+<li>Extra arguments.</li>
+</ul>
+<hr />
+<h3 id="normalize">normalize()</h3>
+<p>A quaternion can be normalized in-place:</p>
+<pre><code class="lua">local foo = luacml.quat_p(1,1,1,1)
+foo:normalize() -- set to (0.5,0.5,0.5,0.5)
+</code></pre>
+
+<h4 id="parameters_5">Parameters</h4>
+<p>(None)</p>
+<h4 id="returns_5">Returns</h4>
+<p>The quaternion, after it has been normalized.</p>
+<h4 id="errors_5">Errors</h4>
+<ul>
+<li>Extra arguments.</li>
+</ul>
+<hr />
+<h3 id="inverse">inverse()</h3>
+<p>A quaternion can be set to its inverse:</p>
+<pre><code class="lua">local foo = luacml.quat_p(1,1,1,1)
+foo:inverse() -- set to (-0.25,-0.25,-0.25,0.25)
+</code></pre>
+
+<h4 id="parameters_6">Parameters</h4>
+<p>(None)</p>
+<h4 id="returns_6">Returns</h4>
+<p>The quaternion, after it has been inverted.</p>
+<h4 id="errors_6">Errors</h4>
+<ul>
+<li>Extra arguments.</li>
+</ul>
+<hr />
+<h3 id="conjugate">conjugate()</h3>
+<p>A quaternion can be set to its conjugate:</p>
+<pre><code class="lua">local foo = luacml.quat_p(1,1,1,1)
+foo:conjugate() -- set to (-1,-1,-1,1)
+</code></pre>
+
+<h4 id="parameters_7">Parameters</h4>
+<p>(None)</p>
+<h4 id="returns_7">Returns</h4>
+<p>The quaternion, after it has been set to its conjugate.</p>
+<h4 id="errors_7">Errors</h4>
+<ul>
+<li>Extra arguments.</li>
+</ul>
+<hr />
+<h3 id="identity">identity()</h3>
+<p>A quaternion can be set to its identity:</p>
+<pre><code class="lua">local foo = luacml.quat_p(1,2,3,4)
+foo:identity() -- set to (0,0,0,1)
+
+local bar = luacml.quat(1,2,3,4)
+bar:identity() -- set to (1,0,0,0)
+</code></pre>
+
+<h4 id="parameters_8">Parameters</h4>
+<p>(None)</p>
+<h4 id="returns_8">Returns</h4>
+<p>The quaternion, after it has been set to its identity.</p>
+<h4 id="errors_8">Errors</h4>
+<ul>
+<li>Extra arguments.</li>
+</ul>
+<hr />
+<h3 id="random">random()</h3>
+<p>A quaternion can be set to a random quaternion with elements between specified
+minimum and maximum values.</p>
+<pre><code class="lua">local foo = luacml.quat()
+foo:random(-1,1) -- sets each element to a random value between -1 and 1.
+</code></pre>
+
+<h4 id="parameters_9">Parameters</h4>
+<ul>
+<li>The minimum number.</li>
+<li>The maximum number.</li>
+</ul>
+<h4 id="returns_9">Returns</h4>
+<p>(None)</p>
+<h4 id="errors_9">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="imaginary">imaginary()</h3>
+<p>A quaternion's imaginary/vector part can be retrieved.</p>
+<pre><code class="lua">local foo = luacml.quat(1,2,3,4)
+local bar = luacml.quat_p(1,2,3,4)
+print(foo:imaginary()) -- prints: vector3:&lt;2,3,4&gt;
+print(bar:imaginary()) -- prints: vector3:&lt;1,2,3&gt;
+</code></pre>
+
+<h4 id="parameters_10">Parameters</h4>
+<p>(None)</p>
+<h4 id="returns_10">Returns</h4>
+<p>Returns a <code>vector3</code> representing the imaginary (<strong>i,j,k</strong>) or (<strong>x,y,z</strong>)
+components.</p>
+<h4 id="errors_10">Errors</h4>
+<ul>
+<li>Extra arguments.</li>
+</ul>
+<hr />
+<h3 id="real">real()</h3>
+<p>A quaternion's real/scalar part can be retrieved.</p>
+<pre><code class="lua">local foo = luacml.quat(1,2,3,4)
+local bar = luacml.quat_p(1,2,3,4)
+print(foo:real()) -- prints: 1
+print(bar:real()) -- prints: 4
+</code></pre>
+
+<h4 id="parameters_11">Parameters</h4>
+<p>(None)</p>
+<h4 id="returns_11">Returns</h4>
+<p>Returns a number representing the real (<strong>w</strong>) component.</p>
+<h4 id="errors_11">Errors</h4>
+<ul>
+<li>Extra arguments.</li>
+</ul>
+<hr />
+<h3 id="add">add()</h3>
+<p>A quaternion can be added with another quaternion of same type.</p>
+<pre><code class="lua">local foo = luacml.quat(1,2,3,4)
+local bar = luacml.quat(1,2,3,4)
+print(foo:add(bar)) -- prints: quat:&lt;2,4,6,8&gt;
+print(foo)          -- prints: quat:&lt;1,2,3,4&gt;
+</code></pre>
+
+<h4 id="note_1">Note</h4>
+<p>The original quaternions are unchanged.</p>
+<p>Internally, this equivalent to the <a href="#__add">__add</a> metamethod.</p>
+<h4 id="parameters_12">Parameters</h4>
+<p>A quaternion of same type.</p>
+<h4 id="returns_12">Returns</h4>
+<p>A new quaternion representing the element-wise sum.</p>
+<h4 id="errors_12">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="sub">sub()</h3>
+<p>A quaternion can be subtracted from another quaternion.</p>
+<pre><code class="lua">local foo = luacml.quat(1,2,3,4)
+local bar = luacml.quat(1,2,3,4)
+print(foo:sub(bar)) -- prints: quat:&lt;0,0,0,0&gt;
+print(foo)          -- prints: quat:&lt;1,2,3,4&gt;
+</code></pre>
+
+<h4 id="note_2">Note</h4>
+<p>The original quaternions are unchanged.</p>
+<p>Internally, this function is equivalent to the <a href="#__sub">__sub</a> metamethod.</p>
+<h4 id="parameters_13">Parameters</h4>
+<p>A quaternion of same type.</p>
+<h4 id="returns_13">Returns</h4>
+<p>A new quaternion representing the element-wise difference.</p>
+<h4 id="errors_13">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="mul">mul()</h3>
+<p>A quaternion can multiplied with another quaternion or with a number.</p>
+<pre><code class="lua">local foo = luacml.quat(1,2,3,4)
+local bar = luacml.quat(4,3,2,1)
+print(foo:mul(bar)) -- prints: quat:&lt;-12,6,24,12&gt;
+</code></pre>
+
+<pre><code class="lua">local foo = luacml.quat_p(1,2,3,4)
+local bar = luacml.quat_p(4,3,2,1)
+print(foo:mul(bar)) -- prints: quat_p:&lt;12,24,6,-12&gt;
+</code></pre>
+
+<pre><code class="lua">local foo = luacml.quat_n(1,2,3,4)
+local bar = luacml.quat_n(4,3,2,1)
+print(foo:mul(bar)) -- prints: quat_n:&lt;22,4,16,-12&gt;
+</code></pre>
+
+<pre><code class="lua">local foo = luacml.quat_p(1,2,3,4)
+print(foo:mul(2)) -- prints: quat_p:&lt;2,4,6,8&gt;
+</code></pre>
+
+<h4 id="note_3">Note</h4>
+<p>The original quaternion(s) are unchanged.</p>
+<p>Internally, this function is equivalent to the <a href="#__mul">__mul</a> metamethod.</p>
+<h4 id="parameters_14">Parameters</h4>
+<ul>
+<li>1 scalar number.</li>
+<li>or 1 quaternion of same type.</li>
+</ul>
+<h4 id="returns_14">Returns</h4>
+<p>A new quaternion representing the multiplication result.</p>
+<h4 id="errors_14">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="div">div()</h3>
+<p>A quaternion can be can be divided by a number.</p>
+<pre><code class="lua">local foo = luacml.quat_n(2,4,6,8)
+print(foo:div(2)) -- prints: quat_n:&lt;1,2,3,4&gt;
+print(foo)        -- prints: quat_n:&lt;2,4,6,8&gt;
+</code></pre>
+
+<h4 id="note_4">Note</h4>
+<p>The original quaternion is unchanged.</p>
+<p>Internally, this function is equivalent to the <a href="#__div">__div</a> metamethod.</p>
+<h4 id="parameters_15">Parameters</h4>
+<ul>
+<li>1 scalar number.</li>
+</ul>
+<h4 id="returns_15">Returns</h4>
+<p>A new quaternion representing the element-wise division.</p>
+<h4 id="errors_15">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="addeq">addeq()</h3>
+<p>A quaternion can be incremented in-place with another quaternion.</p>
+<pre><code class="lua">local foo = luacml.quat_n(1,2,3,4)
+local bar = luacml.quat_n(1,2,3,4)
+print(foo:addeq(bar)) -- prints: quat_n:&lt;2,4,6,8&gt;
+print(foo)            -- prints: quat_n:&lt;2,4,6,8&gt;
+</code></pre>
+
+<h4 id="note_5">Note</h4>
+<p>The original quaternion (but not the input parameter) is updated.</p>
+<h4 id="parameters_16">Parameters</h4>
+<ul>
+<li>1 quaternion of same type.</li>
+</ul>
+<h4 id="returns_16">Returns</h4>
+<p>The updated quaternion after the element-wise sum.</p>
+<h4 id="errors_16">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="subeq">subeq()</h3>
+<p>A quaternion can be subtracted in-place with another quaternion.</p>
+<pre><code class="lua">local foo = luacml.quat(1,2,3,4)
+local bar = luacml.quat(1,2,3,4)
+print(foo:subeq(bar)) -- prints: quat:&lt;0,0,0,0&gt;
+print(foo)            -- prints: quat:&lt;0,0,0,0&gt;
+</code></pre>
+
+<h4 id="note_6">Note</h4>
+<p>The original quaternion (but not the parameter) is updated.</p>
+<h4 id="parameters_17">Parameters</h4>
+<ul>
+<li>1 quaternion of same type.</li>
+</ul>
+<h4 id="returns_17">Returns</h4>
+<p>The updated quaternion after the element-wise subtraction.</p>
+<h4 id="errors_17">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="muleq">muleq()</h3>
+<p>A quaternion can be multiplied in-place with another quaternion or a number.</p>
+<pre><code class="lua">local foo = luacml.quat(1,2,3,4)
+local bar = luacml.quat(4,3,2,1)
+print(foo:muleq(bar)) -- prints: quat:&lt;-12,6,24,12&gt;
+print(foo)            -- prints: quat:&lt;-12,6,24,12&gt;
+</code></pre>
+
+<pre><code class="lua">local foo = luacml.quat_p(1,2,3,4)
+local bar = luacml.quat_p(4,3,2,1)
+print(foo:muleq(bar)) -- prints: quat_p:&lt;12,24,6,-12&gt;
+print(foo)            -- prints: quat_p:&lt;12,24,6,-12&gt;
+</code></pre>
+
+<pre><code class="lua">local foo = luacml.quat_n(1,2,3,4)
+local bar = luacml.quat_n(4,3,2,1)
+print(foo:muleq(bar)) -- prints: quat_n:&lt;22,4,16,-12&gt;
+print(foo)            -- prints: quat_n:&lt;22,4,16,-12&gt;
+</code></pre>
+
+<pre><code class="lua">local foo = luacml.quat_p(1,2,3,4)
+print(foo:muleq(2)) -- prints: quat_p:&lt;2,4,6,8&gt;
+print(foo)          -- prints: quat_p:&lt;2,4,6,8&gt;
+</code></pre>
+
+<h4 id="note_7">Note</h4>
+<p>The original quaternion (not the parameter) is updated.</p>
+<h4 id="parameters_18">Parameters</h4>
+<ul>
+<li>1 quaternion of same type.</li>
+<li>or 1 scalar number.</li>
+</ul>
+<h4 id="returns_18">Returns</h4>
+<p>The updated quaternion after the multiplication.</p>
+<h4 id="errors_18">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h3 id="div_1">div()</h3>
+<p>A quaternion can be can be divided in-place by a number.</p>
+<pre><code class="lua">local foo = luacml.quat_n(2,4,6,8)
+print(foo:diveq(2)) -- prints: quat_n:&lt;1,2,3,4&gt;
+print(foo)          -- prints: quat_n:&lt;1,2,3,4&gt;
+</code></pre>
+
+<h4 id="note_8">Note</h4>
+<p>The original quaternion is updated.</p>
+<h4 id="parameters_19">Parameters</h4>
+<ul>
+<li>1 scalar number.</li>
+</ul>
+<h4 id="returns_19">Returns</h4>
+<p>A new quaternion representing the element-wise division.</p>
+<h4 id="errors_19">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="quaternion-metamethods">Quaternion metamethods</h2>
+<p>All vector types have a set of
+<a href="http://www.lua.org/manual/5.3/manual.html#2.4">metamethods</a> that allow them to
+be used with several operators.</p>
+<hr />
+<h3 id="__index">__index</h3>
+<p>The __index metamethod permits quaternion element access.</p>
+<p>Quaternions can be indexed with 1-based integer keys:</p>
+<pre><code class="lua">local foo = luacml.quat(10,20,30,40)
+local bar = luacml.quat_p(10,20,30,40)
+print(foo[1]) -- prints: 10
+print(bar[1]) -- prints: 10
+</code></pre>
+
+<p>Or with case-insensitive "x", "y", "z", or "w" string keys:</p>
+<pre><code class="lua">local foo = luacml.quat(10,20,30,40)
+local bar = luacml.quat_p(10,20,30,40)
+print(foo.x)    -- prints: 20
+print(foo.W)    -- prints: 10
+print(bar[&quot;w&quot;]) -- prints: 40
+print(bar[&quot;Z&quot;]) -- prints: 30
+</code></pre>
+
+<h4 id="parameters_20">Parameters</h4>
+<ul>
+<li>An integer from 1 to 4.</li>
+<li>or one of {x, y, z, w}.</li>
+</ul>
+<h4 id="returns_20">Returns</h4>
+<p>The quaternion's element as a number.</p>
+<h4 id="errors_20">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Invalid index value.</li>
+<li>Invalid index type.</li>
+</ul>
+<hr />
+<h3 id="__newindex">__newindex</h3>
+<p>The __newindex metamethod permits vector element setting.</p>
+<p>Quaternions can be indexed with 1-based integer keys:</p>
+<pre><code class="lua">local foo = luacml.quat(0,0,0,0)
+local bar = luacml.quat_p(0,0,0,0)
+foo[1] = 10 -- Set to (1,0,0,0)
+bar[1] = 10 -- Set to (1,0,0,0)
+</code></pre>
+
+<p>Or with case-insensitive "x", "y", "z", or "w" string keys:</p>
+<pre><code class="lua">local foo = luacml.quat(0,0,0,0)
+foo.x = 10
+foo.Y = 20
+foo[&quot;z&quot;] = 30
+-- Set to (0,10,20,30)
+</code></pre>
+
+<h4 id="parameters_21">Parameters</h4>
+<ul>
+<li>An integer from 1 to 4.</li>
+<li>or one of {x, y, z, w}.</li>
+</ul>
+<h4 id="returns_21">Returns</h4>
+<p>(None)</p>
+<h4 id="errors_21">Errors</h4>
+<ul>
+<li>Missing arguments.</li>
+<li>Invalid index value.</li>
+<li>Invalid index type.</li>
+</ul>
+<hr />
+<h3 id="__tostring">__tostring</h3>
+<p>Quaternions can be converted to strings for easy printing.</p>
+<pre><code class="lua">local foo = luacml.quat(1,2,3,4)
+local bar = luacml.quat_p(1,2,3,4)
+local baz = luacml.quat_n(1,2,3,4)
+print(foo) -- prints: quat:&lt;1,2,3,4&gt;
+print(bar) -- prints: quat_p:&lt;1,2,3,4&gt;
+print(baz) -- prints: quat_n:&lt;1,2,3,4&gt;
+</code></pre>
+
+<h4 id="note_9">Note</h4>
+<p>This function internally uses <code>lua_pushfstring</code> to format the output, so be
+aware of different formatting across versions of Lua.</p>
+<h4 id="parameters_22">Parameters</h4>
+<ul>
+<li>1 quaternion.</li>
+</ul>
+<h4 id="returns_22">Returns</h4>
+<p>The quaternion formatted as a string.</p>
+<h4 id="errors_22">Errors</h4>
+<p>(None)</p>
+<hr />
+<h3 id="__unm">__unm</h3>
+<p>The negative of a quaternion can be generated.</p>
+<pre><code class="lua">local foo = luacml.quat(1,2,-3,-4)
+print(-foo) -- prints: quat:&lt;-1,-2,3,4&gt;
+</code></pre>
+
+<h4 id="note_10">Note</h4>
+<p>The original quaternion is unchanged.</p>
+<h4 id="parameters_23">Parameters</h4>
+<ul>
+<li>1 quaternion.</li>
+</ul>
+<h4 id="returns_23">Returns</h4>
+<p>A new quaternion representing the negative of the original.</p>
+<h4 id="errors_23">Errors</h4>
+<p>(None)</p>
+<hr />
+<h3 id="__add">__add</h3>
+<p>Two quaternions can be added together.</p>
+<pre><code class="lua">local foo = luacml.quat(1,2,3,4)
+local bar = luacml.quat(4,3,2,1)
+print(foo + bar) -- prints: quat&lt;5,5,5,5&gt;
+</code></pre>
+
+<h4 id="note_11">Note</h4>
+<p>The original quaternions are unchanged.</p>
+<h4 id="parameters_24">Parameters</h4>
+<ul>
+<li>2 quaternions of same type.</li>
+</ul>
+<h4 id="returns_24">Returns</h4>
+<p>A new quaternion representing the element-wise sum.</p>
+<h4 id="errors_24">Errors</h4>
+<ul>
+<li>Invalid types.</li>
+</ul>
+<hr />
+<h3 id="__sub">__sub</h3>
+<p>Two quaternions can be subtracted.</p>
+<pre><code class="lua">local foo = luacml.quat(1,2,3,4)
+local bar = luacml.quat(4,3,2,1)
+print(foo - bar) -- prints: quat&lt;-3,-1,1,3&gt;
+</code></pre>
+
+<h4 id="note_12">Note</h4>
+<p>The original quaternions are unchanged.</p>
+<h4 id="parameters_25">Parameters</h4>
+<ul>
+<li>2 quaternions of same type.</li>
+</ul>
+<h4 id="returns_25">Returns</h4>
+<p>A new quaternion representing the element-wise difference.</p>
+<h4 id="errors_25">Errors</h4>
+<ul>
+<li>Invalid types.</li>
+</ul>
+<hr />
+<h3 id="__mul">__mul</h3>
+<p>Quaternions can be scaled.</p>
+<pre><code class="lua">local foo = luacml.quat_p(1,2,3,4)
+print(2.0 * foo) -- prints: quat_p&lt;2,4,6,8&gt;
+print(foo * 3.0) -- prints: quat_p&lt;3,6,9,12&gt;
+</code></pre>
+
+<h4 id="note_13">Note</h4>
+<p>The original quaternion is unchanged.</p>
+<h4 id="parameters_26">Parameters</h4>
+<ul>
+<li>1 quaternion and 1 number.</li>
+<li>or 1 number and 1 quaternion.</li>
+</ul>
+<h4 id="returns_26">Returns</h4>
+<p>A new quaternion representing the element-wise scale.</p>
+<h4 id="errors_26">Errors</h4>
+<ul>
+<li>Invalid types.</li>
+</ul>
+<hr />
+<h3 id="__div">__div</h3>
+<p>Quaternions can be inverse divided.</p>
+<pre><code class="lua">local foo = luacml.quat_p(2,4,6,8)
+print(foo / 2.0) -- prints: quat_p&lt;1,2,3,4&gt;
+</code></pre>
+
+<h4 id="note_14">Note</h4>
+<p>The original quaternion is unchanged.</p>
+<h4 id="parameters_27">Parameters</h4>
+<ul>
+<li>1 quaternion and 1 number.</li>
+</ul>
+<h4 id="returns_27">Returns</h4>
+<p>A new quaternion representing the element-wise division.</p>
+<h4 id="errors_27">Errors</h4>
+<ul>
+<li>Invalid types.</li>
+</ul>
+<hr />
+<h3 id="__eq">__eq</h3>
+<p>Quaternions can be compared.</p>
+<pre><code class="lua">local foo = luacml.quat_p(2,4,6)
+local bar = luacml.quat_p(2,4,6)
+local baz = luacml.quat_p(1,2,3)
+print(foo == bar) -- prints: true
+print(foo ~= baz) -- prints: false
+</code></pre>
+
+<h4 id="note_15">Note</h4>
+<p>The original quaternions are unchanged.</p>
+<h4 id="parameters_28">Parameters</h4>
+<ul>
+<li>2 quaternions of same type.</li>
+</ul>
+<h4 id="returns_28">Returns</h4>
+<p>Boolean representing element-wise equality.</p>
+<h4 id="errors_28">Errors</h4>
+<ul>
+<li>Invalid types.</li>
+</ul></div>
             
         </div>
 
