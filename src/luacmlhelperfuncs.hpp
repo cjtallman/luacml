@@ -17,12 +17,12 @@
 #include "luacml.hpp"
 
 namespace Helper {
-LUACML_API int GetNumberFromStack(lua_State* L, const int index, lua_Number* num);
-LUACML_API int GetIntegerFromStack(lua_State* L, const int index, int* num);
-LUACML_API int GetNumbersFromTable(lua_State* L, const int tab, lua_Number* vec, const int len,
-                                   bool err_less, bool err_more);
-LUACML_API int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* vec, const int len,
-                                      bool err_less, bool err_more);
+int GetNumberFromStack(lua_State* L, const int index, lua_Number* num);
+int GetIntegerFromStack(lua_State* L, const int index, int* num);
+int GetNumbersFromTable(lua_State* L, const int tab, lua_Number* vec, const int len, bool err_less,
+                        bool err_more);
+int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* vec, const int len,
+                           bool err_less, bool err_more);
 
 template < typename T, typename U >
 int AssignFromUserdata(lua_State* L, const int ud, T* to)

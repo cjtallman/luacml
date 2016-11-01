@@ -37,7 +37,7 @@ int NewClass(lua_State* L, const char* TYPE_NAME, const luaL_Reg* funcs)
     // Loop over each func and store in metatable.
     for (const luaL_Reg* func = funcs; func->name; ++func)
     {
-        if(func->func)
+        if (func->func)
         {
             lua_pushstring(L, func->name);
             lua_pushcfunction(L, func->func);
@@ -103,7 +103,7 @@ int Dot(lua_State* L)
         lua_rawset(L, -3);                                                                         \
     } while (0)
 
-LUACML_API int luaopen_luacml(lua_State* L)
+int luaopen_luacml(lua_State* L)
 {
     static luaL_Reg funcs[] = {{"cross", Cross}, {"dot", Dot}, {NULL, NULL}};
 

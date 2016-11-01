@@ -54,8 +54,25 @@ build =
                    {
                        "stdc++",
                    },
+                   defines =
+                   {
+                       "LUACML_API=extern \"C\" __attribute__((visibility(\"default\")))",
+                   },
                },
            },
        },
+       win32 =
+       {
+           modules =
+           {
+               luacml =
+               {
+                   defines =
+                   {
+                       "LUACML_API=extern \"C\" __declspec(dllexport)",
+                   },
+               },
+           },
+       }
    }
 }

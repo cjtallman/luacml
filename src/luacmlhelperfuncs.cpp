@@ -15,7 +15,7 @@
 
 namespace Helper {
 
-LUACML_API int GetNumberFromStack(lua_State* L, const int index, lua_Number* num)
+int GetNumberFromStack(lua_State* L, const int index, lua_Number* num)
 {
     luaL_checktype(L, index, LUA_TNUMBER);
 
@@ -28,7 +28,7 @@ LUACML_API int GetNumberFromStack(lua_State* L, const int index, lua_Number* num
     return 1;
 }
 
-LUACML_API int GetIntegerFromStack(lua_State* L, const int index, int* num)
+int GetIntegerFromStack(lua_State* L, const int index, int* num)
 {
     luaL_checktype(L, index, LUA_TNUMBER);
 
@@ -46,8 +46,8 @@ LUACML_API int GetIntegerFromStack(lua_State* L, const int index, int* num)
     return 1;
 }
 
-LUACML_API int GetNumbersFromTable(lua_State* L, const int tab, lua_Number* vec, const int len,
-                                   bool err_less, bool err_more)
+int GetNumbersFromTable(lua_State* L, const int tab, lua_Number* vec, const int len, bool err_less,
+                        bool err_more)
 {
     // Verify it's a table.
     luaL_checktype(L, tab, LUA_TTABLE);
@@ -76,8 +76,8 @@ LUACML_API int GetNumbersFromTable(lua_State* L, const int tab, lua_Number* vec,
     return count;
 }
 
-LUACML_API int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* vec, const int len,
-                                      bool err_less, bool err_more)
+int GetNumbersFromUserdata(lua_State* L, const int ud, lua_Number* vec, const int len,
+                           bool err_less, bool err_more)
 {
     luaL_checktype(L, ud, LUA_TUSERDATA);
     lua_getfield(L, ud, "totable");
