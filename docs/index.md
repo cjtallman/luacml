@@ -11,13 +11,25 @@ It works as a Lua module that can be loaded using the `require` function:
 local luacml = require("luacml")
 ```
 
+or
+
+```lua
+-- Only load portions of the LuaCML library.
+local vec2 = require("luacml.vector2")
+local vec3 = require("luacml.vector3")
+local vec4 = require("luacml.vector4")
+local quat = require("luacml.quat_p")
+```
+
 ## Features
 
 There are a number of predefined types available:
 
-- [Vector types](./vector-docs.md)
-- [Quaternion types](./quaternion-docs.md)
-- [Matrix types](./matrix-docs.md)
+-   [Vector types](./vector-docs.md)
+-   [Quaternion types](./quaternion-docs.md)
+-   [Matrix types](./matrix-docs.md)
+
+More detailed documentation exists for various [library functions](./library-docs.md).
 
 ## Design decisions
 

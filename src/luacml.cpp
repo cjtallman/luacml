@@ -94,6 +94,32 @@ int Dot(lua_State* L)
         return luaL_argerror(L, 1, "Expected vector2, vector3, vector4, quat, quat_p, quat_n");
 }
 
+template < typename T, typename U >
+int TOuter(lua_State* L)
+{
+    typedef typename T::Pointer TPointer;
+    typedef typename U::Pointer UPointer;
+
+    if (const TPointer A = (TPointer)luaL_testudata(L, 1, T::UDATA_TYPE_NAME))
+    {
+        TPointer B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+        UPointer C = (UPointer)lua_newuserdata(L, sizeof(U::Type));
+        *C         = cml::outer(*A, *B);
+        return SetClass(L, U::UDATA_TYPE_NAME);
+    }
+    return 0;
+}
+int Outer(lua_State* L)
+{
+    CHECK_ARG_COUNT(L, 2);
+
+    if (TOuter< Vector4, Matrix44 >(L) || TOuter< Vector3, Matrix33 >(L) ||
+        TOuter< Vector2, Matrix22 >(L))
+        return 1;
+    else
+        return luaL_argerror(L, 1, "Expected vector2, vector3, vector4");
+}
+
 #define REGISTER_LIB(L, name, func)                                                                \
     do                                                                                             \
     {                                                                                              \
@@ -105,7 +131,7 @@ int Dot(lua_State* L)
 
 int luaopen_luacml(lua_State* L)
 {
-    static luaL_Reg funcs[] = {{"cross", Cross}, {"dot", Dot}, {NULL, NULL}};
+    static luaL_Reg funcs[] = {{"cross", Cross}, {"dot", Dot}, {"outer", Outer}, {NULL, NULL}};
 
     lua_newtable(L);
     luaL_setfuncs(L, funcs, 0);
