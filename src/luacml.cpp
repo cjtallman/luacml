@@ -99,11 +99,12 @@ int TOuter(lua_State* L)
 {
     typedef typename T::Pointer TPointer;
     typedef typename U::Pointer UPointer;
+    typedef typename U::Type    UType;
 
     if (const TPointer A = (TPointer)luaL_testudata(L, 1, T::UDATA_TYPE_NAME))
     {
         TPointer B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
-        UPointer C = (UPointer)lua_newuserdata(L, sizeof(U::Type));
+        UPointer C = (UPointer)lua_newuserdata(L, sizeof(UType));
         *C         = cml::outer(*A, *B);
         return SetClass(L, U::UDATA_TYPE_NAME);
     }
