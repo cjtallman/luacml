@@ -131,6 +131,8 @@
         
             <li><a href="#perp_dot">perp_dot()</a></li>
         
+            <li><a href="#triple_product">triple_product()</a></li>
+        
     
     </ul>
 </div></div>
@@ -225,6 +227,33 @@ print(luacml.perp_dot(left, right)) -- prints: -2
 <h3 id="returns_3">Returns</h3>
 <p>Returns the perpendicular dot product of the two input vectors.</p>
 <h3 id="errors_3">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="triple_product">triple_product()</h2>
+<p>The triple product can be performed for three <code>vector3</code> objects.</p>
+<pre><code class="lua">local A = luacml.vector3(1,2,3)
+local B = luacml.vector3(4,5,6)
+local C = luacml.vector3(7,8,9)
+print(luacml.triple_product(A, B, C)) -- prints: 0
+</code></pre>
+
+<h3 id="note_4">Note</h3>
+<p>Only the <code>vector3</code> type is supported.</p>
+<p>The result is equivalent to</p>
+<pre><code class="lua">luacml.dot(A, luacml.cross(B,C))
+</code></pre>
+
+<h3 id="parameters_4">Parameters</h3>
+<ul>
+<li>3 <code>vector3</code>.</li>
+</ul>
+<h3 id="returns_4">Returns</h3>
+<p>Returns the triple product of the three input vectors.</p>
+<h3 id="errors_4">Errors</h3>
 <ul>
 <li>Missing arguments.</li>
 <li>Extra arguments.</li>
