@@ -133,6 +133,8 @@
         
             <li><a href="#triple_product">triple_product()</a></li>
         
+            <li><a href="#unit_cross">unit_cross()</a></li>
+        
     
     </ul>
 </div></div>
@@ -254,6 +256,32 @@ print(luacml.triple_product(A, B, C)) -- prints: 0
 <h3 id="returns_4">Returns</h3>
 <p>Returns the triple product of the three input vectors.</p>
 <h3 id="errors_4">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="unit_cross">unit_cross()</h2>
+<p>The normalized cross product between two <code>vector3</code>:</p>
+<pre><code class="lua">local A = luacml.vector3(10,0,0)
+local B = luacml.vector3(0,10,0)
+print(luacml.unit_cross(A, B)) -- prints: vector3:&lt;0,0,1&gt;
+</code></pre>
+
+<h3 id="note_5">Note</h3>
+<p>Only the <code>vector3</code> type is supported.</p>
+<p>The result is equivalent to</p>
+<pre><code class="lua">luacml.cross(B,C):normalize()
+</code></pre>
+
+<h3 id="parameters_5">Parameters</h3>
+<ul>
+<li>3 <code>vector3</code>.</li>
+</ul>
+<h3 id="returns_5">Returns</h3>
+<p>Returns the normalized cross product of the two input vectors.</p>
+<h3 id="errors_5">Errors</h3>
 <ul>
 <li>Missing arguments.</li>
 <li>Extra arguments.</li>

@@ -32,7 +32,7 @@
         }, 
         {
             "location": "/library-docs/", 
-            "text": "Library Functions\n\n\n\n\ndot()\n\n\nThe dot product can be performed for vector and quaternion types.\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(1,2,3)\nprint(luacml.dot(foo, bar)) -- prints: 14\n\n\n\n\nNote\n\n\nOnly the following types are supported:\n\n\nVectors\n: \nvector2\n, \nvector3\n, \nvector4\n\n\nQuaternions\n: \nquat\n, \nquat_p\n, \nquat_n\n\n\nParameters\n\n\n\n\n2 vectors of same type.\n\n\nor 2 quaternions of same type.\n\n\n\n\nReturns\n\n\nReturns the dot product as a number.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\ncross()\n\n\nThe cross product can be performed for the \nvector3\n type.\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(3,2,1)\nprint(luacml.cross(foo, bar)) -- prints: vector3:\n-4,8,-4\n\n\n\n\n\nNote\n\n\nOnly the \nvector3\n type supports cross product.\n\n\nParameters\n\n\n\n\n2 vectors of type \nvector3\n.\n\n\n\n\nReturns\n\n\nReturns the cross product as a \nvector3\n.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nouter()\n\n\nThe outer product can be performed for vector types.\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(3,2,1)\nprint(luacml.outer(foo, bar)) -- prints: matrix33:|3,2,1|6,4,2|9,6,3|\n\n\n\n\nNote\n\n\nOnly the following types are supported:\n\n\nVectors\n: \nvector2\n, \nvector3\n, \nvector4\n\n\nParameters\n\n\n\n\n2 vectors of same type.\n\n\n\n\nReturns\n\n\nReturns the outer product as a matrix of size \nNxN\n for vectors of size \nN\n.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nperp_dot()\n\n\nThe perpendicular dot product can be performed for Vector2.\n\n\nlocal left = luacml.vector2(1,2)\nlocal right = luacml.vector2(3,4)\nprint(luacml.perp_dot(left, right)) -- prints: -2\n\n\n\n\nNote\n\n\nOnly the \nvector2\n type is supported.\n\n\nThe result is the dot product of \nright\n and the perpendicular vector to \nleft\n.\n\n\nParameters\n\n\n\n\n2 \nvector2\n.\n\n\n\n\nReturns\n\n\nReturns the perpendicular dot product of the two input vectors.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\ntriple_product()\n\n\nThe triple product can be performed for three \nvector3\n objects.\n\n\nlocal A = luacml.vector3(1,2,3)\nlocal B = luacml.vector3(4,5,6)\nlocal C = luacml.vector3(7,8,9)\nprint(luacml.triple_product(A, B, C)) -- prints: 0\n\n\n\n\nNote\n\n\nOnly the \nvector3\n type is supported.\n\n\nThe result is equivalent to\n\n\nluacml.dot(A, luacml.cross(B,C))\n\n\n\n\nParameters\n\n\n\n\n3 \nvector3\n.\n\n\n\n\nReturns\n\n\nReturns the triple product of the three input vectors.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.", 
+            "text": "Library Functions\n\n\n\n\ndot()\n\n\nThe dot product can be performed for vector and quaternion types.\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(1,2,3)\nprint(luacml.dot(foo, bar)) -- prints: 14\n\n\n\n\nNote\n\n\nOnly the following types are supported:\n\n\nVectors\n: \nvector2\n, \nvector3\n, \nvector4\n\n\nQuaternions\n: \nquat\n, \nquat_p\n, \nquat_n\n\n\nParameters\n\n\n\n\n2 vectors of same type.\n\n\nor 2 quaternions of same type.\n\n\n\n\nReturns\n\n\nReturns the dot product as a number.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\ncross()\n\n\nThe cross product can be performed for the \nvector3\n type.\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(3,2,1)\nprint(luacml.cross(foo, bar)) -- prints: vector3:\n-4,8,-4\n\n\n\n\n\nNote\n\n\nOnly the \nvector3\n type supports cross product.\n\n\nParameters\n\n\n\n\n2 vectors of type \nvector3\n.\n\n\n\n\nReturns\n\n\nReturns the cross product as a \nvector3\n.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nouter()\n\n\nThe outer product can be performed for vector types.\n\n\nlocal foo = luacml.vector3(1,2,3)\nlocal bar = luacml.vector3(3,2,1)\nprint(luacml.outer(foo, bar)) -- prints: matrix33:|3,2,1|6,4,2|9,6,3|\n\n\n\n\nNote\n\n\nOnly the following types are supported:\n\n\nVectors\n: \nvector2\n, \nvector3\n, \nvector4\n\n\nParameters\n\n\n\n\n2 vectors of same type.\n\n\n\n\nReturns\n\n\nReturns the outer product as a matrix of size \nNxN\n for vectors of size \nN\n.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nperp_dot()\n\n\nThe perpendicular dot product can be performed for Vector2.\n\n\nlocal left = luacml.vector2(1,2)\nlocal right = luacml.vector2(3,4)\nprint(luacml.perp_dot(left, right)) -- prints: -2\n\n\n\n\nNote\n\n\nOnly the \nvector2\n type is supported.\n\n\nThe result is the dot product of \nright\n and the perpendicular vector to \nleft\n.\n\n\nParameters\n\n\n\n\n2 \nvector2\n.\n\n\n\n\nReturns\n\n\nReturns the perpendicular dot product of the two input vectors.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\ntriple_product()\n\n\nThe triple product can be performed for three \nvector3\n objects.\n\n\nlocal A = luacml.vector3(1,2,3)\nlocal B = luacml.vector3(4,5,6)\nlocal C = luacml.vector3(7,8,9)\nprint(luacml.triple_product(A, B, C)) -- prints: 0\n\n\n\n\nNote\n\n\nOnly the \nvector3\n type is supported.\n\n\nThe result is equivalent to\n\n\nluacml.dot(A, luacml.cross(B,C))\n\n\n\n\nParameters\n\n\n\n\n3 \nvector3\n.\n\n\n\n\nReturns\n\n\nReturns the triple product of the three input vectors.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.\n\n\n\n\n\n\nunit_cross()\n\n\nThe normalized cross product between two \nvector3\n:\n\n\nlocal A = luacml.vector3(10,0,0)\nlocal B = luacml.vector3(0,10,0)\nprint(luacml.unit_cross(A, B)) -- prints: vector3:\n0,0,1\n\n\n\n\n\nNote\n\n\nOnly the \nvector3\n type is supported.\n\n\nThe result is equivalent to\n\n\nluacml.cross(B,C):normalize()\n\n\n\n\nParameters\n\n\n\n\n3 \nvector3\n.\n\n\n\n\nReturns\n\n\nReturns the normalized cross product of the two input vectors.\n\n\nErrors\n\n\n\n\nMissing arguments.\n\n\nExtra arguments.\n\n\nInvalid argument type.", 
             "title": "Library docs"
         }, 
         {
@@ -162,6 +162,31 @@
         }, 
         {
             "location": "/library-docs/#errors_4", 
+            "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
+            "title": "Errors"
+        }, 
+        {
+            "location": "/library-docs/#unit_cross", 
+            "text": "The normalized cross product between two  vector3 :  local A = luacml.vector3(10,0,0)\nlocal B = luacml.vector3(0,10,0)\nprint(luacml.unit_cross(A, B)) -- prints: vector3: 0,0,1", 
+            "title": "unit_cross()"
+        }, 
+        {
+            "location": "/library-docs/#note_5", 
+            "text": "Only the  vector3  type is supported.  The result is equivalent to  luacml.cross(B,C):normalize()", 
+            "title": "Note"
+        }, 
+        {
+            "location": "/library-docs/#parameters_5", 
+            "text": "3  vector3 .", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/library-docs/#returns_5", 
+            "text": "Returns the normalized cross product of the two input vectors.", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/library-docs/#errors_5", 
             "text": "Missing arguments.  Extra arguments.  Invalid argument type.", 
             "title": "Errors"
         }, 
