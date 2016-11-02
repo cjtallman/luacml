@@ -169,7 +169,7 @@ Returns the triple product of the three input vectors.
 
 ## unit_cross()
 
-The normalized cross product between two `vector3`:
+The normalized cross product between two `vector3`.
 
 ```lua
 local A = luacml.vector3(10,0,0)
@@ -189,11 +189,60 @@ luacml.cross(B,C):normalize()
 
 ### Parameters
 
--   3 `vector3`.
+-   2 `vector3`.
 
 ### Returns
 
 Returns the normalized cross product of the two input vectors.
+
+### Errors
+
+-   Missing arguments.
+-   Extra arguments.
+-   Invalid argument type.
+
+--------------------------------------------------------------------------------
+
+## cross_cardinal()
+
+The cross product between a `vector3` and a cardinal axis.
+
+```lua
+local foo = luacml.vector3(1,2,3)
+-- A cross X
+print(luacml.cross_cardinal(A, 1)) -- prints: vector3:<0,3,-2>
+
+-- A cross Y
+print(luacml.cross_cardinal(A, 2)) -- prints: vector3:<-3,0,1>
+
+-- A cross Z
+print(luacml.cross_cardinal(A, 3)) -- prints: vector3:<2,-1,0>
+
+-- X cross A
+print(luacml.cross_cardinal(1, A)) -- prints: vector3:<0,-3,2>
+
+-- Y cross A
+print(luacml.cross_cardinal(2, A)) -- prints: vector3:<3,0,-1>
+
+-- Z cross A
+print(luacml.cross_cardinal(3, A)) -- prints: vector3:<-2,1,0>
+```
+
+### Note
+
+Only the `vector3` type is supported.
+
+Only the indices `1,2,3` are valid for cardinal axes.
+
+### Parameters
+
+-   1 `vector3`, and 1 integer between 1 and 3.
+-   or 1 integer between 1 and 3, and 1 `vector3`.
+
+### Returns
+
+Returns the cross product between the input `vector3` and the cardinal axis that
+corresponds to the input index.
 
 ### Errors
 

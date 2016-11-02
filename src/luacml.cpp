@@ -147,6 +147,41 @@ int UnitCross(lua_State* L)
     return 1;
 }
 
+int CrossCardinal(lua_State* L)
+{
+    CHECK_ARG_COUNT(L, 2);
+    if (lua_isuserdata(L, 1) && lua_isnumber(L, 2))
+    {
+        const Vector3::Pointer A =
+            (Vector3::Pointer)(luaL_checkudata(L, 1, Vector3::UDATA_TYPE_NAME));
+        const lua_Number numaxis = luaL_checknumber(L, 2);
+        const int        B       = static_cast< int >(numaxis);
+        luaL_argcheck(L, (B >= 1 && B <= Vector3::NUM_ELEMENTS), 2, NULL);
+        luaL_argcheck(L, (B == numaxis), 2, "not an integer");
+        Vector3::Pointer C = (Vector3::Pointer)lua_newuserdata(L, sizeof(Vector3::Type));
+        *C                 = cml::cross_cardinal(*A, B - 1);
+        SetClass(L, Vector3::UDATA_TYPE_NAME);
+        return 1;
+    }
+    else if (lua_isnumber(L, 1) && lua_isuserdata(L, 2))
+    {
+        const lua_Number numaxis = luaL_checknumber(L, 1);
+        const int        A       = static_cast< int >(numaxis);
+        luaL_argcheck(L, (A >= 1 && A <= Vector3::NUM_ELEMENTS), 2, NULL);
+        luaL_argcheck(L, (A == numaxis), 2, "not an integer");
+        const Vector3::Pointer B =
+            (Vector3::Pointer)(luaL_checkudata(L, 2, Vector3::UDATA_TYPE_NAME));
+        Vector3::Pointer C = (Vector3::Pointer)lua_newuserdata(L, sizeof(Vector3::Type));
+        *C                 = cml::cross_cardinal(A - 1, *B);
+        SetClass(L, Vector3::UDATA_TYPE_NAME);
+        return 1;
+    }
+    else
+    {
+        return luaL_argerror(L, 1, "Expected vector3 or number");
+    }
+}
+
 #define REGISTER_LIB(L, name, func)                                                                \
     do                                                                                             \
     {                                                                                              \
@@ -164,6 +199,7 @@ LUACML_API int luaopen_luacml(lua_State* L)
                                {"perp_dot", PerpDot},
                                {"triple_product", TripleProduct},
                                {"unit_cross", UnitCross},
+                               {"cross_cardinal", CrossCardinal},
                                {NULL, NULL}};
 
     lua_newtable(L);

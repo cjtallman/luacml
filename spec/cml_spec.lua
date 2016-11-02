@@ -377,4 +377,33 @@ describe("cml", function()
             end
         end
     end)
+
+    describe("cross_cardinal", function()
+        local test_seeds =
+        {
+            vector3 =
+            {
+                { A = {1,2,3}, B = 1, expected = {0,3,-2} },
+                { A = {1,2,3}, B = 2, expected = {-3,0,1} },
+                { A = {1,2,3}, B = 3, expected = {2,-1,0} },
+                { A = 1, B = {1,2,3}, expected = {0,-3,2} },
+                { A = 2, B = {1,2,3}, expected = {3,0,-1} },
+                { A = 3, B = {1,2,3}, expected = {-2,1,0} },
+            },
+        }
+
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s , %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = type(seed.A) == "table" and ctor(seed.A) or type(seed.A) == "nil" and ctor() or seed.A
+                local B = type(seed.B) == "table" and ctor(seed.B) or type(seed.B) == "nil" and ctor() or seed.B
+                local testname = testfmt:format(tostring(A), tostring(B))
+                it(testname, function()
+                    local input, expected = cml.cross_cardinal(A, B), seed.expected
+                    assert.same(expected, input:totable())
+                end)
+            end
+        end
+    end)
 end)
