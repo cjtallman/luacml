@@ -135,6 +135,14 @@
         
             <li><a href="#unit_cross">unit_cross()</a></li>
         
+            <li><a href="#cross_cardinal">cross_cardinal()</a></li>
+        
+            <li><a href="#length_squared">length_squared()</a></li>
+        
+            <li><a href="#length">length()</a></li>
+        
+            <li><a href="#normalize">normalize()</a></li>
+        
     
     </ul>
 </div></div>
@@ -263,7 +271,7 @@ print(luacml.triple_product(A, B, C)) -- prints: 0
 </ul>
 <hr />
 <h2 id="unit_cross">unit_cross()</h2>
-<p>The normalized cross product between two <code>vector3</code>:</p>
+<p>The normalized cross product between two <code>vector3</code>.</p>
 <pre><code class="lua">local A = luacml.vector3(10,0,0)
 local B = luacml.vector3(0,10,0)
 print(luacml.unit_cross(A, B)) -- prints: vector3:&lt;0,0,1&gt;
@@ -277,11 +285,157 @@ print(luacml.unit_cross(A, B)) -- prints: vector3:&lt;0,0,1&gt;
 
 <h3 id="parameters_5">Parameters</h3>
 <ul>
-<li>3 <code>vector3</code>.</li>
+<li>2 <code>vector3</code>.</li>
 </ul>
 <h3 id="returns_5">Returns</h3>
 <p>Returns the normalized cross product of the two input vectors.</p>
 <h3 id="errors_5">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="cross_cardinal">cross_cardinal()</h2>
+<p>The cross product between a <code>vector3</code> and a cardinal axis.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+-- A cross X
+print(luacml.cross_cardinal(A, 1)) -- prints: vector3:&lt;0,3,-2&gt;
+
+-- A cross Y
+print(luacml.cross_cardinal(A, 2)) -- prints: vector3:&lt;-3,0,1&gt;
+
+-- A cross Z
+print(luacml.cross_cardinal(A, 3)) -- prints: vector3:&lt;2,-1,0&gt;
+
+-- X cross A
+print(luacml.cross_cardinal(1, A)) -- prints: vector3:&lt;0,-3,2&gt;
+
+-- Y cross A
+print(luacml.cross_cardinal(2, A)) -- prints: vector3:&lt;3,0,-1&gt;
+
+-- Z cross A
+print(luacml.cross_cardinal(3, A)) -- prints: vector3:&lt;-2,1,0&gt;
+</code></pre>
+
+<h3 id="note_6">Note</h3>
+<p>Only the <code>vector3</code> type is supported.</p>
+<p>Only the indices <code>1,2,3</code> are valid for cardinal axes.</p>
+<h3 id="parameters_6">Parameters</h3>
+<ul>
+<li>1 <code>vector3</code>, and 1 integer between 1 and 3.</li>
+<li>or 1 integer between 1 and 3, and 1 <code>vector3</code>.</li>
+</ul>
+<h3 id="returns_6">Returns</h3>
+<p>Returns the cross product between the input <code>vector3</code> and the cardinal axis that
+corresponds to the input index.</p>
+<h3 id="errors_6">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="length_squared">length_squared()</h2>
+<p>The squared length of a vector type.</p>
+<pre><code class="lua">local foo = luacml.vector2(1,2)
+print(luacml.length_squared(foo)) -- prints: 5
+
+local bar = luacml.vector3(1,2,3)
+print(luacml.length_squared(bar)) -- prints: 14
+
+local baz = luacml.vector4(1,2,3,4)
+print(luacml.length_squared(baz)) -- prints: 30
+</code></pre>
+
+<h3 id="note_7">Note</h3>
+<p>This is functionally identical to calling the length_squared() method for each
+respective vector type.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+assert(foo:length_squared() == luacml.length_squared(foo))
+</code></pre>
+
+<h3 id="parameters_7">Parameters</h3>
+<ul>
+<li>1 <code>vector2</code>.</li>
+<li>or 1 <code>vector3</code>.</li>
+<li>or 1 <code>vector4</code>.</li>
+</ul>
+<h3 id="returns_7">Returns</h3>
+<p>Returns the squared length (or squared magnitude) of the input vector.</p>
+<h3 id="errors_7">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="length">length()</h2>
+<p>The length of a vector.</p>
+<pre><code class="lua">local foo = luacml.vector2(1,2)
+print(luacml.length(foo)) -- prints: sqrt(5)
+
+local bar = luacml.vector3(1,2,3)
+print(luacml.length(bar)) -- prints: sqrt(14)
+
+local baz = luacml.vector4(1,2,3,4)
+print(luacml.length(baz)) -- prints: sqrt(30)
+</code></pre>
+
+<h3 id="note_8">Note</h3>
+<p>This is functionally identical to calling the length() method for each
+respective vector type.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+assert(foo:length() == luacml.length(foo))
+</code></pre>
+
+<h3 id="parameters_8">Parameters</h3>
+<ul>
+<li>1 <code>vector2</code>.</li>
+<li>or 1 <code>vector3</code>.</li>
+<li>or 1 <code>vector4</code>.</li>
+</ul>
+<h3 id="returns_8">Returns</h3>
+<p>Returns the length (or magnitude) of the input vector.</p>
+<h3 id="errors_8">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="normalize">normalize()</h2>
+<p>Get the unit length vector for an the input vector.</p>
+<pre><code class="lua">local foo = luacml.vector2(1,2)
+print(luacml.normalize(foo)) -- prints: sqrt(5)
+
+local bar = luacml.vector3(1,2,3)
+print(luacml.normalize(bar)) -- prints: sqrt(14)
+
+local baz = luacml.vector4(1,2,3,4)
+print(luacml.normalize(baz)) -- prints: sqrt(30)
+</code></pre>
+
+<h3 id="note_9">Note</h3>
+<p>This function is similar to calling the respective <code>normalize()</code> functions for
+each vector type, however the input vector is left unchanged.</p>
+<pre><code class="lua">local foo = luacml.vector3(10,0,0)
+local bar = luacml.normalize(foo)
+print(foo) -- prints: vector3&lt;10,0,0&gt;
+print(bar) -- prints: vector3&lt;1,0,0&gt;
+</code></pre>
+
+<p>Also note that no checking for zero magnitude is performed; As such, possible to
+yield vectors with NaN in them.</p>
+<h3 id="parameters_9">Parameters</h3>
+<ul>
+<li>1 <code>vector2</code>.</li>
+<li>or 1 <code>vector3</code>.</li>
+<li>or 1 <code>vector4</code>.</li>
+</ul>
+<h3 id="returns_9">Returns</h3>
+<p>Returns a new normlized vector from the input vector.</p>
+<h3 id="errors_9">Errors</h3>
 <ul>
 <li>Missing arguments.</li>
 <li>Extra arguments.</li>
