@@ -129,3 +129,40 @@ Returns the perpendicular dot product of the two input vectors.
 -   Invalid argument type.
 
 --------------------------------------------------------------------------------
+
+## triple_product()
+
+The triple product can be performed for three `vector3` objects.
+
+```lua
+local A = luacml.vector3(1,2,3)
+local B = luacml.vector3(4,5,6)
+local C = luacml.vector3(7,8,9)
+print(luacml.triple_product(A, B, C)) -- prints: 0
+```
+
+### Note
+
+Only the `vector3` type is supported.
+
+The result is equivalent to
+
+```lua
+luacml.dot(A, luacml.cross(B,C))
+```
+
+### Parameters
+
+-   3 `vector3`.
+
+### Returns
+
+Returns the triple product of the three input vectors.
+
+### Errors
+
+-   Missing arguments.
+-   Extra arguments.
+-   Invalid argument type.
+
+--------------------------------------------------------------------------------

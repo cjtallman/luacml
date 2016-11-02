@@ -326,4 +326,30 @@ describe("cml", function()
             end
         end
     end)
+
+    describe(".triple_product", function()
+        local test_seeds =
+        {
+            vector3 =
+            {
+                { A = nil, B = nil, C = nil, expected = 0 },
+                { A = {1,2,3}, B = {4,5,6}, C = {7,8,9}, expected = 0 },
+            },
+        }
+
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s , %s , %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = (seed.A ~= nil) and ctor(seed.A) or ctor()
+                local B = (seed.B ~= nil) and ctor(seed.B) or ctor()
+                local C = (seed.C ~= nil) and ctor(seed.C) or ctor()
+                local testname = testfmt:format(tostring(A), tostring(B), tostring(C))
+                it(testname, function()
+                    local input, expected = cml.triple_product(A, B, C), seed.expected
+                    assert.same(expected, input)
+                end)
+            end
+        end
+    end)
 end)

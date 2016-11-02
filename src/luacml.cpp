@@ -132,6 +132,16 @@ int PerpDot(lua_State* L)
     return 1;
 }
 
+int TripleProduct(lua_State* L)
+{
+    CHECK_ARG_COUNT(L, 3);
+    const Vector3::Pointer A = (Vector3::Pointer)(luaL_checkudata(L, 1, Vector3::UDATA_TYPE_NAME));
+    const Vector3::Pointer B = (Vector3::Pointer)(luaL_checkudata(L, 2, Vector3::UDATA_TYPE_NAME));
+    const Vector3::Pointer C = (Vector3::Pointer)(luaL_checkudata(L, 3, Vector3::UDATA_TYPE_NAME));
+    lua_pushnumber(L, cml::triple_product(*A, *B, *C));
+    return 1;
+}
+
 #define REGISTER_LIB(L, name, func)                                                                \
     do                                                                                             \
     {                                                                                              \
@@ -143,8 +153,12 @@ int PerpDot(lua_State* L)
 
 LUACML_API int luaopen_luacml(lua_State* L)
 {
-    static luaL_Reg funcs[] = {
-        {"cross", Cross}, {"dot", Dot}, {"outer", Outer}, {"perp_dot", PerpDot}, {NULL, NULL}};
+    static luaL_Reg funcs[] = {{"cross", Cross},
+                               {"dot", Dot},
+                               {"outer", Outer},
+                               {"perp_dot", PerpDot},
+                               {"triple_product", TripleProduct},
+                               {NULL, NULL}};
 
     lua_newtable(L);
     luaL_setfuncs(L, funcs, 0);
