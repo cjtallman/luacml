@@ -166,3 +166,39 @@ Returns the triple product of the three input vectors.
 -   Invalid argument type.
 
 --------------------------------------------------------------------------------
+
+## unit_cross()
+
+The normalized cross product between two `vector3`:
+
+```lua
+local A = luacml.vector3(10,0,0)
+local B = luacml.vector3(0,10,0)
+print(luacml.unit_cross(A, B)) -- prints: vector3:<0,0,1>
+```
+
+### Note
+
+Only the `vector3` type is supported.
+
+The result is equivalent to
+
+```lua
+luacml.cross(B,C):normalize()
+```
+
+### Parameters
+
+-   3 `vector3`.
+
+### Returns
+
+Returns the normalized cross product of the two input vectors.
+
+### Errors
+
+-   Missing arguments.
+-   Extra arguments.
+-   Invalid argument type.
+
+--------------------------------------------------------------------------------

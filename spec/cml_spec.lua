@@ -327,7 +327,7 @@ describe("cml", function()
         end
     end)
 
-    describe(".triple_product", function()
+    describe("triple_product", function()
         local test_seeds =
         {
             vector3 =
@@ -348,6 +348,31 @@ describe("cml", function()
                 it(testname, function()
                     local input, expected = cml.triple_product(A, B, C), seed.expected
                     assert.same(expected, input)
+                end)
+            end
+        end
+    end)
+
+    describe("unit_cross", function()
+        local test_seeds =
+        {
+            vector3 =
+            {
+                { A = {1,2,3}, B = {4,5,6}, expected = {-3/math.sqrt(54),6/math.sqrt(54),-3/math.sqrt(54)} },
+                { A = {10,0,0}, B = {0,-10,0}, expected = {0,0,-1} },
+            },
+        }
+
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s , %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = (seed.A ~= nil) and ctor(seed.A) or ctor()
+                local B = (seed.B ~= nil) and ctor(seed.B) or ctor()
+                local testname = testfmt:format(tostring(A), tostring(B))
+                it(testname, function()
+                    local input, expected = cml.unit_cross(A, B), seed.expected
+                    assert.same(expected, input:totable())
                 end)
             end
         end

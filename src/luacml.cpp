@@ -60,14 +60,12 @@ int SetClass(lua_State* L, const char* TYPE_NAME)
 int Cross(lua_State* L)
 {
     CHECK_ARG_COUNT(L, 2);
-
     Vector3::Pointer A = (Vector3::Pointer)luaL_checkudata(L, 1, Vector3::UDATA_TYPE_NAME);
     Vector3::Pointer B = (Vector3::Pointer)luaL_checkudata(L, 2, Vector3::UDATA_TYPE_NAME);
     Vector3::Pointer C = (Vector3::Pointer)lua_newuserdata(L, sizeof(Vector3::Type));
-
-    *C = cml::cross(*A, *B);
-
-    return SetClass(L, Vector3::UDATA_TYPE_NAME);
+    *C                 = cml::cross(*A, *B);
+    SetClass(L, Vector3::UDATA_TYPE_NAME);
+    return 1;
 }
 
 template < typename T >
@@ -86,7 +84,6 @@ int TDot(lua_State* L)
 int Dot(lua_State* L)
 {
     CHECK_ARG_COUNT(L, 2);
-
     if (TDot< Vector4 >(L) || TDot< Vector3 >(L) || TDot< Vector2 >(L) || TDot< QuatDef >(L) ||
         TDot< QuatPos >(L) || TDot< QuatNeg >(L))
         return 1;
@@ -100,7 +97,6 @@ int TOuter(lua_State* L)
     typedef typename T::Pointer TPointer;
     typedef typename U::Pointer UPointer;
     typedef typename U::Type    UType;
-
     if (const TPointer A = (TPointer)luaL_testudata(L, 1, T::UDATA_TYPE_NAME))
     {
         TPointer B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
@@ -114,7 +110,6 @@ int TOuter(lua_State* L)
 int Outer(lua_State* L)
 {
     CHECK_ARG_COUNT(L, 2);
-
     if (TOuter< Vector4, Matrix44 >(L) || TOuter< Vector3, Matrix33 >(L) ||
         TOuter< Vector2, Matrix22 >(L))
         return 1;
@@ -125,7 +120,6 @@ int Outer(lua_State* L)
 int PerpDot(lua_State* L)
 {
     CHECK_ARG_COUNT(L, 2);
-
     const Vector2::Pointer A = (Vector2::Pointer)(luaL_checkudata(L, 1, Vector2::UDATA_TYPE_NAME));
     const Vector2::Pointer B = (Vector2::Pointer)(luaL_checkudata(L, 2, Vector2::UDATA_TYPE_NAME));
     lua_pushnumber(L, cml::perp_dot(*A, *B));
@@ -139,6 +133,17 @@ int TripleProduct(lua_State* L)
     const Vector3::Pointer B = (Vector3::Pointer)(luaL_checkudata(L, 2, Vector3::UDATA_TYPE_NAME));
     const Vector3::Pointer C = (Vector3::Pointer)(luaL_checkudata(L, 3, Vector3::UDATA_TYPE_NAME));
     lua_pushnumber(L, cml::triple_product(*A, *B, *C));
+    return 1;
+}
+
+int UnitCross(lua_State* L)
+{
+    CHECK_ARG_COUNT(L, 2);
+    const Vector3::Pointer A = (Vector3::Pointer)(luaL_checkudata(L, 1, Vector3::UDATA_TYPE_NAME));
+    const Vector3::Pointer B = (Vector3::Pointer)(luaL_checkudata(L, 2, Vector3::UDATA_TYPE_NAME));
+    Vector3::Pointer       C = (Vector3::Pointer)lua_newuserdata(L, sizeof(Vector3::Type));
+    *C                       = cml::unit_cross(*A, *B);
+    SetClass(L, Vector3::UDATA_TYPE_NAME);
     return 1;
 }
 
@@ -158,6 +163,7 @@ LUACML_API int luaopen_luacml(lua_State* L)
                                {"outer", Outer},
                                {"perp_dot", PerpDot},
                                {"triple_product", TripleProduct},
+                               {"unit_cross", UnitCross},
                                {NULL, NULL}};
 
     lua_newtable(L);
