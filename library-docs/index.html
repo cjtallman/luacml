@@ -129,6 +129,8 @@
         
             <li><a href="#outer">outer()</a></li>
         
+            <li><a href="#perp_dot">perp_dot()</a></li>
+        
     
     </ul>
 </div></div>
@@ -200,6 +202,29 @@ print(luacml.outer(foo, bar)) -- prints: matrix33:|3,2,1|6,4,2|9,6,3|
 <h3 id="returns_2">Returns</h3>
 <p>Returns the outer product as a matrix of size <em>NxN</em> for vectors of size <em>N</em>.</p>
 <h3 id="errors_2">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="perp_dot">perp_dot()</h2>
+<p>The perpendicular dot product can be performed for Vector2.</p>
+<pre><code class="lua">local left = luacml.vector2(1,2)
+local right = luacml.vector2(3,4)
+print(luacml.perp_dot(left, right)) -- prints: -2
+</code></pre>
+
+<h3 id="note_3">Note</h3>
+<p>Only the <code>vector2</code> type is supported.</p>
+<p>The result is the dot product of <code>right</code> and the perpendicular vector to <code>left</code>.</p>
+<h3 id="parameters_3">Parameters</h3>
+<ul>
+<li>2 <code>vector2</code>.</li>
+</ul>
+<h3 id="returns_3">Returns</h3>
+<p>Returns the perpendicular dot product of the two input vectors.</p>
+<h3 id="errors_3">Errors</h3>
 <ul>
 <li>Missing arguments.</li>
 <li>Extra arguments.</li>
