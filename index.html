@@ -60,6 +60,12 @@
                 
                 
                     <li >
+                        <a href="library-docs/">Library docs</a>
+                    </li>
+                
+                
+                
+                    <li >
                         <a href="matrix-docs/">Matrix docs</a>
                     </li>
                 
@@ -92,7 +98,7 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="matrix-docs/">
+                        <a rel="prev" href="library-docs/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -138,6 +144,14 @@ It works as a Lua module that can be loaded using the <code>require</code> funct
 local luacml = require(&quot;luacml&quot;)
 </code></pre>
 
+<p>or</p>
+<pre><code class="lua">-- Only load portions of the LuaCML library.
+local vec2 = require(&quot;luacml.vector2&quot;)
+local vec3 = require(&quot;luacml.vector3&quot;)
+local vec4 = require(&quot;luacml.vector4&quot;)
+local quat = require(&quot;luacml.quat_p&quot;)
+</code></pre>
+
 <h2 id="features">Features</h2>
 <p>There are a number of predefined types available:</p>
 <ul>
@@ -145,6 +159,7 @@ local luacml = require(&quot;luacml&quot;)
 <li><a href="quaternion-docs/">Quaternion types</a></li>
 <li><a href="matrix-docs/">Matrix types</a></li>
 </ul>
+<p>More detailed documentation exists for various <a href="library-docs/">library functions</a>.</p>
 <h2 id="design-decisions">Design decisions</h2>
 <p>Since CML is a library based on C++ templates, LuaCML is unable to provide the
 same configurability and instead aims to provide only the most common types.</p>
@@ -230,5 +245,5 @@ nor planned.</p>
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-11-01 18:56:57.933812
+Build Date UTC : 2016-11-02 19:07:05.287109
 -->

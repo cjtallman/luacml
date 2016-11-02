@@ -7,14 +7,14 @@
         
         
         
-        <link rel="shortcut icon" href="./img/favicon.ico">
+        <link rel="shortcut icon" href="../img/favicon.ico">
 
-	<title>LuaCML Documentation</title>
+	<title>Library docs - LuaCML Documentation</title>
 
-        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="./css/font-awesome-4.5.0.css" rel="stylesheet">
-        <link href="./css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="./css/highlight.css">
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -43,7 +43,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href=".">LuaCML Documentation</a>
+            <a class="navbar-brand" href="..">LuaCML Documentation</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -54,31 +54,31 @@
                 
                 
                     <li >
-                        <a href=".">Home</a>
+                        <a href="..">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="active">
+                        <a href="./">Library docs</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="library-docs/">Library docs</a>
+                        <a href="../matrix-docs/">Matrix docs</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="matrix-docs/">Matrix docs</a>
+                        <a href="../quaternion-docs/">Quaternion docs</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="quaternion-docs/">Quaternion docs</a>
-                    </li>
-                
-                
-                
-                    <li >
-                        <a href="vector-docs/">Vector docs</a>
+                        <a href="../vector-docs/">Vector docs</a>
                     </li>
                 
                 
@@ -92,13 +92,13 @@
                     </a>
                 </li>
                 
-                    <li class="disabled">
-                        <a rel="next" >
+                    <li >
+                        <a rel="next" href="..">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
-                    <li class="disabled">
-                        <a rel="prev" >
+                    <li >
+                        <a rel="prev" href="../matrix-docs/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -118,15 +118,95 @@
 
         <div class="container">
             
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#library-functions">Library Functions</a></li>
+        
+            <li><a href="#dot">dot()</a></li>
+        
+            <li><a href="#cross">cross()</a></li>
+        
+            <li><a href="#outer">outer()</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
 
-    <div class="row-fluid">
-      <div id="main-content" class="span12">
-        <h1 id="404-page-not-found" style="text-align: center">404</h1>
-        <p style="text-align: center"><strong>Page not found</strong></p>
-      </div>
-    </div>
+<h1 id="library-functions">Library Functions</h1>
+<hr />
+<h2 id="dot">dot()</h2>
+<p>The dot product can be performed for vector and quaternion types.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+local bar = luacml.vector3(1,2,3)
+print(luacml.dot(foo, bar)) -- prints: 14
+</code></pre>
 
+<h3 id="note">Note</h3>
+<p>Only the following types are supported:</p>
+<p><strong>Vectors</strong>: <code>vector2</code>, <code>vector3</code>, <code>vector4</code>
+<strong>Quaternions</strong>: <code>quat</code>, <code>quat_p</code>, <code>quat_n</code></p>
+<h3 id="parameters">Parameters</h3>
+<ul>
+<li>2 vectors of same type.</li>
+<li>or 2 quaternions of same type.</li>
+</ul>
+<h3 id="returns">Returns</h3>
+<p>Returns the dot product as a number.</p>
+<h3 id="errors">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="cross">cross()</h2>
+<p>The cross product can be performed for the <code>vector3</code> type.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+local bar = luacml.vector3(3,2,1)
+print(luacml.cross(foo, bar)) -- prints: vector3:&lt;-4,8,-4&gt;
+</code></pre>
 
+<h3 id="note_1">Note</h3>
+<p>Only the <code>vector3</code> type supports cross product.</p>
+<h3 id="parameters_1">Parameters</h3>
+<ul>
+<li>2 vectors of type <code>vector3</code>.</li>
+</ul>
+<h3 id="returns_1">Returns</h3>
+<p>Returns the cross product as a <code>vector3</code>.</p>
+<h3 id="errors_1">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="outer">outer()</h2>
+<p>The outer product can be performed for vector types.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+local bar = luacml.vector3(3,2,1)
+print(luacml.outer(foo, bar)) -- prints: matrix33:|3,2,1|6,4,2|9,6,3|
+</code></pre>
+
+<h3 id="note_2">Note</h3>
+<p>Only the following types are supported:</p>
+<p><strong>Vectors</strong>: <code>vector2</code>, <code>vector3</code>, <code>vector4</code></p>
+<h3 id="parameters_2">Parameters</h3>
+<ul>
+<li>2 vectors of same type.</li>
+</ul>
+<h3 id="returns_2">Returns</h3>
+<p>Returns the outer product as a matrix of size <em>NxN</em> for vectors of size <em>N</em>.</p>
+<h3 id="errors_2">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr /></div>
+            
         </div>
 
         <footer class="col-md-12">
@@ -135,12 +215,12 @@
             <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
 
-        <script src="./js/jquery-1.10.2.min.js"></script>
-        <script src="./js/bootstrap-3.0.3.min.js"></script>
-        <script src="./js/highlight.pack.js"></script>
-        <script>var base_url = '.';</script>
-        <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
-        <script src="./js/base.js"></script>
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script>var base_url = '..';</script>
+        <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+        <script src="../js/base.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
             <div class="modal-dialog">
