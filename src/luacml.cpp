@@ -182,6 +182,72 @@ int CrossCardinal(lua_State* L)
     }
 }
 
+template < typename T >
+int TLengthSquared(lua_State* L)
+{
+    typedef typename T::Pointer Pointer;
+    if (const Pointer A = (Pointer)luaL_testudata(L, 1, T::UDATA_TYPE_NAME))
+    {
+        lua_pushnumber(L, cml::length_squared(*A));
+        return 1;
+    }
+    return 0;
+}
+
+int LengthSquared(lua_State* L)
+{
+    CHECK_ARG_COUNT(L, 1);
+    if (TLengthSquared< Vector4 >(L) || TLengthSquared< Vector3 >(L) ||
+        TLengthSquared< Vector2 >(L))
+        return 1;
+    else
+        return luaL_argerror(L, 1, "Expected vector2, vector3, vector4");
+}
+
+template < typename T >
+int TLength(lua_State* L)
+{
+    typedef typename T::Pointer Pointer;
+    if (const Pointer A = (Pointer)luaL_testudata(L, 1, T::UDATA_TYPE_NAME))
+    {
+        lua_pushnumber(L, cml::length(*A));
+        return 1;
+    }
+    return 0;
+}
+
+int Length(lua_State* L)
+{
+    CHECK_ARG_COUNT(L, 1);
+    if (TLength< Vector4 >(L) || TLength< Vector3 >(L) || TLength< Vector2 >(L))
+        return 1;
+    else
+        return luaL_argerror(L, 1, "Expected vector2, vector3, vector4");
+}
+
+template < typename T >
+int TNormalize(lua_State* L)
+{
+    typedef typename T::Pointer TPointer;
+    typedef typename T::Type    TType;
+    if (const TPointer A = (TPointer)luaL_testudata(L, 1, T::UDATA_TYPE_NAME))
+    {
+        TPointer B = (TPointer)lua_newuserdata(L, sizeof(TType));
+        *B         = cml::normalize(*A);
+        return SetClass(L, T::UDATA_TYPE_NAME);
+    }
+    return 0;
+}
+
+int Normalize(lua_State* L)
+{
+    CHECK_ARG_COUNT(L, 1);
+    if (TNormalize< Vector4 >(L) || TNormalize< Vector3 >(L) || TNormalize< Vector2 >(L))
+        return 1;
+    else
+        return luaL_argerror(L, 1, "Expected vector2, vector3, vector4");
+}
+
 #define REGISTER_LIB(L, name, func)                                                                \
     do                                                                                             \
     {                                                                                              \
@@ -200,6 +266,9 @@ LUACML_API int luaopen_luacml(lua_State* L)
                                {"triple_product", TripleProduct},
                                {"unit_cross", UnitCross},
                                {"cross_cardinal", CrossCardinal},
+                               {"length_squared", LengthSquared},
+                               {"length", Length},
+                               {"normalize", Normalize},
                                {NULL, NULL}};
 
     lua_newtable(L);

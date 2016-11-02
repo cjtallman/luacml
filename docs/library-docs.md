@@ -251,3 +251,137 @@ corresponds to the input index.
 -   Invalid argument type.
 
 --------------------------------------------------------------------------------
+
+## length_squared()
+
+The squared length of a vector type.
+
+```lua
+local foo = luacml.vector2(1,2)
+print(luacml.length_squared(foo)) -- prints: 5
+
+local bar = luacml.vector3(1,2,3)
+print(luacml.length_squared(bar)) -- prints: 14
+
+local baz = luacml.vector4(1,2,3,4)
+print(luacml.length_squared(baz)) -- prints: 30
+```
+
+### Note
+
+This is functionally identical to calling the length_squared() method for each
+respective vector type.
+
+```lua
+local foo = luacml.vector3(1,2,3)
+assert(foo:length_squared() == luacml.length_squared(foo))
+```
+
+### Parameters
+
+-   1 `vector2`.
+-   or 1 `vector3`.
+-   or 1 `vector4`.
+
+### Returns
+
+Returns the squared length (or squared magnitude) of the input vector.
+
+### Errors
+
+-   Missing arguments.
+-   Extra arguments.
+-   Invalid argument type.
+
+--------------------------------------------------------------------------------
+
+## length()
+
+The length of a vector.
+
+```lua
+local foo = luacml.vector2(1,2)
+print(luacml.length(foo)) -- prints: sqrt(5)
+
+local bar = luacml.vector3(1,2,3)
+print(luacml.length(bar)) -- prints: sqrt(14)
+
+local baz = luacml.vector4(1,2,3,4)
+print(luacml.length(baz)) -- prints: sqrt(30)
+```
+
+### Note
+
+This is functionally identical to calling the length() method for each
+respective vector type.
+
+```lua
+local foo = luacml.vector3(1,2,3)
+assert(foo:length() == luacml.length(foo))
+```
+
+### Parameters
+
+-   1 `vector2`.
+-   or 1 `vector3`.
+-   or 1 `vector4`.
+
+### Returns
+
+Returns the length (or magnitude) of the input vector.
+
+### Errors
+
+-   Missing arguments.
+-   Extra arguments.
+-   Invalid argument type.
+
+--------------------------------------------------------------------------------
+
+## normalize()
+
+Get the unit length vector for an the input vector.
+
+```lua
+local foo = luacml.vector2(1,2)
+print(luacml.normalize(foo)) -- prints: sqrt(5)
+
+local bar = luacml.vector3(1,2,3)
+print(luacml.normalize(bar)) -- prints: sqrt(14)
+
+local baz = luacml.vector4(1,2,3,4)
+print(luacml.normalize(baz)) -- prints: sqrt(30)
+```
+
+### Note
+
+This function is similar to calling the respective `normalize()` functions for
+each vector type, however the input vector is left unchanged.
+
+```lua
+local foo = luacml.vector3(10,0,0)
+local bar = luacml.normalize(foo)
+print(foo) -- prints: vector3<10,0,0>
+print(bar) -- prints: vector3<1,0,0>
+```
+
+Also note that no checking for zero magnitude is performed; As such, possible to
+yield vectors with NaN in them.
+
+### Parameters
+
+-   1 `vector2`.
+-   or 1 `vector3`.
+-   or 1 `vector4`.
+
+### Returns
+
+Returns a new normlized vector from the input vector.
+
+### Errors
+
+-   Missing arguments.
+-   Extra arguments.
+-   Invalid argument type.
+
+--------------------------------------------------------------------------------

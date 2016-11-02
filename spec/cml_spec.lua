@@ -406,4 +406,103 @@ describe("cml", function()
             end
         end
     end)
+
+    describe("length", function()
+        local test_seeds =
+        {
+            vector2 =
+            {
+                { A = nil, expected = 0 },
+                { A = {1,2}, expected = math.sqrt(5) },
+            },
+            vector3 =
+            {
+                { A = nil, expected = 0 },
+                { A = {1,2,3}, expected = math.sqrt(14) },
+            },
+            vector4 =
+            {
+                { A = nil, expected = 0 },
+                { A = {1,2,3,4}, expected = math.sqrt(30) },
+            },
+        }
+
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = type(seed.A) == "table" and ctor(seed.A) or type(seed.A) == "nil" and ctor() or seed.A
+                local testname = testfmt:format(tostring(A))
+                it(testname, function()
+                    local input, expected = cml.length(A), seed.expected
+                    assert.same(expected, input)
+                end)
+            end
+        end
+    end)
+
+    describe("length_squared", function()
+        local test_seeds =
+        {
+            vector2 =
+            {
+                { A = nil, expected = 0 },
+                { A = {1,2}, expected = 5 },
+            },
+            vector3 =
+            {
+                { A = nil, expected = 0 },
+                { A = {1,2,3}, expected = 14 },
+            },
+            vector4 =
+            {
+                { A = nil, expected = 0 },
+                { A = {1,2,3,4}, expected = 30 },
+            },
+        }
+
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = type(seed.A) == "table" and ctor(seed.A) or type(seed.A) == "nil" and ctor() or seed.A
+                local testname = testfmt:format(tostring(A))
+                it(testname, function()
+                    local input, expected = cml.length_squared(A), seed.expected
+                    assert.same(expected, input)
+                end)
+            end
+        end
+    end)
+
+    describe("normalize", function()
+        local test_seeds =
+        {
+            vector2 =
+            {
+                { A = {1,2}, expected = {1/math.sqrt(5), 2/math.sqrt(5)} },
+            },
+            vector3 =
+            {
+                { A = {1,2,3}, expected = {1/math.sqrt(14),2/math.sqrt(14),3/math.sqrt(14)} },
+            },
+            vector4 =
+            {
+                { A = {1,2,3,4}, expected = {1/math.sqrt(30),2/math.sqrt(30),3/math.sqrt(30),4/math.sqrt(30)} },
+            },
+        }
+
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = type(seed.A) == "table" and ctor(seed.A) or type(seed.A) == "nil" and ctor() or seed.A
+                local testname = testfmt:format(tostring(A))
+                it(testname, function()
+                    local input, expected = cml.normalize(A), seed.expected
+                    assert.same(expected, input:totable())
+                end)
+            end
+        end
+    end)
 end)
