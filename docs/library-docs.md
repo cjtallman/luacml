@@ -97,3 +97,35 @@ Returns the outer product as a matrix of size *NxN* for vectors of size *N*.
 -   Invalid argument type.
 
 --------------------------------------------------------------------------------
+
+## perp_dot()
+
+The perpendicular dot product can be performed for Vector2.
+
+```lua
+local left = luacml.vector2(1,2)
+local right = luacml.vector2(3,4)
+print(luacml.perp_dot(left, right)) -- prints: -2
+```
+
+### Note
+
+Only the `vector2` type is supported.
+
+The result is the dot product of `right` and the perpendicular vector to `left`.
+
+### Parameters
+
+-   2 `vector2`.
+
+### Returns
+
+Returns the perpendicular dot product of the two input vectors.
+
+### Errors
+
+-   Missing arguments.
+-   Extra arguments.
+-   Invalid argument type.
+
+--------------------------------------------------------------------------------

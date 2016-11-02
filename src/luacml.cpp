@@ -110,6 +110,7 @@ int TOuter(lua_State* L)
     }
     return 0;
 }
+
 int Outer(lua_State* L)
 {
     CHECK_ARG_COUNT(L, 2);
@@ -119,6 +120,16 @@ int Outer(lua_State* L)
         return 1;
     else
         return luaL_argerror(L, 1, "Expected vector2, vector3, vector4");
+}
+
+int PerpDot(lua_State* L)
+{
+    CHECK_ARG_COUNT(L, 2);
+
+    const Vector2::Pointer A = (Vector2::Pointer)(luaL_checkudata(L, 1, Vector2::UDATA_TYPE_NAME));
+    const Vector2::Pointer B = (Vector2::Pointer)(luaL_checkudata(L, 2, Vector2::UDATA_TYPE_NAME));
+    lua_pushnumber(L, cml::perp_dot(*A, *B));
+    return 1;
 }
 
 #define REGISTER_LIB(L, name, func)                                                                \
@@ -132,7 +143,8 @@ int Outer(lua_State* L)
 
 LUACML_API int luaopen_luacml(lua_State* L)
 {
-    static luaL_Reg funcs[] = {{"cross", Cross}, {"dot", Dot}, {"outer", Outer}, {NULL, NULL}};
+    static luaL_Reg funcs[] = {
+        {"cross", Cross}, {"dot", Dot}, {"outer", Outer}, {"perp_dot", PerpDot}, {NULL, NULL}};
 
     lua_newtable(L);
     luaL_setfuncs(L, funcs, 0);

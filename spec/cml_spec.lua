@@ -1,69 +1,67 @@
 
 describe("cml", function()
     local cml = require("luacml")
-    local testfmt = "(%s)"
+
     --local eps = 1e-5
 
+    local classes =
+    {
+        vector2 = cml.vector2,
+        vector3 = cml.vector3,
+        vector4 = cml.vector4,
+        quat = cml.quat,
+        quat_p = cml.quat_p,
+        quat_n = cml.quat_n,
+    }
+
     describe("dot", function()
-        it("vector2(), vector2()", function()
-            local input = cml.dot(cml.vector2(), cml.vector2())
-            local expected = 0
-            assert.same(expected, input)
-        end)
+        local test_seeds =
+        {
+            vector2 =
+            {
+                { A = nil, B = nil, expected = 0 },
+                { A = {-1,2}, B = {3,-4}, expected = -11 },
+            },
+            vector3 =
+            {
+                { A = nil, B = nil, expected = 0 },
+                { A = {-1,2,3}, B = {4,-5,6}, expected = 4 },
+            },
+            vector4 =
+            {
+                { A = nil, B = nil, expected = 0 },
+                { A = {-1,2,3,4}, B = {5,-6,7,8}, expected = 36 },
+            },
+            quat =
+            {
+                { A = nil, B = nil, expected = 1 },
+                { A = {-1,2,3,4}, B = {5,-6,7,8}, expected = 36 },
+            },
+            quat_p =
+            {
+                { A = nil, B = nil, expected = 1 },
+                { A = {-1,2,3,4}, B = {5,-6,7,8}, expected = 36 },
+            },
+            quat_n =
+            {
+                { A = nil, B = nil, expected = 1 },
+                { A = {-1,2,3,4}, B = {5,-6,7,8}, expected = 36 },
+            },
+        }
 
-        it("vector3(), vector3()", function()
-            local input = cml.dot(cml.vector3(), cml.vector3())
-            local expected = 0
-            assert.same(expected, input)
-        end)
-
-        it("vector4(), vector4()", function()
-            local input = cml.dot(cml.vector4(), cml.vector4())
-            local expected = 0
-            assert.same(expected, input)
-        end)
-
-        it("quat_p(), quat_p()", function()
-            local input = cml.dot(cml.quat_p(), cml.quat_p())
-            local expected = 1
-            assert.same(expected, input)
-        end)
-
-        it("quat_n(), quat_n()", function()
-            local input = cml.dot(cml.quat_n(), cml.quat_n())
-            local expected = 1
-            assert.same(expected, input)
-        end)
-
-        it("vector2(-1,2), vector2(3,-4)", function()
-            local input = cml.dot(cml.vector2(-1,2),cml.vector2(3,-4))
-            local expected = -11
-            assert.same(expected, input)
-        end)
-
-        it("vector3(-1,2,3), vector3(4,-5,6)", function()
-            local input = cml.dot(cml.vector3(-1,2,3), cml.vector3(4,-5,6))
-            local expected = 4
-            assert.same(expected, input)
-        end)
-
-        it("vector4(-1,2,3,4), vector4(5,-6,7,8)", function()
-            local input = cml.dot(cml.vector4(-1,2,3,4), cml.vector4(5,-6,7,8))
-            local expected = 36
-            assert.same(expected, input)
-        end)
-
-        it("quat_p(-1,2,3,4), quat_p(5,-6,7,8)", function()
-            local input = cml.dot(cml.quat_p(-1,2,3,4), cml.quat_p(5,-6,7,8))
-            local expected = 36
-            assert.same(expected, input)
-        end)
-
-        it("quat_n(-1,2,3,4), quat_n(5,-6,7,8)", function()
-            local input = cml.dot(cml.quat_n(-1,2,3,4), cml.quat_n(5,-6,7,8))
-            local expected = 36
-            assert.same(expected, input)
-        end)
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s , %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = (seed.A ~= nil) and ctor(seed.A) or ctor()
+                local B = (seed.B ~= nil) and ctor(seed.B) or ctor()
+                local testname = testfmt:format(tostring(A), tostring(B))
+                it(testname, function()
+                    local input, expected = cml.dot(A, B), seed.expected
+                    assert.same(expected, input)
+                end)
+            end
+        end
 
         describe("throws #error for", function()
             -- vector2 errors
@@ -194,23 +192,29 @@ describe("cml", function()
     end)
 
     describe("cross", function()
-        it("vector3(), vector3()", function()
-            local input = cml.cross(cml.vector3(), cml.vector3())
-            local expected = {0,0,0}
-            assert.same(expected, input:totable())
-        end)
+        local test_seeds =
+        {
+            vector3 =
+            {
+                { A = nil, B = nil, expected = {0,0,0} },
+                { A = {1,2,3}, B = {4,5,6}, expected = {-3,6,-3} },
+                { A = {1,0,0}, B = {0,-1,0}, expected = {0,0,-1} },
+            },
+        }
 
-        it("vector3(1,2,3), vector3(4,5,6)", function()
-            local input = cml.cross(cml.vector3(1,2,3), cml.vector3(4,5,6))
-            local expected = {-3,6,-3}
-            assert.same(expected, input:totable())
-        end)
-
-        it("vector3(1,0,0), vector3(0,-1,0)", function()
-            local input = cml.cross(cml.vector3(1,0,0), cml.vector3(0,-1,0))
-            local expected = {0,0,-1}
-            assert.same(expected, input:totable())
-        end)
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s , %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = (seed.A ~= nil) and ctor(seed.A) or ctor()
+                local B = (seed.B ~= nil) and ctor(seed.B) or ctor()
+                local testname = testfmt:format(tostring(A), tostring(B))
+                it(testname, function()
+                    local input, expected = cml.cross(A, B), seed.expected
+                    assert.same(expected, input:totable())
+                end)
+            end
+        end
 
         describe("throws #error for", function()
             it("(no args)", function()
@@ -264,52 +268,62 @@ describe("cml", function()
     end)
 
     describe("outer", function()
-        describe(testfmt:format("vector2"), function()
-            it("(0,0), (0,0)", function()
-                local A = cml.vector2(0,0)
-                local B = cml.vector2(0,0)
-                local input, expected = cml.outer(A,B), cml.matrix22(0,0,0,0)
-                assert.same(expected:totable(), input:totable())
-            end)
+        local test_seeds =
+        {
+            vector2 =
+            {
+                { A = nil, B = nil, expected = {0,0,0,0} },
+                { A = {1, 2}, B = {3, 4}, expected = {3,4,6,8} },
+            },
+            vector3 =
+            {
+                { A = nil, B = nil, expected = {0,0,0,0,0,0,0,0,0} },
+                { A = {1,2,3}, B = {3,4,5}, expected = {3,4,5,6,8,10,9,12,15} },
+            },
+            vector4 =
+            {
+                { A = nil, B = nil, expected = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} },
+                { A = {1,2,3,4}, B = {4,5,6,7}, expected = {4,5,6,7,8,10,12,14,12,15,18,21,16,20,24,28} },
+            },
+        }
 
-            it("(1,2), (2,3)", function()
-                local A = cml.vector2(1,2)
-                local B = cml.vector2(2,3)
-                local input, expected = cml.outer(A,B), cml.matrix22(2,3,4,6)
-                assert.same(expected:totable(), input:totable())
-            end)
-        end)
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s , %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = (seed.A ~= nil) and ctor(seed.A) or ctor()
+                local B = (seed.B ~= nil) and ctor(seed.B) or ctor()
+                local testname = testfmt:format(tostring(A), tostring(B))
+                it(testname, function()
+                    local input, expected = cml.outer(A, B), seed.expected
+                    assert.same(expected, input:totable())
+                end)
+            end
+        end
+    end)
 
-        describe(testfmt:format("vector3"), function()
-            it("(0,0,0), (0,0,0)", function()
-                local A = cml.vector3(0,0,0)
-                local B = cml.vector3(0,0,0)
-                local input, expected = cml.outer(A,B), cml.matrix33(0,0,0,0,0,0,0,0,0)
-                assert.same(expected:totable(), input:totable())
-            end)
+    describe("perp_dot", function()
+        local test_seeds =
+        {
+            vector2 =
+            {
+                { A = nil, B = nil, expected = 0 },
+                { A = {1, 2}, B = {3, 4}, expected = -2 },
+            },
+        }
 
-            it("(1,2,3), (3,4,5)", function()
-                local A = cml.vector3(1,2,3)
-                local B = cml.vector3(3,4,5)
-                local input, expected = cml.outer(A,B), cml.matrix33(3,4,5,6,8,10,9,12,15)
-                assert.same(expected:totable(), input:totable())
-            end)
-        end)
-
-        describe(testfmt:format("vector4"), function()
-            it("(0,0,0), (0,0,0)", function()
-                local A = cml.vector4(0,0,0)
-                local B = cml.vector4(0,0,0)
-                local input, expected = cml.outer(A,B), cml.matrix44(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
-                assert.same(expected:totable(), input:totable())
-            end)
-
-            it("(1,2,3,4), (4,5,6,7)", function()
-                local A = cml.vector4(1,2,3,4)
-                local B = cml.vector4(4,5,6,7)
-                local input, expected = cml.outer(A,B), cml.matrix44(4,5,6,7,8,10,12,14,12,15,18,21,16,20,24,28)
-                assert.same(expected:totable(), input:totable())
-            end)
-        end)
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s , %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = (seed.A ~= nil) and ctor(seed.A) or ctor()
+                local B = (seed.B ~= nil) and ctor(seed.B) or ctor()
+                local testname = testfmt:format(tostring(A), tostring(B))
+                it(testname, function()
+                    local input, expected = cml.perp_dot(A, B), seed.expected
+                    assert.same(expected, input)
+                end)
+            end
+        end
     end)
 end)
