@@ -130,7 +130,7 @@ int Outer(lua_State* L)
         lua_rawset(L, -3);                                                                         \
     } while (0)
 
-int luaopen_luacml(lua_State* L)
+LUACML_API int luaopen_luacml(lua_State* L)
 {
     static luaL_Reg funcs[] = {{"cross", Cross}, {"dot", Dot}, {"outer", Outer}, {NULL, NULL}};
 
