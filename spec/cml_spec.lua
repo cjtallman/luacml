@@ -505,4 +505,36 @@ describe("cml", function()
             end
         end
     end)
+
+    describe("project_to_hplane", function()
+        local test_seeds =
+        {
+            vector2 =
+            {
+                { A = {1,2}, B = {1,0}, expected = {0,2} },
+            },
+            vector3 =
+            {
+                { A = {1,2,3}, B = {0,1,0}, expected = {1,0,3}},
+            },
+            vector4 =
+            {
+                { A = {1,2,3,4}, B = {0,0,1,0}, expected = {1,2,0,4} },
+            },
+        }
+
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = type(seed.A) == "table" and ctor(seed.A) or type(seed.A) == "nil" and ctor() or seed.A
+                local B = type(seed.B) == "table" and ctor(seed.B) or type(seed.B) == "nil" and ctor() or seed.B
+                local testname = testfmt:format(tostring(A), tostring(B))
+                it(testname, function()
+                    local input, expected = cml.project_to_hplane(A,B), seed.expected
+                    assert.same(expected, input:totable())
+                end)
+            end
+        end
+    end)
 end)

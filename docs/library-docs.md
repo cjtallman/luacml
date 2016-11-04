@@ -385,3 +385,44 @@ Returns a new normlized vector from the input vector.
 -   Invalid argument type.
 
 --------------------------------------------------------------------------------
+
+## project_to_hplane()
+
+Project a vector orthographically onto a hyperplane with the input normal.
+
+```lua
+local foo = luacml.vector2(1,2)
+local n = luacml.vector2(1,0)
+print(luacml.project_to_hplane(foo, n)) -- prints: vector2:<0,2>
+
+local bar = luacml.vector3(1,2,3)
+local n = luacml.vector3(0,1,0)
+print(luacml.project_to_hplane(bar, n)) -- prints: vector3:<1,0,3>
+
+local baz = luacml.vector4(1,2,3,4)
+local n = luacml.vector4(0,0,1,0)
+print(luacml.project_to_hplane(baz, n)) -- prints: vector4:<1,2,0,4>
+```
+
+### Note
+
+This function does not normalize the second argument (input normal).
+
+### Parameters
+
+-   2 `vector2`.
+-   or 2 `vector3`.
+-   or 2 `vector4`.
+
+### Returns
+
+Returns a new vector projected onto the hyperplane described by the input normal
+vector.
+
+### Errors
+
+-   Missing arguments.
+-   Extra arguments.
+-   Invalid argument type.
+
+--------------------------------------------------------------------------------
