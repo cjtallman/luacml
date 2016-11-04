@@ -103,6 +103,8 @@
             <li><a href="#normalize">normalize()</a></li>
             <li><a href="#project_to_hplane">project_to_hplane()</a></li>
             <li><a href="#perp">perp()</a></li>
+            <li><a href="#rotate_vector">rotate_vector()</a></li>
+            <li><a href="#rotate_vector_2d">rotate_vector_2D()</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -452,6 +454,53 @@ print(luacml.perp(luacml.vector2(2,-1)))  -- prints: vector2:&lt;1,2&gt;
 <h3 id="returns_11">Returns</h3>
 <p>Returns a new <code>vector2</code> that is perpendicular to the input vector.</p>
 <h3 id="errors_11">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="rotate_vector">rotate_vector()</h2>
+<p>Rotate a <code>vector3</code> around a unit <code>vector3</code> by a specified angle.</p>
+<pre><code class="lua">local foo = luacml.vector3(1,2,3)
+local n = lua.vector3(0,1,0)
+print(luacml.rotate_vector(foo, n, math.rad(90))) -- prints: vector3:&lt;3,2,-1&gt;
+</code></pre>
+
+<h3 id="note_12">Note</h3>
+<p>This function is only available for <code>vector3</code> types.</p>
+<p>The input normal (argument 2) is not normalized by the library.</p>
+<p>The input angle (argument 3) is expected to be in <strong>radians</strong>.</p>
+<h3 id="parameters_12">Parameters</h3>
+<ul>
+<li>2 <code>vector3</code> and 1 number.</li>
+</ul>
+<h3 id="returns_12">Returns</h3>
+<p>Returns a new <code>vector3</code> that is the input vector rotated by an angle around an
+input normal vector.</p>
+<h3 id="errors_12">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="rotate_vector_2d">rotate_vector_2D()</h2>
+<p>Rotate a <code>vector2</code> by a specified angle.</p>
+<pre><code class="lua">local foo = luacml.vector2(1,2)
+print(luacml.rotate_vector_2D(foo, math.rad(90))) -- prints: vector2:&lt;-2,1&gt;
+</code></pre>
+
+<h3 id="note_13">Note</h3>
+<p>This function is only available for <code>vector2</code> types.</p>
+<p>The input angle (argument 2) is expected to be in <strong>radians</strong>.</p>
+<h3 id="parameters_13">Parameters</h3>
+<ul>
+<li>1 <code>vector1</code> and 1 number.</li>
+</ul>
+<h3 id="returns_13">Returns</h3>
+<p>Returns a new <code>vector2</code> that is the input vector rotated by an angle.</p>
+<h3 id="errors_13">Errors</h3>
 <ul>
 <li>Missing arguments.</li>
 <li>Extra arguments.</li>
