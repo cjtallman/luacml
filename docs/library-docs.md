@@ -494,3 +494,34 @@ input normal vector.
 -   Invalid argument type.
 
 --------------------------------------------------------------------------------
+
+## rotate_vector_2D()
+
+Rotate a `vector2` by a specified angle.
+
+```lua
+local foo = luacml.vector2(1,2)
+print(luacml.rotate_vector_2D(foo, math.rad(90))) -- prints: vector2:<-2,1>
+```
+
+### Note
+
+This function is only available for `vector2` types.
+
+The input angle (argument 2) is expected to be in **radians**.
+
+### Parameters
+
+-   1 `vector1` and 1 number.
+
+### Returns
+
+Returns a new `vector2` that is the input vector rotated by an angle.
+
+### Errors
+
+-   Missing arguments.
+-   Extra arguments.
+-   Invalid argument type.
+
+--------------------------------------------------------------------------------

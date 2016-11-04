@@ -608,4 +608,30 @@ describe("cml", function()
             end
         end
     end)
+
+    describe("rotate_vector_2D", function()
+        local test_seeds =
+        {
+            vector2 =
+            {
+                { A = {1,2}, B = math.rad(90), expected = {-2,1}},
+                { A = {1,2}, B = math.rad(-90), expected = {2,-1}},
+            },
+        }
+
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s , %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = type(seed.A) == "table" and ctor(seed.A) or type(seed.A) == "nil" and ctor() or seed.A
+                local B = type(seed.B) == "table" and ctor(seed.B) or type(seed.B) == "nil" and ctor() or seed.B
+                local testname = testfmt:format(tostring(A), tostring(B), tostring(C))
+                it(testname, function()
+                    local input, expected = cml.rotate_vector_2D(A,B), seed.expected
+                    local result = input:totable()
+                    assert.similar(expected, result, eps)
+                end)
+            end
+        end
+    end)
 end)

@@ -232,4 +232,15 @@ int RotateVector(lua_State* L)
     return 1;
 }
 
+int RotateVector2D(lua_State* L)
+{
+    CHECK_ARG_COUNT(L, 2);
+    const Vector2::Pointer A = (Vector2::Pointer)(luaL_checkudata(L, 1, Vector2::UDATA_TYPE_NAME));
+    const lua_Number       B = luaL_checknumber(L, 2);
+    Vector2::Pointer       C = (Vector2::Pointer)lua_newuserdata(L, sizeof(Vector2::Type));
+    *C                       = cml::rotate_vector_2D(*A, B);
+    SetClass(L, Vector2::UDATA_TYPE_NAME);
+    return 1;
+}
+
 #endif // luacmlvectorfuncs_hpp__
