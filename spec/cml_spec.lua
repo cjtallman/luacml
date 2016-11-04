@@ -625,7 +625,7 @@ describe("cml", function()
             for _, seed in ipairs(seeds) do
                 local A = type(seed.A) == "table" and ctor(seed.A) or type(seed.A) == "nil" and ctor() or seed.A
                 local B = type(seed.B) == "table" and ctor(seed.B) or type(seed.B) == "nil" and ctor() or seed.B
-                local testname = testfmt:format(tostring(A), tostring(B), tostring(C))
+                local testname = testfmt:format(tostring(A), tostring(B))
                 it(testname, function()
                     local input, expected = cml.rotate_vector_2D(A,B), seed.expected
                     local result = input:totable()
