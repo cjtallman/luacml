@@ -1,8 +1,23 @@
 
+local say = require("say")
+local tablex = require("pl.tablex")
+
+local function similar(_, arguments)
+    local A, B = arguments[1], arguments[2]
+    local eps = tonumber(arguments[3] or 0)
+    arguments[1], arguments[2] = arguments[2], arguments[1]
+    return tablex.deepcompare(A,B,true,eps)
+end
+
+say:set("assertion.similar.positive", "Expected objects to be similar.\nPassed in:\n%s\nExpected:\n%s")
+say:set("assertion.similar.negative", "Expected objects to be dissimilar.\nPassed in:\n%s\nExpected:\n%s")
+assert:register("assertion", "similar", similar, "assertion.similar.positive", "assertion.similar.negative")
+
+--------------------------------------------------------------------------------
+
 describe("cml", function()
     local cml = require("luacml")
-
-    --local eps = 1e-5
+    local eps = 1e-10
 
     local classes =
     {
@@ -524,7 +539,7 @@ describe("cml", function()
         }
 
         for name, seeds in pairs(test_seeds) do
-            local testfmt = "( %s )"
+            local testfmt = "( %s , %s )"
             local ctor = classes[name]
             for _, seed in ipairs(seeds) do
                 local A = type(seed.A) == "table" and ctor(seed.A) or type(seed.A) == "nil" and ctor() or seed.A
@@ -558,6 +573,37 @@ describe("cml", function()
                 it(testname, function()
                     local input, expected = cml.perp(A), seed.expected
                     assert.same(expected, input:totable())
+                end)
+            end
+        end
+    end)
+
+    describe("rotate_vector", function()
+        local test_seeds =
+        {
+            vector3 =
+            {
+                { A = {1,2,3}, B = {1,0,0}, C = math.rad(90), expected = {1,-3,2}},
+                { A = {1,2,3}, B = {1,0,0}, C = math.rad(-90), expected = {1,3,-2}},
+                { A = {1,2,3}, B = {0,1,0}, C = math.rad(90), expected = {3,2,-1}},
+                { A = {1,2,3}, B = {0,1,0}, C = math.rad(-90), expected = {-3,2,1}},
+                { A = {1,2,3}, B = {0,0,1}, C = math.rad(90), expected = {-2,1,3}},
+                { A = {1,2,3}, B = {0,0,1}, C = math.rad(-90), expected = {2,-1,3}},
+            },
+        }
+
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s , %s , %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = type(seed.A) == "table" and ctor(seed.A) or type(seed.A) == "nil" and ctor() or seed.A
+                local B = type(seed.B) == "table" and ctor(seed.B) or type(seed.B) == "nil" and ctor() or seed.B
+                local C = type(seed.C) == "table" and ctor(seed.C) or type(seed.C) == "nil" and ctor() or seed.C
+                local testname = testfmt:format(tostring(A), tostring(B), tostring(C))
+                it(testname, function()
+                    local input, expected = cml.rotate_vector(A,B,C), seed.expected
+                    local result = input:totable()
+                    assert.similar(expected, result, eps)
                 end)
             end
         end

@@ -1,8 +1,16 @@
 return
 {
+    _all =
+    {
+        verbose = true,
+    },
     default =
     {
-        verbose = true
-        coverage = true
+        coverage = false,
+    },
+    coverage =
+    {
+        coverage = true,
+        defer-print = true,
     },
 }

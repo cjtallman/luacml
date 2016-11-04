@@ -220,4 +220,16 @@ int Perp(lua_State* L)
     return 1;
 }
 
+int RotateVector(lua_State* L)
+{
+    CHECK_ARG_COUNT(L, 3);
+    const Vector3::Pointer A = (Vector3::Pointer)(luaL_checkudata(L, 1, Vector3::UDATA_TYPE_NAME));
+    const Vector3::Pointer B = (Vector3::Pointer)(luaL_checkudata(L, 2, Vector3::UDATA_TYPE_NAME));
+    const lua_Number       C = luaL_checknumber(L, 3);
+    Vector3::Pointer       D = (Vector3::Pointer)lua_newuserdata(L, sizeof(Vector3::Type));
+    *D                       = cml::rotate_vector(*A, *B, C);
+    SetClass(L, Vector3::UDATA_TYPE_NAME);
+    return 1;
+}
+
 #endif // luacmlvectorfuncs_hpp__

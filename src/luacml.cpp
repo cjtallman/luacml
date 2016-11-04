@@ -104,6 +104,7 @@ LUACML_API int luaopen_luacml(lua_State* L)
                                {"normalize", Normalize},
                                {"project_to_hplane", ProjectToHPlane},
                                {"perp", Perp},
+                               {"rotate_vector", RotateVector},
                                {NULL, NULL}};
 
     lua_newtable(L);

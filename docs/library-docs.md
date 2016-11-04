@@ -459,3 +459,38 @@ Returns a new `vector2` that is perpendicular to the input vector.
 -   Invalid argument type.
 
 --------------------------------------------------------------------------------
+
+## rotate_vector()
+
+Rotate a `vector3` around a unit `vector3` by a specified angle.
+
+```lua
+local foo = luacml.vector3(1,2,3)
+local n = lua.vector3(0,1,0)
+print(luacml.rotate_vector(foo, n, math.rad(90))) -- prints: vector3:<3,2,-1>
+```
+
+### Note
+
+This function is only available for `vector3` types.
+
+The input normal (argument 2) is not normalized by the library.
+
+The input angle (argument 3) is expected to be in **radians**.
+
+### Parameters
+
+-   2 `vector3` and 1 number.
+
+### Returns
+
+Returns a new `vector3` that is the input vector rotated by an angle around an
+input normal vector.
+
+### Errors
+
+-   Missing arguments.
+-   Extra arguments.
+-   Invalid argument type.
+
+--------------------------------------------------------------------------------
