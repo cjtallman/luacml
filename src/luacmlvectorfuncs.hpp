@@ -246,7 +246,7 @@ int RotateVector2D(lua_State* L)
 template < typename T >
 int TRandomUnit(lua_State* L)
 {
-    typedef T::Pointer TPointer;
+    typedef typename T::Pointer TPointer;
 
     if (TPointer A = (TPointer)luaL_testudata(L, 1, T::UDATA_TYPE_NAME))
     {
