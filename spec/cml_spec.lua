@@ -658,7 +658,7 @@ describe("cml", function()
                     cml.random_unit(input)
                     local result = input:totable()
                     assert.is_not.similar(expected, result, eps)
-                    assert.same(1, input:length())
+                    assert.similar(1, input:length(), eps)
                 end)
             end
         end
@@ -687,7 +687,7 @@ describe("cml", function()
                     cml.random_unit(input, B, C)
                     local result = input:totable()
                     assert.is_not.similar(expected, result, eps)
-                    assert.same(1, input:length())
+                    assert.similar(1, input:length(), eps)
 
                     -- TODO: Test within cone specified by B and C.
                 end)
