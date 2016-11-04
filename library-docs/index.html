@@ -105,6 +105,7 @@
             <li><a href="#perp">perp()</a></li>
             <li><a href="#rotate_vector">rotate_vector()</a></li>
             <li><a href="#rotate_vector_2d">rotate_vector_2D()</a></li>
+            <li><a href="#random_unit">random_unit()</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -496,11 +497,46 @@ print(luacml.rotate_vector_2D(foo, math.rad(90))) -- prints: vector2:&lt;-2,1&gt
 <p>The input angle (argument 2) is expected to be in <strong>radians</strong>.</p>
 <h3 id="parameters_13">Parameters</h3>
 <ul>
-<li>1 <code>vector1</code> and 1 number.</li>
+<li>1 <code>vector2</code> and 1 number.</li>
 </ul>
 <h3 id="returns_13">Returns</h3>
 <p>Returns a new <code>vector2</code> that is the input vector rotated by an angle.</p>
 <h3 id="errors_13">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="random_unit">random_unit()</h2>
+<p>Set an input vector to a random unit vector.</p>
+<p>Set to a random unit vector:</p>
+<pre><code class="lua">local foo = luacml.vector2()
+luacml.random_unit(foo)
+print(foo, foo:length()) -- prints: vector2:&lt;#,#&gt; 1.0
+</code></pre>
+
+<p>Set to a random unit vector within <em>theta</em> radians of <em>axis</em>:</p>
+<pre><code class="lua">local foo = luacml.vector2()
+luacml.random_unit(foo, luacml.vector2(1,0), math.rad(90))
+print(foo, foo:length()) -- prints: vector2:&lt;#,#&gt; 1.0
+</code></pre>
+
+<h3 id="note_14">Note</h3>
+<p>This function is only available for <code>vector2</code> and <code>vector3</code> types.</p>
+<p>The input vector (argument 1) is modified in place.</p>
+<p>The input axis vector (argument 2) is expected to be same type as argument 1.</p>
+<p>The input angle (argument 3) is expected to be in <strong>radians</strong>.</p>
+<h3 id="parameters_14">Parameters</h3>
+<ul>
+<li>1 <code>vector2</code>.</li>
+<li>or 1 <code>vector3</code>.</li>
+<li>or 2 <code>vector2</code> and 1 number.</li>
+<li>or 2 <code>vector3</code> and 1 number.</li>
+</ul>
+<h3 id="returns_14">Returns</h3>
+<p>(None)</p>
+<h3 id="errors_14">Errors</h3>
 <ul>
 <li>Missing arguments.</li>
 <li>Extra arguments.</li>
