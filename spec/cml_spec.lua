@@ -634,4 +634,64 @@ describe("cml", function()
             end
         end
     end)
+
+    describe("random_unit", function()
+        local test_seeds_1 =
+        {
+            vector2 =
+            {
+                { A = nil, expected = {0,0}},
+            },
+            vector3 =
+            {
+                { A = nil, expected = {0,0,0}},
+            },
+        }
+        for name, seeds in pairs(test_seeds_1) do
+            local testfmt = "( %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = type(seed.A) == "table" and ctor(seed.A) or type(seed.A) == "nil" and ctor() or seed.A
+                local testname = testfmt:format(tostring(A))
+                it(testname, function()
+                    local input, expected = ctor(A), seed.expected
+                    cml.random_unit(input)
+                    local result = input:totable()
+                    assert.is_not.similar(expected, result, eps)
+                    assert.same(1, input:length())
+                end)
+            end
+        end
+
+        local test_seeds_2 =
+        {
+            vector2 =
+            {
+                { A = nil, B = {1,0}, C = math.rad(90), expected = {0,0}},
+            },
+            vector3 =
+            {
+                { A = nil, B = {1,0,0}, C = math.rad(90), expected = {0,0,0}},
+            },
+        }
+        for name, seeds in pairs(test_seeds_2) do
+            local testfmt = "( %s , %s , %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = type(seed.A) == "table" and ctor(seed.A) or type(seed.A) == "nil" and ctor() or seed.A
+                local B = type(seed.B) == "table" and ctor(seed.B) or type(seed.B) == "nil" and ctor() or seed.B
+                local C = type(seed.C) == "table" and ctor(seed.C) or type(seed.C) == "nil" and ctor() or seed.C
+                local testname = testfmt:format(tostring(A), tostring(B), tostring(C))
+                it(testname, function()
+                    local input, expected = ctor(A), seed.expected
+                    cml.random_unit(input, B, C)
+                    local result = input:totable()
+                    assert.is_not.similar(expected, result, eps)
+                    assert.same(1, input:length())
+
+                    -- TODO: Test within cone specified by B and C.
+                end)
+            end
+        end
+    end)
 end)

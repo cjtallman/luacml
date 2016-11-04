@@ -512,11 +512,60 @@ The input angle (argument 2) is expected to be in **radians**.
 
 ### Parameters
 
--   1 `vector1` and 1 number.
+-   1 `vector2` and 1 number.
 
 ### Returns
 
 Returns a new `vector2` that is the input vector rotated by an angle.
+
+### Errors
+
+-   Missing arguments.
+-   Extra arguments.
+-   Invalid argument type.
+
+--------------------------------------------------------------------------------
+
+## random_unit()
+
+Set an input vector to a random unit vector.
+
+Set to a random unit vector:
+
+```lua
+local foo = luacml.vector2()
+luacml.random_unit(foo)
+print(foo, foo:length()) -- prints: vector2:<#,#> 1.0
+```
+
+Set to a random unit vector within *theta* radians of *axis*:
+
+```lua
+local foo = luacml.vector2()
+luacml.random_unit(foo, luacml.vector2(1,0), math.rad(90))
+print(foo, foo:length()) -- prints: vector2:<#,#> 1.0
+```
+
+### Note
+
+This function is only available for `vector2` and `vector3` types.
+
+The input vector (argument 1) is modified in place.
+
+The input axis vector (argument 2) is expected to be same type as argument 1.
+
+The input angle (argument 3) is expected to be in **radians**.
+
+### Parameters
+
+-   1 `vector2`.
+-   or 1 `vector3`.
+-   or 2 `vector2` and 1 number.
+-   or 2 `vector3` and 1 number.
+
+### Returns
+
+(None)
 
 ### Errors
 

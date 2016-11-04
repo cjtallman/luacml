@@ -243,4 +243,38 @@ int RotateVector2D(lua_State* L)
     return 1;
 }
 
+template < typename T >
+int TRandomUnit(lua_State* L)
+{
+    typedef T::Pointer TPointer;
+
+    if (TPointer A = (TPointer)luaL_testudata(L, 1, T::UDATA_TYPE_NAME))
+    {
+        if (lua_gettop(L) == 1)
+        {
+            cml::random_unit(*A);
+            return 1;
+        }
+        else if (lua_gettop(L) == 3)
+        {
+            const TPointer   B = (TPointer)luaL_checkudata(L, 2, T::UDATA_TYPE_NAME);
+            const lua_Number C = luaL_checknumber(L, 3);
+            cml::random_unit(*A, *B, C);
+            return 1;
+        }
+        else
+            return luaL_argerror(L, 2, "Expected (none) or same vector type as argument 1.");
+    }
+    else
+        return 0;
+}
+
+int RandomUnit(lua_State* L)
+{
+    if (TRandomUnit< Vector2 >(L) || TRandomUnit< Vector3 >(L))
+        return 0;
+    else
+        return luaL_argerror(L, 1, "Expected vector2, vector3, vector4");
+}
+
 #endif // luacmlvectorfuncs_hpp__

@@ -106,6 +106,7 @@ LUACML_API int luaopen_luacml(lua_State* L)
                                {"perp", Perp},
                                {"rotate_vector", RotateVector},
                                {"rotate_vector_2D", RotateVector2D},
+                               {"random_unit", RandomUnit},
                                {NULL, NULL}};
 
     lua_newtable(L);
