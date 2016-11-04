@@ -537,4 +537,29 @@ describe("cml", function()
             end
         end
     end)
+
+    describe("perp", function()
+        local test_seeds =
+        {
+            vector2 =
+            {
+                { A = {0,0}, expected = {0,0} },
+                { A = {1,2}, expected = {-2,1} },
+                { A = {-2,1}, expected = {-1,-2} },
+            },
+        }
+
+        for name, seeds in pairs(test_seeds) do
+            local testfmt = "( %s )"
+            local ctor = classes[name]
+            for _, seed in ipairs(seeds) do
+                local A = type(seed.A) == "table" and ctor(seed.A) or type(seed.A) == "nil" and ctor() or seed.A
+                local testname = testfmt:format(tostring(A))
+                it(testname, function()
+                    local input, expected = cml.perp(A), seed.expected
+                    assert.same(expected, input:totable())
+                end)
+            end
+        end
+    end)
 end)

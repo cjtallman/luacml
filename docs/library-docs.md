@@ -426,3 +426,36 @@ vector.
 -   Invalid argument type.
 
 --------------------------------------------------------------------------------
+
+## perp()
+
+Get a perpendicular vector to a `vector2`.
+
+```lua
+print(luacml.perp(luacml.vector2(1,2)))   -- prints: vector2:<-2,1>
+print(luacml.perp(luacml.vector2(-2,1)))  -- prints: vector2:<-1,-2>
+print(luacml.perp(luacml.vector2(-1,-2))) -- prints: vector2:<2,-1>
+print(luacml.perp(luacml.vector2(2,-1)))  -- prints: vector2:<1,2>
+```
+
+### Note
+
+This function is only available for `vector2` types.
+
+The result follows a convention of (-y,x) from the input vector.
+
+### Parameters
+
+-   1 `vector2`.
+
+### Returns
+
+Returns a new `vector2` that is perpendicular to the input vector.
+
+### Errors
+
+-   Missing arguments.
+-   Extra arguments.
+-   Invalid argument type.
+
+--------------------------------------------------------------------------------
