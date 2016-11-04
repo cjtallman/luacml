@@ -102,6 +102,7 @@
             <li><a href="#length">length()</a></li>
             <li><a href="#normalize">normalize()</a></li>
             <li><a href="#project_to_hplane">project_to_hplane()</a></li>
+            <li><a href="#perp">perp()</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -427,6 +428,30 @@ print(luacml.project_to_hplane(baz, n)) -- prints: vector4:&lt;1,2,0,4&gt;
 <p>Returns a new vector projected onto the hyperplane described by the input normal
 vector.</p>
 <h3 id="errors_10">Errors</h3>
+<ul>
+<li>Missing arguments.</li>
+<li>Extra arguments.</li>
+<li>Invalid argument type.</li>
+</ul>
+<hr />
+<h2 id="perp">perp()</h2>
+<p>Get a perpendicular vector to a <code>vector2</code>.</p>
+<pre><code class="lua">print(luacml.perp(luacml.vector2(1,2)))   -- prints: vector2:&lt;-2,1&gt;
+print(luacml.perp(luacml.vector2(-2,1)))  -- prints: vector2:&lt;-1,-2&gt;
+print(luacml.perp(luacml.vector2(-1,-2))) -- prints: vector2:&lt;2,-1&gt;
+print(luacml.perp(luacml.vector2(2,-1)))  -- prints: vector2:&lt;1,2&gt;
+</code></pre>
+
+<h3 id="note_11">Note</h3>
+<p>This function is only available for <code>vector2</code> types.</p>
+<p>The result follows a convention of (-y,x) from the input vector.</p>
+<h3 id="parameters_11">Parameters</h3>
+<ul>
+<li>1 <code>vector2</code>.</li>
+</ul>
+<h3 id="returns_11">Returns</h3>
+<p>Returns a new <code>vector2</code> that is perpendicular to the input vector.</p>
+<h3 id="errors_11">Errors</h3>
 <ul>
 <li>Missing arguments.</li>
 <li>Extra arguments.</li>
